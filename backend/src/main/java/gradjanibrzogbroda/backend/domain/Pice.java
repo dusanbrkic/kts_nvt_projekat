@@ -1,6 +1,9 @@
 package gradjanibrzogbroda.backend.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -8,16 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="sankeri")
-@SQLDelete(sql
-        = "UPDATE sankeri "
-        + "SET obrisan = true "
-        + "WHERE id = ?")
-@Where(clause = "obrisan = false")
+@Table(name="pice")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor
-public class Sanker extends Zaposleni{
+public class Pice extends Artikal{
 }

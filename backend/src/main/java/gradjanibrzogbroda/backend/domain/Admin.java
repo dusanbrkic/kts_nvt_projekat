@@ -4,25 +4,32 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name="glavni_kuvari")
+@Table(name="admini")
 @SQLDelete(sql
-        = "UPDATE glavni_kuvari "
+        = "UPDATE admini "
         + "SET obrisan = true "
         + "WHERE id = ?")
 @Where(clause = "obrisan = false")
 @Getter
 @Setter
-//@Builder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GlavniKuvar extends Kuvar{
+public class Admin {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "korisnicko_ime", nullable = false)
     private String korisnicko_ime;
+
     @Column(name = "lozinka", nullable = false)
     private String lozinka;
+
+    @Column(name = "obrisan", nullable = false)
+    private boolean obrisan;
 }

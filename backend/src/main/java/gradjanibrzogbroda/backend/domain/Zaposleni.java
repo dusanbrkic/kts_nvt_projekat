@@ -1,9 +1,6 @@
 package gradjanibrzogbroda.backend.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -21,6 +18,7 @@ import java.util.List;
         + "WHERE id = ?")
 @Where(clause = "obrisan = false")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class Zaposleni {

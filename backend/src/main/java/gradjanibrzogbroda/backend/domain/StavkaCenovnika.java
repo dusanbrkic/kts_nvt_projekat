@@ -6,17 +6,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="plate")
+@Table(name="cenovnik")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Plata {
-
+public class StavkaCenovnika {
     @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "pocetak_vazenja")
@@ -26,6 +24,5 @@ public class Plata {
     private LocalDate krajVazenja;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Zaposleni zaposleni;
-
+    private Artikal artikal;
 }
