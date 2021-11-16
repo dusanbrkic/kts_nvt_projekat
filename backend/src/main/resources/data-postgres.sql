@@ -26,3 +26,20 @@ insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) value
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Rib-eye', 1100, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (5, 30000, 'Odrezak govedine spremljen na rostilju na nacin po zahtevu kupca', 1, 1);
+
+--pice
+
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Coca Cola 0.33l', 125, false);
+insert into pice (id) values (6);
+
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Sprite 0.33l', 125, false);
+insert into pice (id) values (7);
+
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Fanta 0.33l', 125, false);
+insert into pice (id) values (8);
+
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Limunada 0.33l', 80, false);
+insert into pice (id) values (9);
+
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Limanada 0.5l', 125, false);
+insert into pice (id) values (10);
