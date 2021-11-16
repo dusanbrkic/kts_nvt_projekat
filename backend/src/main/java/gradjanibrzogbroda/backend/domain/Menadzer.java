@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -21,6 +23,9 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Menadzer extends Zaposleni{
+    public Menadzer(ZaposleniDTO zaposleniDTO) {
+        super(zaposleniDTO);
+    }
     @Column(name = "korisnicko_ime", nullable = false)
     private String korisnicko_ime;
     @Column(name = "lozinka", nullable = false)

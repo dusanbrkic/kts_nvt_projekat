@@ -4,10 +4,14 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import gradjanibrzogbroda.backend.dto.PlataDTO;
+import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "zaposleni")
@@ -48,4 +52,23 @@ public abstract class Zaposleni {
     @Column(name = "obrisan", nullable = false)
     private boolean obrisan;
 
+    public Zaposleni(ZaposleniDTO zDto){
+        updateFields(zDto);
+    }
+
+    public void updateFields(ZaposleniDTO zDto){
+        id = zDto.getId();
+        ime = zDto.getIme();
+        prezime = zDto.getPrezime();
+        pol = zDto.getPol();
+        datumRodjenja = zDto.getDatumRodjenja();
+        trenutnaPlata = zDto.getTrenutnaPlata();
+        tipZaposlenja = zDto.getTipZaposlenja();
+        putanjaSlike = sacuvajSliku(zDto.getSlikaString());
+    }
+
+    public String sacuvajSliku(String slika){
+        // TODO: logika cuvanja slike iz string-a u filesistem i cuvanje u path-u
+        return "";
+    }
 }

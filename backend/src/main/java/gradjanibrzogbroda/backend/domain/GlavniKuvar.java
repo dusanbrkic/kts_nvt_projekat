@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -25,4 +27,8 @@ public class GlavniKuvar extends Kuvar{
     private String korisnicko_ime;
     @Column(name = "lozinka", nullable = false)
     private String lozinka;
+
+    public GlavniKuvar(ZaposleniDTO zaposleniDTO) {
+        super(zaposleniDTO);
+    }
 }

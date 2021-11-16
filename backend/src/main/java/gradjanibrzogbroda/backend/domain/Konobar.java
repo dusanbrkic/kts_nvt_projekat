@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -20,4 +22,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 //@NoArgsConstructor
 public class Konobar extends Zaposleni{
+        public Konobar(ZaposleniDTO zaposleniDTO){
+                super(zaposleniDTO);
+        }
 }
