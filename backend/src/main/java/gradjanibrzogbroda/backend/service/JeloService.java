@@ -28,16 +28,16 @@ public class JeloService {
 		return jeloRep.findOneByNaziv(naziv);
 	}
 	
-	public void addJelo(Jelo j) {
-		jeloRep.save(j);
+	public Jelo addJelo(Jelo j) {
+		return jeloRep.save(j);
 	}
 	
 	public void deleteJelo(Integer id) {
 		jeloRep.deleteById(id);
 	}
 	
-	public void updateJelo(Jelo j) {
-		jeloRep.save(j);
+	public Jelo updateJelo(Jelo j) {
+		return jeloRep.save(j);
 	}
 	
 	public List<Jelo> findAllByKategorija(KategorijaJela kat){
