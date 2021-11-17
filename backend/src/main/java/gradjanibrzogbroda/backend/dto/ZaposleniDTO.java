@@ -10,12 +10,14 @@ import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class ZaposleniDTO {
     private Integer id;
