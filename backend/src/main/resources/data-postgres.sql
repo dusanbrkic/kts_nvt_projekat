@@ -46,3 +46,8 @@ insert into pice (id) values (9);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Limanada 0.5l', 125, false);
 insert into pice (id) values (10);
+
+--porudzbine
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id) values ('2021-11-11', 'Posluziti hranu dok je topla.', false, 0, 3, 1);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id) values (2.0, 'Sa ledom.', 0, 6, 1);
