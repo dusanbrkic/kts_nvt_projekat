@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name="kuvari")
 @Inheritance(strategy= InheritanceType.JOINED)
 @SQLDelete(sql
-        = "UPDATE kuvari "
+        = "UPDATE zaposleni "
         + "SET obrisan = true "
         + "WHERE id = ?")
 @Where(clause = "obrisan = false")

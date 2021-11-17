@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="konobari")
 @SQLDelete(sql
-        = "UPDATE konobari "
+        = "UPDATE zaposleni "
         + "SET obrisan = true "
         + "WHERE id = ?")
 @Where(clause = "obrisan = false")

@@ -1,5 +1,7 @@
 package gradjanibrzogbroda.backend.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -22,9 +24,11 @@ import gradjanibrzogbroda.backend.domain.GlavniKuvar;
 import gradjanibrzogbroda.backend.domain.Konobar;
 import gradjanibrzogbroda.backend.domain.Kuvar;
 import gradjanibrzogbroda.backend.domain.Menadzer;
+import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.Sanker;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
+import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
@@ -67,7 +71,17 @@ public class ZaposleniController {
 	}
 	
 	@PostMapping(value = "/updateAdd")
-	public ResponseEntity<String> updateAddZaposleni(@RequestBody ZaposleniDTO zaposleniDTO) {
+	public ResponseEntity<String> updateAddZaposleni(@RequestParam Integer id,
+													@RequestParam String ime,
+													@RequestParam String prezime,
+													@RequestParam String pol,
+													@RequestParam String datumRodjenja,
+													@RequestParam Double trenutnaPlata,
+													@RequestParam String tipZaposlenja,
+													@RequestParam String slikaString ) {
+
+		ZaposleniDTO zaposleniDTO = new ZaposleniDTO(id, ime, prezime, Pol.valueOf(pol), LocalDate.parse(datumRodjenja, DateTimeFormatter.ofPattern("yyyy-MM-dd")), trenutnaPlata, TipZaposlenja.valueOf(tipZaposlenja), slikaString, null);
+
         Zaposleni zaposleni = zaposleniService.findOneById(zaposleniDTO.getId());
 
 		if (zaposleni == null) {
