@@ -22,6 +22,9 @@ public class PicePorudzbine {
     @Column(name = "kolicina")
     private Double kolicina;
 
+    @Column(name = "napomena")
+    private String napomena;
+
     @Column(name = "status_pica")
     private StatusPica statusPica;
 

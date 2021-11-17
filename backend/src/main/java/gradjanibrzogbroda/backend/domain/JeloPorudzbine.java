@@ -22,6 +22,9 @@ public class JeloPorudzbine {
     @Column(name = "kolicina")
     private Double kolicina;
 
+    @Column(name = "napomena")
+    private String napomena;
+
     @Column(name = "status_jela")
     private StatusJela statusJela;
 
