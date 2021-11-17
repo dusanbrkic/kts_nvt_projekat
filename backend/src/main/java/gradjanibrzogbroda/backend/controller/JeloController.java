@@ -2,7 +2,6 @@ package gradjanibrzogbroda.backend.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

@@ -10,6 +10,9 @@ insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposl
 insert into kuvari (id) values(2);
 insert into glavni_kuvari (korisnicko_ime, lozinka, id) values ('marko', 'marko', 2);
 
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, putanja_slike, obrisan) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 1, 'jovana.jpg', false);
+insert into konobari (id) values(3);
+
 --jela
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Pljeskavica', 240, false);

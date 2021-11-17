@@ -1,10 +1,10 @@
 package gradjanibrzogbroda.backend.repository;
 
-import gradjanibrzogbroda.backend.domain.Konobar;
+import gradjanibrzogbroda.backend.domain.Sto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KonobarRepository extends JpaRepository<Konobar, Integer> {
-    Konobar findOneById(Integer id);
+public interface StoRepository extends JpaRepository<Sto, Integer> {
+    Sto findOneById(Integer id);
 }
