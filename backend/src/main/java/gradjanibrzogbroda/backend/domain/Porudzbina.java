@@ -6,6 +6,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,13 @@ public class Porudzbina {
     private StatusPorudzbine statusPorudzbine;
 
     @Column(name = "datum_vreme")
-    private LocalDate datumVreme;
+    private LocalDateTime datumVreme;
 
     @Column(name = "napomena")
     private String napomena;
+
+    @Column(name = "ukupna_cena")
+    private Double ukupnaCena;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Konobar konobar;

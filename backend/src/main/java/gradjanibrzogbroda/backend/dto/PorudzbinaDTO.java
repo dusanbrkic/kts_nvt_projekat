@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import java.util.List;
 public class PorudzbinaDTO {
     private Integer id;
     private StatusPorudzbine statusPorudzbine;
-    private LocalDate datumVreme;
+    private LocalDateTime datumVreme;
     private String napomena;
+    private Double ukupnaCena;
     private Integer konobarId;
     private Integer stoId;
     private List<JeloPorudzbineDTO> jelaPorudzbine=new ArrayList<JeloPorudzbineDTO>();
@@ -28,6 +30,7 @@ public class PorudzbinaDTO {
         this.statusPorudzbine = p.getStatusPorudzbine();
         this.datumVreme = p.getDatumVreme();
         this.napomena = p.getNapomena();
+        this.ukupnaCena = p.getUkupnaCena();
         this.konobarId = p.getKonobar().getId();
         this.stoId = p.getSto().getId();
 
