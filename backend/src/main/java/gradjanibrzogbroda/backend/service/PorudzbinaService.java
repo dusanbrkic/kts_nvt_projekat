@@ -107,4 +107,14 @@ public class PorudzbinaService {
         porudzbinaRepository.deleteById(id);
     }
 
+    public boolean naplatiPorudzbinu(Integer id){
+        Porudzbina porudzbina = porudzbinaRepository.findOneById(id);
+        if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.DOSTAVLJENO)){
+            porudzbina.setStatusPorudzbine(StatusPorudzbine.NAPLACENO);
+            porudzbinaRepository.save(porudzbina);
+            return true;
+        }
+        return false;
+    }
+
 }

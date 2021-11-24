@@ -49,5 +49,50 @@ public class JeloPorudzbineController {
         }
     }
 
+    @PutMapping("/preuzmi/{id}")
+    public ResponseEntity<Object> preuzmiJeloPorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = jeloPorudzbineService.preuzmiJelo(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/pripremi/{id}")
+    public ResponseEntity<Object> pripremiJeloPorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = jeloPorudzbineService.pripremiJelo(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/dostavi/{id}")
+    public ResponseEntity<Object> dostaviJeloPorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = jeloPorudzbineService.dostaviJelo(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

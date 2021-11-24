@@ -3,6 +3,7 @@ package gradjanibrzogbroda.backend.service;
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.repository.*;
+import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ public class PicePorudzbineService {
     private PicePorudzbineRepository picePorudzbineRepository;
     @Autowired
     private PiceRepository piceRepository;
+
+    PorudzbinaUtil porudzbinaUtil = new PorudzbinaUtil();
 
     public PicePorudzbine dodajPicePorudzbine(PicePorudzbineDTO dto){
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());
@@ -57,4 +60,42 @@ public class PicePorudzbineService {
         picePorudzbineRepository.deleteById(id);
         return true;
     }
+
+    public boolean pripremiPice(Integer id){
+        PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
+        if (picePorudzbine == null){
+            return false;
+        }
+        else if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
+            return false;
+        }
+        picePorudzbine.setStatusPica(StatusPica.PRIPREMLJENO);
+        picePorudzbineRepository.save(picePorudzbine);
+        Porudzbina porudzbina = picePorudzbine.getPorudzbina();
+        if (porudzbinaUtil.promeniStatusPorudzbine(porudzbina, StatusJela.PRIPREMLJENO, StatusPica.PRIPREMLJENO)){
+            porudzbina.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
+            porudzbinaRepository.save(porudzbina);
+        }
+        return true;
+    }
+
+    public boolean dostaviPice(Integer id){
+        PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
+        if (picePorudzbine == null){
+            return false;
+        }
+        else if (!picePorudzbine.getStatusPica().equals(StatusPica.PRIPREMLJENO)){
+            return false;
+        }
+        picePorudzbine.setStatusPica(StatusPica.DOSTAVLJENO);
+        picePorudzbineRepository.save(picePorudzbine);
+        Porudzbina porudzbina = picePorudzbine.getPorudzbina();
+        if (porudzbinaUtil.promeniStatusPorudzbine(porudzbina, StatusJela.DOSTAVLJENO, StatusPica.DOSTAVLJENO)){
+            porudzbina.setStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
+            porudzbinaRepository.save(porudzbina);
+        }
+        return true;
+    }
+
+
 }

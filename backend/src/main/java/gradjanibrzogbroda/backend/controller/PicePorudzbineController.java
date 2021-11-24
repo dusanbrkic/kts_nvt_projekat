@@ -49,4 +49,34 @@ public class PicePorudzbineController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/pripremi/{id}")
+    public ResponseEntity<Object> pripremiPicePorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = picePorudzbineService.pripremiPice(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/dostavi/{id}")
+    public ResponseEntity<Object> dostaviPicePorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = picePorudzbineService.dostaviPice(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
