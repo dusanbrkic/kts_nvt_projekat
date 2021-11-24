@@ -3,7 +3,7 @@ package gradjanibrzogbroda.backend.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="cenovnik")
@@ -18,10 +18,13 @@ public class StavkaCenovnika {
     private Integer id;
 
     @Column(name = "pocetak_vazenja")
-    private LocalDate pocetakVazenja;
+    private LocalDateTime pocetakVazenja;
 
     @Column(name = "kraj_vazenja")
-    private LocalDate krajVazenja;
+    private LocalDateTime krajVazenja;
+
+    @Column(name = "cena")
+    private Double cena;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Artikal artikal;

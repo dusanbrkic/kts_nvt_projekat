@@ -1,7 +1,9 @@
 package gradjanibrzogbroda.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,4 +49,22 @@ public class JeloService {
 	public List<Jelo> findAllByTip(TipJela tip){
 		return jeloRep.findAllByTipJela(tip);
 	}
+
+	public Jelo izmeniCenu(Integer jeloId, Double novaCena){
+		Jelo jelo = jeloRep.findOneById(jeloId);
+		jelo.setTrenutnaCena(novaCena);
+		for (StavkaCenovnika s: jelo.getCeneArtikla()) {
+			if (s.getKrajVazenja() == null){
+				s.setKrajVazenja(LocalDateTime.now());
+			}
+		}
+
+		StavkaCenovnika stavkaCenovnika = StavkaCenovnika.builder()
+				.artikal(jelo)
+				.cena(novaCena)
+				.pocetakVazenja(LocalDateTime.now())
+				.build();
+		jelo.getCeneArtikla().add(stavkaCenovnika);
+		return jeloRep.save(jelo);
+	};
 }

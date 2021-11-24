@@ -8,26 +8,14 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import gradjanibrzogbroda.backend.domain.*;
+import gradjanibrzogbroda.backend.dto.JeloDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import gradjanibrzogbroda.backend.domain.GlavniKuvar;
-import gradjanibrzogbroda.backend.domain.Konobar;
-import gradjanibrzogbroda.backend.domain.Kuvar;
-import gradjanibrzogbroda.backend.domain.Menadzer;
-import gradjanibrzogbroda.backend.domain.Pol;
-import gradjanibrzogbroda.backend.domain.Sanker;
-import gradjanibrzogbroda.backend.domain.TipZaposlenja;
-import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
@@ -117,5 +105,12 @@ public class ZaposleniController {
 		}catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@PutMapping("izmeni-platu")
+	public ResponseEntity<ZaposleniDTO> izmeniCenuJela(@RequestBody PlataDTO dto){
+		Zaposleni z = zaposleniService.izmeniPlatu(dto);
+
+		return new ResponseEntity<ZaposleniDTO>(new ZaposleniDTO(z), HttpStatus.OK);
 	}
 }
