@@ -117,8 +117,11 @@ public class PorudzbinaController {
     @DeleteMapping("/jelo-porudzbine/{id}")
     public ResponseEntity<Object> obrisiJeloPorudzbine(@PathVariable("id") Integer id) {
         try {
-            porudzbinaService.obrisiJeloPorudzbine(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean uspeh = porudzbinaService.obrisiJeloPorudzbine(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch(EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch(Exception e) {
@@ -129,8 +132,11 @@ public class PorudzbinaController {
     @DeleteMapping("/pice-porudzbine/{id}")
     public ResponseEntity<Object> obrisiPicePorudzbine(@PathVariable("id") Integer id) {
         try {
-            porudzbinaService.obrisiPicePorudzbine(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean uspeh = porudzbinaService.obrisiPicePorudzbine(id);;
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch(EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch(Exception e) {
