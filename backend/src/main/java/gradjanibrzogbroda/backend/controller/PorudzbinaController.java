@@ -86,62 +86,6 @@ public class PorudzbinaController {
         }
     }
 
-    @PostMapping("/jelo-porudzbine")
-    public ResponseEntity<JeloPorudzbineDTO> dodajJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
-        JeloPorudzbine jelo = porudzbinaService.dodajJeloPorudzbine(dto);
 
-        return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
-    }
-
-    @PostMapping("/pice-porudzbine")
-    public ResponseEntity<PicePorudzbineDTO> dodajPicePorudzbine(@RequestBody PicePorudzbineDTO dto) {
-        PicePorudzbine pice = porudzbinaService.dodajPicePorudzbine(dto);
-
-        return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(pice), HttpStatus.OK);
-    }
-
-    @PutMapping("/jelo-porudzbine")
-    public ResponseEntity<JeloPorudzbineDTO> izmeniJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
-        JeloPorudzbine jelo = porudzbinaService.izmeniJeloPorudzbine(dto);
-
-        return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
-    }
-
-    @PutMapping("/pice-porudzbine")
-    public ResponseEntity<PicePorudzbineDTO> izmeniPicePorudzbine(@RequestBody PicePorudzbineDTO dto) {
-        PicePorudzbine pice = porudzbinaService.izmeniPicePorudzbine(dto);
-
-        return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(pice), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/jelo-porudzbine/{id}")
-    public ResponseEntity<Object> obrisiJeloPorudzbine(@PathVariable("id") Integer id) {
-        try {
-            boolean uspeh = porudzbinaService.obrisiJeloPorudzbine(id);
-            if(uspeh){
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch(EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/pice-porudzbine/{id}")
-    public ResponseEntity<Object> obrisiPicePorudzbine(@PathVariable("id") Integer id) {
-        try {
-            boolean uspeh = porudzbinaService.obrisiPicePorudzbine(id);;
-            if(uspeh){
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch(EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 
 }

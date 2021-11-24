@@ -1,0 +1,53 @@
+package gradjanibrzogbroda.backend.controller;
+
+import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
+import gradjanibrzogbroda.backend.domain.PicePorudzbine;
+import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
+import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.service.JeloPorudzbineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/jelo-porudzbine")
+public class JeloPorudzbineController {
+
+    @Autowired
+    JeloPorudzbineService jeloPorudzbineService;
+
+    @PostMapping()
+    public ResponseEntity<JeloPorudzbineDTO> dodajJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
+        JeloPorudzbine jelo = jeloPorudzbineService.dodajJeloPorudzbine(dto);
+
+        return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
+    }
+
+
+    @PutMapping()
+    public ResponseEntity<JeloPorudzbineDTO> izmeniJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
+        JeloPorudzbine jelo = jeloPorudzbineService.izmeniJeloPorudzbine(dto);
+
+        return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> obrisiJeloPorudzbine(@PathVariable("id") Integer id) {
+        try {
+            boolean uspeh = jeloPorudzbineService.obrisiJeloPorudzbine(id);
+            if(uspeh){
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+}
