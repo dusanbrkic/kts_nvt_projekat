@@ -45,7 +45,6 @@ public class PiceController {
 	
 	@GetMapping("/id/{id}")
 	public ResponseEntity<PiceDTO> getOneById(@PathVariable("id") Integer id){
-		
 		Pice p=piceService.findOne(id);
 		
 		if(p!=null) {

@@ -110,8 +110,8 @@ public class ZaposleniController {
             return new ResponseEntity<String>("Something went wrong!", HttpStatus.BAD_REQUEST);
 	}
 	
-	@DeleteMapping(value = "/delete")
-	public ResponseEntity<Object> deleteZaposleni(@RequestParam("id") Integer id) {
+	@DeleteMapping(value = "/delete/{id}")
+	public ResponseEntity<Object> deleteZaposleni(@PathVariable("id") Integer id) {
 		try {
 			zaposleniService.deleteZaposleni(id);
 			return new ResponseEntity<>(HttpStatus.OK);

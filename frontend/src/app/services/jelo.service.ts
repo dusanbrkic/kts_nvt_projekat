@@ -14,19 +14,19 @@ export class JeloService {
   }
 
   getJeloById(jeloId:any):any{
-    return this.http.get(environment.baseUrl + "jela/id/"+jeloId);
+    return this.http.get<any>(environment.baseUrl + "jela/id/" + jeloId);
   }
 
   getJeloByNaziv(jeloId:string):any{
-    return this.http.get(environment.baseUrl + "jela/naziv/"+jeloId);
+    return this.http.get<any>(environment.baseUrl + "jela/naziv/" + jeloId);
   }
 
   addJelo(jelo:any):any{
-    return this.http.post(environment.baseUrl + "jela", jelo);
+    return this.http.post<any>(environment.baseUrl + "jela", jelo);
   }
 
   updateJelo(jelo:any):any{
-    return this.http.put(environment.baseUrl + "jela", jelo);
+    return this.http.put<any>(environment.baseUrl + "jela", jelo);
   }
 
   deleteJelo(jeloId:any):any{
