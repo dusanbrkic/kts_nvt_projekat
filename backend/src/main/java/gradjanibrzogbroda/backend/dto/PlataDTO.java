@@ -14,12 +14,16 @@ import lombok.Setter;
 public class PlataDTO {
 
     private Integer id;
+    private Double visinaPlate;
     private LocalDate pocetakVazenja;
     private LocalDate krajVazenja;
+    private Integer zaposleniId;
 
     public PlataDTO(Plata p){
         id = p.getId();
+        visinaPlate = p.getVisinaPlate();
         pocetakVazenja = p.getPocetakVazenja();
         krajVazenja = p.getKrajVazenja();
+        zaposleniId = p.getZaposleni().getId();
     }
 }

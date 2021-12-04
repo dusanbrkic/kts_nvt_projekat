@@ -25,6 +25,9 @@ public class Plata {
     @Column(name = "kraj_vazenja")
     private LocalDate krajVazenja;
 
+    @Column(name = "visina_plate")
+    private Double visinaPlate;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Zaposleni zaposleni;
 

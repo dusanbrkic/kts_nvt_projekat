@@ -1,7 +1,10 @@
 package gradjanibrzogbroda.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import gradjanibrzogbroda.backend.domain.Jelo;
+import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +40,23 @@ public class PiceService {
 	public Pice updatePice(Pice p) {
 		return piceRep.save(p);
 	}
+
+	public Pice izmeniCenu(Integer piceId, Double novaCena){
+		Pice pice = piceRep.findOneById(piceId);
+		pice.setTrenutnaCena(novaCena);
+		for (StavkaCenovnika s: pice.getCeneArtikla()) {
+			if (s.getKrajVazenja() == null){
+				s.setKrajVazenja(LocalDateTime.now());
+			}
+		}
+
+		StavkaCenovnika stavkaCenovnika = StavkaCenovnika.builder()
+				.artikal(pice)
+				.cena(novaCena)
+				.pocetakVazenja(LocalDateTime.now())
+				.build();
+		pice.getCeneArtikla().add(stavkaCenovnika);
+		return piceRep.save(pice);
+	};
 
 }
