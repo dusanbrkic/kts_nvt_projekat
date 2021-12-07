@@ -6,6 +6,9 @@ import org.hibernate.annotations.Where;
 
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;

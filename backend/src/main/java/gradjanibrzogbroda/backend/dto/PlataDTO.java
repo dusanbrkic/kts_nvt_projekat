@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PlataDTO {
 
     private Integer id;

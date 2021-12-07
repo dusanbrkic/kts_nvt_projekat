@@ -68,8 +68,8 @@ public class ZaposleniController {
 		
 	}
 	
-	@PostMapping(value = "/updateAdd")
-	public ResponseEntity<String> updateAddZaposleni(@RequestParam Integer id,
+	@PostMapping(value = "/update")
+	public ResponseEntity<String> updateZaposleni(@RequestParam Integer id,
 													@RequestParam String ime,
 													@RequestParam String prezime,
 													@RequestParam String pol,
@@ -83,6 +83,31 @@ public class ZaposleniController {
         Zaposleni zaposleni = zaposleniService.findOneById(zaposleniDTO.getId());
 
 		if (zaposleni == null) {
+			return new ResponseEntity<String>("Something went wrong!", HttpStatus.BAD_REQUEST);
+		} else {
+			zaposleni.updateFields(zaposleniDTO);
+			zaposleniService.updateAddZaposleni(zaposleni);
+			return new ResponseEntity<String>("Succesful!", HttpStatus.OK);
+		}
+	}
+
+	@PostMapping(value = "/add")
+	public ResponseEntity<String> addZaposleni(@RequestParam Integer id,
+													@RequestParam String ime,
+													@RequestParam String prezime,
+													@RequestParam String pol,
+													@RequestParam String datumRodjenja,
+													@RequestParam Double trenutnaPlata,
+													@RequestParam String tipZaposlenja,
+													@RequestParam String slikaString ) {
+
+		ZaposleniDTO zaposleniDTO = new ZaposleniDTO(id, ime, prezime, Pol.valueOf(pol), LocalDate.parse(datumRodjenja, DateTimeFormatter.ofPattern("yyyy-MM-dd")), trenutnaPlata, TipZaposlenja.valueOf(tipZaposlenja), slikaString, null);
+
+        Zaposleni zaposleni = zaposleniService.findOneById(zaposleniDTO.getId());
+
+		if (zaposleni != null) {
+            return new ResponseEntity<String>("Something went wrong!", HttpStatus.BAD_REQUEST);
+		} else {
 			if (zaposleniDTO.getTipZaposlenja()==TipZaposlenja.GLAVNI_KUVAR)
 				zaposleni = zaposleniService.updateAddZaposleni(new GlavniKuvar(zaposleniDTO));
 			if (zaposleniDTO.getTipZaposlenja()==TipZaposlenja.KONOBAR)
@@ -93,16 +118,10 @@ public class ZaposleniController {
 				zaposleni = zaposleniService.updateAddZaposleni(new Menadzer(zaposleniDTO));
 			if (zaposleniDTO.getTipZaposlenja()==TipZaposlenja.SANKER) 
 				zaposleni = zaposleniService.updateAddZaposleni(new Sanker(zaposleniDTO));
-		} else {
-			zaposleni.updateFields(zaposleniDTO);
+			return new ResponseEntity<String>("Succesful!", HttpStatus.OK);
 		}
 
-		zaposleniService.updateAddZaposleni(zaposleni);
-
-        if (zaposleni!=null)
-		    return new ResponseEntity<String>("Succesful!", HttpStatus.OK);
-        else 
-            return new ResponseEntity<String>("Something went wrong!", HttpStatus.BAD_REQUEST);
+        
 	}
 	
 	@DeleteMapping(value = "/delete/{id}")
