@@ -6,3 +6,6 @@
 .settings
 .springBeans
 .sts4-cache
+
+# vs code
+.vscode
