@@ -34,4 +34,4 @@ build/
 /bin/
 
 # zivancev test-output
-backend\test-output
+test-output
