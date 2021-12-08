@@ -73,7 +73,7 @@ public class PiceController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity<PiceDTO> updateJelo(@RequestBody Pice pice){
+	public ResponseEntity<PiceDTO> updatePice(@RequestBody Pice pice){
 		Pice p = piceService.updatePice(pice);
 		
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
@@ -83,11 +83,11 @@ public class PiceController {
 	public ResponseEntity<Object> deletePice(@PathVariable("id") int id) {
 		try {
 			piceService.deletePice(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<Object>(HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
 		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -97,5 +97,7 @@ public class PiceController {
 
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}
+	
+	
 
 }
