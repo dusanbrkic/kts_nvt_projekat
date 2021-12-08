@@ -7,6 +7,8 @@ import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JeloPorudzbineService {
     @Autowired
@@ -17,6 +19,14 @@ public class JeloPorudzbineService {
     private JeloRepository jeloRepository;
 
     PorudzbinaUtil porudzbinaUtil = new PorudzbinaUtil();
+
+    public List<JeloPorudzbine> findAll(){
+        return jeloPorudzbineRepository.findAll();
+    }
+
+    public JeloPorudzbine findOne(Integer id) {
+        return jeloPorudzbineRepository.findOneById(id);
+    }
 
     public JeloPorudzbine dodajJeloPorudzbine(JeloPorudzbineDTO dto){
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());

@@ -7,6 +7,8 @@ import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PicePorudzbineService {
     @Autowired
@@ -17,6 +19,15 @@ public class PicePorudzbineService {
     private PiceRepository piceRepository;
 
     PorudzbinaUtil porudzbinaUtil = new PorudzbinaUtil();
+
+    public List<PicePorudzbine> findAll(){
+        return picePorudzbineRepository.findAll();
+    }
+
+    public PicePorudzbine findOne(Integer id) {
+        return picePorudzbineRepository.findOneById(id);
+    }
+
 
     public PicePorudzbine dodajPicePorudzbine(PicePorudzbineDTO dto){
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());

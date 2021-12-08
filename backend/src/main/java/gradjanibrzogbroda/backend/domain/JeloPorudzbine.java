@@ -8,6 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="jela_porudzbine")
+@SQLDelete(sql
+        = "UPDATE jela_porudzbine "
+        + "SET obrisan = true "
+        + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 @Getter
 @Setter
 @Builder
@@ -33,4 +38,7 @@ public class JeloPorudzbine {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Porudzbina porudzbina;
+
+    @Column(name = "obrisan", nullable = false)
+    private boolean obrisan;
 }

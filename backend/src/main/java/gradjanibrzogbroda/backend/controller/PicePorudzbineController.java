@@ -35,7 +35,7 @@ public class PicePorudzbineController {
 
 
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> obrisiPicePorudzbine(@PathVariable("id") Integer id) {
         try {
             boolean uspeh = picePorudzbineService.obrisiPicePorudzbine(id);;

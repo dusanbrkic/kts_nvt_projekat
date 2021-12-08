@@ -49,13 +49,16 @@ insert into pice (id) values (10);
 
 --porudzbine
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-11-11', 'Posluziti hranu dok je topla.', false, 0, 3, 1, 730.0);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id) values (2.0, 'Sa ledom.', 0, 6, 1);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 1, false);
 
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-12-12', 'Dajte mi majoneza.', false, 1, 3, 1, 860.0);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id) values (2.0, 'Stavite mi majoneza.', 0, 3, 1);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id) values (2.0, 'Sa ledom.', 0, 6, 1);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi majoneza.', 0, 3, 2, false);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (1.0, 'Bez kiselih krastavaca.', 1, 4, 2, false);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (3.0, 'Stavite mi pavlake.', 2, 2, 2, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 2, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda.', 1, 7, 2, false);
 
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-01-02', 'Dajte mi Kepac.', false, 3, 3, 1, 920.0);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id) values (2.0, 'Stavite mi kepaca.', 0, 2, 1);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id) values (2.0, 'Sa ledom.', 0, 6, 1);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi kepaca.', 3, 2, 3, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 3, 6, 3, false);
