@@ -114,7 +114,7 @@ public class PorudzbinaControllerTests extends AbstractTestNGSpringContextTests 
         assertEquals(actual.getSto().getId(), PorudzbinaConstants.UPDATED_PORUDZBINA_STO_ID);
     }
 
-    @Test(priority = 1)
+    @Test(priority = 2)
     public void testObrisiPorudzbinu() {
         ResponseEntity<Object> responseEntity = restTemplate.exchange(
                 "/porudzbine/" + PorudzbinaConstants.DELETED_PORUDZBINA_ID, HttpMethod.DELETE,
