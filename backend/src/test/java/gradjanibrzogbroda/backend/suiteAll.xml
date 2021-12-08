@@ -8,6 +8,7 @@
       <class name="gradjanibrzogbroda.backend.contoller.PiceControllerTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.JelaControllerTests"/>
       <class name="gradjanibrzogbroda.backend.service.PiceServiceTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.JelaRepositoryTests"/>
     </classes>
   </test> <!-- TestAll -->
 </suite> <!-- SuiteAll -->

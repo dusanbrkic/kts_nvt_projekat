@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 
 import gradjanibrzogbroda.backend.constants.JeloConstants;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
-import gradjanibrzogbroda.backend.service.JeloService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")

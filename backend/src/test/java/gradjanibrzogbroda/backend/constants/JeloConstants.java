@@ -13,9 +13,9 @@ public class JeloConstants {
 	public static final String DB_JELO_NAZIV = "Pljeskavica";
 	public static final Double DB_JELO_CENA = 240.0;
 	
-	public static final JeloDTO NEW_JELO_DTO = new JeloDTO(11, "Jelo test", 200.0, (long) 300000, "Opis test", KategorijaJela.DEZERT, TipJela.BASIC);
+	public static final JeloDTO NEW_JELO_DTO = new JeloDTO(12, "Jelo test", 200.0, (long) 300000, "Opis test", KategorijaJela.DEZERT, TipJela.BASIC);
 	public static final Jelo NEW_JELO = new Jelo();
-	public static final Integer NEW_JELO_ID = 11;
+	public static final Integer NEW_JELO_ID = 12;
 	public static final String NEW_JELO_NAZIV = "Jelo test";
 	public static final Double NEW_JELO_CENA =  200.0;
 	public static final Long NEW_JELO_VREME_PRIPREME =  (long) 300000;
@@ -33,5 +33,13 @@ public class JeloConstants {
 	
 	public static final Integer PRICE_CHANGE_JELO_ID = 3;
 	public static final Double PRICE_CHANGE_JELO_CENA =  22.0;
+	
+	public static final String FIND_JELO_NAZIV = "Pljeskavica";
+	
+	public static final TipJela FIND_JELO_TIP=TipJela.BASIC;
+	public static final long FIND_TIP_NUMBER_OF_ITEMS = 3;
+	
+	public static final KategorijaJela FIND_JELO_KATEGORIJA=KategorijaJela.GLAVNO_JELO;
+	public static final long FIND_KATEGORIJA_NUMBER_OF_ITEMS = 3;
 
 }
