@@ -33,7 +33,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
     public void testDodajJeloPorudzbine(){
         ResponseEntity<JeloPorudzbineDTO> responseEntity = restTemplate.postForEntity("/jelo-porudzbine",
                 JeloPorudzbineConstants.NEW_JELO_PORUDZBINE, JeloPorudzbineDTO.class);
-        JeloPorudzbine actual = jeloPorudzbineService.findOne(JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_ID);
+        JeloPorudzbineDTO actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);
@@ -41,7 +41,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
         assertEquals(actual.getId(), JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_ID);
         assertEquals(actual.getNapomena(), JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_NAPOMENA);
         assertEquals(actual.getKolicina(), JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_KOLICINA);
-        assertEquals(actual.getJelo().getId(), JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_JELO);
+        assertEquals(actual.getJeloId(), JeloPorudzbineConstants.NEW_JELO_PORUDZBINE_JELO);
 
     }
 
@@ -50,7 +50,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
         ResponseEntity<JeloPorudzbineDTO> responseEntity = restTemplate.exchange("/jelo-porudzbine",
                 HttpMethod.PUT,
                 new HttpEntity<JeloPorudzbineDTO>(JeloPorudzbineConstants.UPDATED_JELO_PORUDZBINE), JeloPorudzbineDTO.class);
-        JeloPorudzbine actual = jeloPorudzbineService.findOne(JeloPorudzbineConstants.UPDATED_JELO_PORUDZBINE_ID);
+        JeloPorudzbineDTO actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);

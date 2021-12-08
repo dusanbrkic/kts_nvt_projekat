@@ -32,7 +32,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
     public void testDodajPicePorudzbine(){
         ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.postForEntity("/pice-porudzbine",
                 PicePorudzbineConstants.NEW_PICE_PORUDZBINE, PicePorudzbineDTO.class);
-        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.NEW_PICE_PORUDZBINE_ID);
+        PicePorudzbineDTO actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);
@@ -40,7 +40,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
         assertEquals(actual.getId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_ID);
         assertEquals(actual.getNapomena(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_NAPOMENA);
         assertEquals(actual.getKolicina(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_KOLICINA);
-        assertEquals(actual.getPice().getId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_PICE);
+        assertEquals(actual.getPiceId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_PICE);
 
     }
 
@@ -49,7 +49,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
         ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.exchange("/pice-porudzbine",
                 HttpMethod.PUT,
                 new HttpEntity<PicePorudzbineDTO>(PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE), PicePorudzbineDTO.class);
-        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_ID);
+        PicePorudzbineDTO actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);

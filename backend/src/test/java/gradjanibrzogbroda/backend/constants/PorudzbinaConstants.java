@@ -48,5 +48,7 @@ public class PorudzbinaConstants {
     public static final Integer NAPLACENA_PORUDZBINA_ID = 3;
     public static final StatusPorudzbine NAPLACENA_PORUDZBINA_STATUS = StatusPorudzbine.NAPLACENO;
 
-
+    public static final StatusPorudzbine FIND_PORUDZBINA_STATUS = StatusPorudzbine.KREIRANO;
+    public static final long FIND_STATUS_NUMBER_OF_ITEMS = 1;
+    public static final long FIND_PORUDZBINA_KONOBAR_COUNT = 3;
 }
