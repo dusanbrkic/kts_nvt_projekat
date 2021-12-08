@@ -29,7 +29,7 @@ public class JeloConstants {
 	public static final String UPDATED_JELO_NAZIV = "Jelo update";
 	public static final Double UPDATED_JELO_CENA =  67.0;
 	
-	public static final Integer DELETED_JELO_ID = 4;
+	public static final Integer DELETED_JELO_ID = 5;
 	
 	public static final Integer PRICE_CHANGE_JELO_ID = 3;
 	public static final Double PRICE_CHANGE_JELO_CENA =  22.0;

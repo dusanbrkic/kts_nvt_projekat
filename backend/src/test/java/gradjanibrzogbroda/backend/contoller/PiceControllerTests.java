@@ -79,7 +79,7 @@ public class PiceControllerTests extends AbstractTestNGSpringContextTests{
 		
 	}
 	
-	@Test
+	@Test(priority = 2)
 	public void testDeletePice() {
 		ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice/"+PiceConstants.DELETED_PICE_ID, HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);
 		

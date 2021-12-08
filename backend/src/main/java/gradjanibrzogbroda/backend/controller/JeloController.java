@@ -80,7 +80,7 @@ public class JeloController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteJelo(@PathVariable("id") int id) {
+	public ResponseEntity<Object> deleteJelo(@PathVariable("id") Integer id) {
 		try {
 			jeloService.deleteJelo(id);
 			return new ResponseEntity<Object>(HttpStatus.OK);

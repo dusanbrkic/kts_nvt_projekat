@@ -93,7 +93,7 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
 
     }
 
-    @Test
+    @Test(priority = 3)
     public void testDeleteZaposleni() {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/zaposleni/delete/" + ZaposleniConstants.DELETED_ZAPOSLENI_ID,
                 HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);

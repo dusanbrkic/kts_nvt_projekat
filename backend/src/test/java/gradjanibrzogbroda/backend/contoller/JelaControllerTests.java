@@ -81,7 +81,7 @@ public class JelaControllerTests extends AbstractTestNGSpringContextTests{
 		assertEquals(actual.getNaziv(),JeloConstants.UPDATED_JELO_NAZIV);
 	}
 	
-	@Test
+	@Test(priority = 2)
 	public void testDeleteJelo() {
 		ResponseEntity<Object> responseEntity = restTemplate.exchange("/jela/"+JeloConstants.DELETED_JELO_ID, HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);
 		
