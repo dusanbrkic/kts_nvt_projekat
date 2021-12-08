@@ -6,6 +6,7 @@
       <class name="gradjanibrzogbroda.backend.BackendApplicationTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.ZaposleniControllerTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.PiceControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.JelaControllerTests"/>
       <class name="gradjanibrzogbroda.backend.service.PiceServiceTests"/>
     </classes>
   </test> <!-- TestAll -->

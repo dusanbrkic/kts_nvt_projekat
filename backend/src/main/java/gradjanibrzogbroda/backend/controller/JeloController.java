@@ -83,15 +83,15 @@ public class JeloController {
 	public ResponseEntity<Object> deleteJelo(@PathVariable("id") int id) {
 		try {
 			jeloService.deleteJelo(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<Object>(HttpStatus.OK);
 		}catch(EmptyResultDataAccessException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
 		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@PutMapping("izmeni-cenu/{id}")
+	@PutMapping("/izmeni-cenu/{id}")
 	public ResponseEntity<JeloDTO> izmeniCenuJela(@PathVariable("id") Integer id, @RequestParam Double novaCena){
 		Jelo j = jeloService.izmeniCenu(id, novaCena);
 

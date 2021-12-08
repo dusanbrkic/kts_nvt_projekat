@@ -11,6 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class JeloDTO {
 	
 	private Integer id;
