@@ -4,7 +4,6 @@ package gradjanibrzogbroda.backend.contoller;
 
 import static org.testng.Assert.assertEquals;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
@@ -22,7 +20,6 @@ import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.dto.PiceDTO;
 import gradjanibrzogbroda.backend.service.PiceService;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class PiceControllerTests extends AbstractTestNGSpringContextTests{

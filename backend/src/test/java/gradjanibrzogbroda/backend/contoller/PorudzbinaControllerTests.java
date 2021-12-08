@@ -102,7 +102,7 @@ public class PorudzbinaControllerTests extends AbstractTestNGSpringContextTests 
     @Test
     public void testPromeniPorudzbinu() {
         ResponseEntity<PorudzbinaDTO> responseEntity = restTemplate.exchange(
-                "/porudzbine/izmeni-platu", HttpMethod.PUT,
+                "/porudzbine", HttpMethod.PUT,
                 new HttpEntity<PorudzbinaDTO>(PorudzbinaConstants.UPDATED_PORUDZBINA), PorudzbinaDTO.class);
 
         Porudzbina actual = porudzbinaService.findOne(PorudzbinaConstants.UPDATED_PORUDZBINA_ID);
