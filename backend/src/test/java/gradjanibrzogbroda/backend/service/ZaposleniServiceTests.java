@@ -49,6 +49,6 @@ public class ZaposleniServiceTests extends AbstractTestNGSpringContextTests {
         verify(zaposleniRepositoryMock, times(1)).findOneById(ZaposleniConstants.UPDATED_ZAPOSLENI_ID);
         verify(zaposleniRepositoryMock, times(1)).save(ZaposleniConstants.UPDATED_ZAPOSLENI);
 
-        Assert.assertEquals(found.getTrenutnaPlata(), ZaposleniConstants.UPDATED_ZAPOSLENI.getTrenutnaPlata());
+        Assert.assertEquals(found.getTrenutnaPlata(), ZaposleniConstants.NEW_PLATA_DTO.getVisinaPlate());
     }
 }
