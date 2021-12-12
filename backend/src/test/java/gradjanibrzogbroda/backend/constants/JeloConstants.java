@@ -13,6 +13,8 @@ public class JeloConstants {
 	public static final String DB_JELO_NAZIV = "Pljeskavica";
 	public static final Double DB_JELO_CENA = 240.0;
 	
+	public static final Integer FAIL_JELO_ID = 342;
+	
 	public static final JeloDTO NEW_JELO_DTO = new JeloDTO(12, "Jelo test", 200.0, (long) 300000, "Opis test", KategorijaJela.DEZERT, TipJela.BASIC);
 	public static final Jelo NEW_JELO = new Jelo();
 	public static final Integer NEW_JELO_ID = 12;

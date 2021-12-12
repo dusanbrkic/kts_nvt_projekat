@@ -35,5 +35,8 @@ public class Jelo extends Artikal{
     @Column(name = "tip_jela")
     private TipJela tipJela;
 
+    public Jelo(int id) {
+    	this.setId(id);
+    }
 
 }
