@@ -40,4 +40,8 @@ public abstract class Artikal {
 
     @Column(name = "obrisan", nullable = false)
     private boolean obrisan;
+    
+    public Artikal(int id) {
+    	this.setId(id);
+    }
 }

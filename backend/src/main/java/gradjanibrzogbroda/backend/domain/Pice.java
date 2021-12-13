@@ -17,4 +17,7 @@ import javax.persistence.Table;
 @Builder
 @AllArgsConstructor
 public class Pice extends Artikal{
+	public Pice(int id) {
+    	this.setId(id);
+    }
 }
