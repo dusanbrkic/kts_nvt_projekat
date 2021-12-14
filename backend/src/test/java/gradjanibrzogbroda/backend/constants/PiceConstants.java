@@ -11,6 +11,8 @@ public class PiceConstants {
 	public static final String DB_PICE_NAZIV = "Coca Cola 0.33l";
 	public static final Double DB_PICE_CENA = 125.0;
 	
+	public static final Integer FAIL_PICE_ID = 555333;
+	
 	public static final PiceDTO NEW_PICE_DTO = new PiceDTO(11, "Sok od zove 0.33", 250.0);
 	public static final Pice NEW_PICE = new Pice();
 	public static final Integer NEW_PICE_ID = 11;
