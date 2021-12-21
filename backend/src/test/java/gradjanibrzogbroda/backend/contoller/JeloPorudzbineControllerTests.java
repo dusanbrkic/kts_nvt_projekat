@@ -6,6 +6,7 @@ import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
 import gradjanibrzogbroda.backend.domain.StatusJela;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
+import gradjanibrzogbroda.backend.exceptions.JeloPorudzbineNotFoundException;
 import gradjanibrzogbroda.backend.service.JeloPorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,8 +62,8 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
 
     }
 
-    @Test(priority = 1)
-    public void testObrisiJeloPorudzbine(){
+    @Test(priority = 1, expectedExceptions = {JeloPorudzbineNotFoundException.class})
+    public void testObrisiJeloPorudzbine() throws JeloPorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/jelo-porudzbine/" + JeloPorudzbineConstants.DELETED_JELO_PORUDZBINE_ID,
                 HttpMethod.DELETE,
                 new HttpEntity<Object>(null), Object.class);
@@ -73,7 +74,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
     }
 
     @Test
-    public void testPreuzmiJeloPorudzbine(){
+    public void testPreuzmiJeloPorudzbine() throws JeloPorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/jelo-porudzbine/preuzmi/" + JeloPorudzbineConstants.KREIRANO_JELO_PORUDZBINE_ID,
                 HttpMethod.PUT,
                 new HttpEntity<Object>(null), Object.class);
@@ -84,7 +85,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
     }
 
     @Test
-    public void testPripremiJeloPorudzbine(){
+    public void testPripremiJeloPorudzbine() throws JeloPorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/jelo-porudzbine/pripremi/" + JeloPorudzbineConstants.PREUZETO_JELO_PORUDZBINE_ID,
                 HttpMethod.PUT,
                 new HttpEntity<Object>(null), Object.class);
@@ -95,7 +96,7 @@ public class JeloPorudzbineControllerTests extends AbstractTestNGSpringContextTe
     }
 
     @Test
-    public void testDostaviJeloPorudzbine(){
+    public void testDostaviJeloPorudzbine() throws JeloPorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/jelo-porudzbine/dostavi/" + JeloPorudzbineConstants.PRIPREMLJENO_JELO_PORUDZBINE_ID,
                 HttpMethod.PUT,
                 new HttpEntity<Object>(null), Object.class);

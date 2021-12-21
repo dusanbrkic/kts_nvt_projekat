@@ -2,6 +2,7 @@ package gradjanibrzogbroda.backend.service;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.*;
 import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,32 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.findAll();
     }
 
-    public JeloPorudzbine findOne(Integer id) {
-        return jeloPorudzbineRepository.findOneById(id);
+    public JeloPorudzbine findOne(Integer id) throws JeloPorudzbineNotFoundException {
+        JeloPorudzbine pronadjeno = jeloPorudzbineRepository.findOneById(id);
+        if (pronadjeno == null){
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo porudzbine sa zadatim id.");
+        }
+        return pronadjeno;
     }
 
-    public JeloPorudzbine dodajJeloPorudzbine(JeloPorudzbineDTO dto){
+    public JeloPorudzbine dodajJeloPorudzbine(JeloPorudzbineDTO dto) throws PorudzbinaNotFoundException, JeloNotFoundException, PorudzbinaNaplacenaException, NepozitivnaKolicinaException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());
+        if (porudzbina == null){
+            throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
+        }
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
-            return null;
+            throw new PorudzbinaNaplacenaException("Porudzbina je vec naplacena.");
         }
 
         Jelo jelo = jeloRepository.findOneById(dto.getJeloId());
+        if (jelo == null){
+            throw new JeloNotFoundException("Nije pronadjeno jelo sa zadatim id.");
+        }
+
+        if(dto.getKolicina() <= 0){
+            throw new NepozitivnaKolicinaException("Kolicina mora biti pozitivan broj");
+        }
+
         JeloPorudzbine jp = JeloPorudzbine.builder()
                 .kolicina(dto.getKolicina())
                 .napomena(dto.getNapomena())
@@ -47,13 +63,16 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.save(jp);
     }
 
-    public JeloPorudzbine izmeniJeloPorudzbine(JeloPorudzbineDTO dto){
+    public JeloPorudzbine izmeniJeloPorudzbine(JeloPorudzbineDTO dto) throws JeloPorudzbineNotFoundException, JeloPorudzbineVecPreuzetoException, NepozitivnaKolicinaException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(dto.getId());
         if (jeloPorudzbine == null){
-            return null;
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.KREIRANO)){
-            return null;
+            throw new JeloPorudzbineVecPreuzetoException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
+        }
+        if(dto.getKolicina() <= 0){
+            throw new NepozitivnaKolicinaException("Kolicina mora biti pozitivan broj");
         }
         Double razlikaKolicine = jeloPorudzbine.getKolicina() - dto.getKolicina();
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
@@ -64,13 +83,13 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.save(jeloPorudzbine);
     }
 
-    public boolean obrisiJeloPorudzbine(Integer id){
+    public boolean obrisiJeloPorudzbine(Integer id) throws JeloPorudzbineNotFoundException, JeloPorudzbineVecPreuzetoException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
-            return false;
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.KREIRANO)){
-            return false;
+            throw new JeloPorudzbineVecPreuzetoException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
         }
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
         porudzbina.setUkupnaCena(porudzbina.getUkupnaCena()-jeloPorudzbine.getJelo().getTrenutnaCena()*jeloPorudzbine.getKolicina());

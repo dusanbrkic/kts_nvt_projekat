@@ -4,6 +4,7 @@ import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
 import gradjanibrzogbroda.backend.domain.PicePorudzbine;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.service.JeloPorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +21,18 @@ public class JeloPorudzbineController {
 
     @PostMapping()
     public ResponseEntity<JeloPorudzbineDTO> dodajJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
-        JeloPorudzbine jelo = jeloPorudzbineService.dodajJeloPorudzbine(dto);
+        JeloPorudzbine jelo = null;
+        try {
+            jelo = jeloPorudzbineService.dodajJeloPorudzbine(dto);
+        } catch (PorudzbinaNotFoundException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
+        } catch (JeloNotFoundException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
+        } catch (PorudzbinaNaplacenaException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+        } catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
     }
@@ -28,7 +40,16 @@ public class JeloPorudzbineController {
 
     @PutMapping()
     public ResponseEntity<JeloPorudzbineDTO> izmeniJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {
-        JeloPorudzbine jelo = jeloPorudzbineService.izmeniJeloPorudzbine(dto);
+        JeloPorudzbine jelo = null;
+        try {
+            jelo = jeloPorudzbineService.izmeniJeloPorudzbine(dto);
+        } catch (JeloPorudzbineNotFoundException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
+        } catch (JeloPorudzbineVecPreuzetoException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+        } catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
     }
