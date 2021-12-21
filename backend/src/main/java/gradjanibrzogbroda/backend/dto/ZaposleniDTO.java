@@ -20,7 +20,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ZaposleniDTO {
-    private Integer id;
     private String ime;
     private String prezime;
     private Pol pol;
@@ -28,11 +27,11 @@ public class ZaposleniDTO {
     private Double trenutnaPlata;
     private TipZaposlenja tipZaposlenja;
     private String slikaString;
+    private String identificationNumber;
 
     private List<PlataDTO> plate;
 
     public ZaposleniDTO(Zaposleni zaposleni){
-        id = zaposleni.getId();
         ime = zaposleni.getIme();
         prezime = zaposleni.getPrezime();
         pol = zaposleni.getPol();
@@ -40,6 +39,7 @@ public class ZaposleniDTO {
         trenutnaPlata = zaposleni.getTrenutnaPlata();
         tipZaposlenja = zaposleni.getTipZaposlenja();
         slikaString = konvertujSliku(zaposleni.getPutanjaSlike());
+        identificationNumber = zaposleni.getIdentificationNumber();
     }
 
     public String konvertujSliku(String slikaPath){

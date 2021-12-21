@@ -44,6 +44,8 @@ public abstract class Zaposleni {
     private TipZaposlenja tipZaposlenja;
     @Column(name = "putanja_slike", nullable = false)
     private String putanjaSlike;
+    @Column(name = "identification_number", nullable = false, unique = true)
+    private String identificationNumber;
 
     @OneToMany(mappedBy = "zaposleni", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Plata> plate=new ArrayList<Plata>();
@@ -57,7 +59,6 @@ public abstract class Zaposleni {
     }
 
     public void updateFields(ZaposleniDTO zDto){
-        id = zDto.getId();
         ime = zDto.getIme();
         prezime = zDto.getPrezime();
         pol = zDto.getPol();
@@ -65,6 +66,7 @@ public abstract class Zaposleni {
         trenutnaPlata = zDto.getTrenutnaPlata();
         tipZaposlenja = zDto.getTipZaposlenja();
         putanjaSlike = sacuvajSliku(zDto.getSlikaString());
+        identificationNumber = zDto.getIdentificationNumber();
     }
 
     public String sacuvajSliku(String slika){
