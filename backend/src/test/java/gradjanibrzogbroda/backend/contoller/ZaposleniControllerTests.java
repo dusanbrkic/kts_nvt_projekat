@@ -16,6 +16,7 @@ import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
+import gradjanibrzogbroda.exception.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -33,40 +34,56 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
 
     @Test(priority = -1)
     public void testGetAllZaposleni() {
-        ResponseEntity<ZaposleniDTO[]> responseEntity = restTemplate.getForEntity("/zaposleni/all", ZaposleniDTO[].class);
+        ResponseEntity<ZaposleniDTO[]> responseEntity = restTemplate.getForEntity("/zaposleni/all",
+                ZaposleniDTO[].class);
 
         ZaposleniDTO[] actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);
         assertEquals(Optional.of(actual.length), Optional.of(ZaposleniConstants.DB_ZAPOSLENI_COUNT));
-        assertEquals(actual[1].getId(), ZaposleniConstants.DB_ZAPOSLENI_ID);
+        assertEquals(actual[1].getIdentificationNumber(), ZaposleniConstants.DB_ZAPOSLENI_IDENTIFICATION_NUMBER);
         assertEquals(actual[1].getIme(), ZaposleniConstants.DB_ZAPOSLENI_IME);
         assertEquals(actual[1].getPrezime(), ZaposleniConstants.DB_ZAPOSLENI_PREZIME);
     }
 
     @Test
     public void testGetZaposleniById() {
-        ResponseEntity<ZaposleniDTO> responseEntity = restTemplate.getForEntity("/zaposleni/id/" + ZaposleniConstants.DB_ZAPOSLENI_ID, ZaposleniDTO.class);
+        ResponseEntity<ZaposleniDTO> responseEntity = restTemplate.getForEntity(
+                "/zaposleni/id/" + ZaposleniConstants.DB_ZAPOSLENI_IDENTIFICATION_NUMBER, ZaposleniDTO.class);
 
         ZaposleniDTO actual = responseEntity.getBody();
 
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         assertNotNull(actual);
-        assertEquals(actual.getId(), ZaposleniConstants.DB_ZAPOSLENI_ID);
+        assertEquals(actual.getIdentificationNumber(), ZaposleniConstants.DB_ZAPOSLENI_IDENTIFICATION_NUMBER);
         assertEquals(actual.getIme(), ZaposleniConstants.DB_ZAPOSLENI_IME);
         assertEquals(actual.getPrezime(), ZaposleniConstants.DB_ZAPOSLENI_PREZIME);
 
     }
 
     @Test
-    public void testUpdateZaposleni() {
+    public void testGetZaposleniByFakeId() {
+        ResponseEntity<ZaposleniDTO> responseEntity = restTemplate
+                .getForEntity("/zaposleni/id/" + ZaposleniConstants.FAKE_IDENTIFICATION_NUMBER, ZaposleniDTO.class);
+
+        ZaposleniDTO actual = responseEntity.getBody();
+
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertNull(actual);
+    }
+
+    @Test
+    public void testUpdateZaposleni() throws UserNotFoundException {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/zaposleni/update?id=" + ZaposleniConstants.UPDATED_ZAPOSLENI_ID + "&ime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_IME +
-                        "&prezime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_PREZIME + "&pol=MUSKI&datumRodjenja=1999-11-10&trenutnaPlata=90000.0&tipZaposlenja=MENADZER&slikaString",
+                "/zaposleni/update?identificationNumber=" + ZaposleniConstants.UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER
+                        + "&ime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_IME +
+                        "&prezime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_PREZIME
+                        + "&pol=MUSKI&datumRodjenja=1999-11-10&trenutnaPlata=90000.0&tipZaposlenja=MENADZER&slikaString",
                 "", String.class);
 
-        Zaposleni actual = zaposleniService.findOneById(ZaposleniConstants.UPDATED_ZAPOSLENI_ID);
+        Zaposleni actual = zaposleniService
+                .findOneByIdentificationNumber(ZaposleniConstants.UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER);
 
         assertNotNull(actual);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
@@ -77,13 +94,31 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void testAddZaposleni() {
+    public void testUpdateZaposleniDoesntExist() throws UserNotFoundException {
+        ResponseEntity<ZaposleniDTO> responseEntity = restTemplate.postForEntity(
+                "/zaposleni/update?identificationNumber=" + ZaposleniConstants.FAKE_IDENTIFICATION_NUMBER + "&ime="
+                        + ZaposleniConstants.UPDATED_ZAPOSLENI_IME +
+                        "&prezime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_PREZIME
+                        + "&pol=MUSKI&datumRodjenja=1999-11-10&trenutnaPlata=90000.0&tipZaposlenja=MENADZER&slikaString",
+                "", ZaposleniDTO.class);
+
+        ZaposleniDTO actual = responseEntity.getBody();
+
+        assertNull(actual);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void testAddZaposleni() throws UserNotFoundException {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/zaposleni/add?id=" + ZaposleniConstants.NEW_ZAPOSLENI_ID + "&ime=" + ZaposleniConstants.NEW_ZAPOSLENI_IME + "&prezime="
-                        + ZaposleniConstants.NEW_ZAPOSLENI_PREZIME + "&pol=MUSKI&datumRodjenja=1967-08-27&trenutnaPlata=46000&tipZaposlenja=KONOBAR&slikaString",
+                "/zaposleni/add?identificationNumber=" + ZaposleniConstants.NEW_ZAPOSLENI_IDENTIFICATION_NUMBER
+                        + "&ime=" + ZaposleniConstants.NEW_ZAPOSLENI_IME + "&prezime="
+                        + ZaposleniConstants.NEW_ZAPOSLENI_PREZIME
+                        + "&pol=MUSKI&datumRodjenja=1967-08-27&trenutnaPlata=46000&tipZaposlenja=KONOBAR&slikaString",
                 "", String.class);
 
-        Zaposleni actual = zaposleniService.findOneById(ZaposleniConstants.NEW_ZAPOSLENI_ID);
+        Zaposleni actual = zaposleniService
+                .findOneByIdentificationNumber(ZaposleniConstants.NEW_ZAPOSLENI_IDENTIFICATION_NUMBER);
 
         assertNotNull(actual);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
@@ -93,22 +128,39 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
 
     }
 
-    @Test(priority = 3)
-    public void testDeleteZaposleni() {
-        ResponseEntity<Object> responseEntity = restTemplate.exchange("/zaposleni/delete/" + ZaposleniConstants.DELETED_ZAPOSLENI_ID,
+    @Test
+    public void testAddZaposleniAlreadyExists() throws UserNotFoundException {
+        ResponseEntity<ZaposleniDTO> responseEntity = restTemplate.postForEntity(
+                "/zaposleni/add?identificationNumber=" + ZaposleniConstants.DB_ZAPOSLENI_IDENTIFICATION_NUMBER + "&ime="
+                        + ZaposleniConstants.NEW_ZAPOSLENI_IME + "&prezime="
+                        + ZaposleniConstants.NEW_ZAPOSLENI_PREZIME
+                        + "&pol=MUSKI&datumRodjenja=1967-08-27&trenutnaPlata=46000&tipZaposlenja=KONOBAR&slikaString",
+                "", ZaposleniDTO.class);
+
+        ZaposleniDTO actual = responseEntity.getBody();
+
+        assertNull(actual);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+    }
+
+    @Test(priority = 3, expectedExceptions = { UserNotFoundException.class })
+    public void testDeleteZaposleni() throws UserNotFoundException {
+        ResponseEntity<Object> responseEntity = restTemplate.exchange(
+                "/zaposleni/delete/" + ZaposleniConstants.DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER,
                 HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);
 
-        Zaposleni actual = zaposleniService.findOneById(ZaposleniConstants.DELETED_ZAPOSLENI_ID);
-
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        assertNull(actual);
+
+        zaposleniService.findOneByIdentificationNumber(ZaposleniConstants.DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER);
 
     }
 
     @Test
-    public void testIzmeniPlatu() {
+    public void testIzmeniPlatu() throws UserNotFoundException {
         ResponseEntity<ZaposleniDTO> responseEntity = restTemplate.exchange(
-                "/zaposleni/izmeni-platu", HttpMethod.PUT, new HttpEntity<PlataDTO>(ZaposleniConstants.NEW_PLATA_DTO), ZaposleniDTO.class);
+                "/zaposleni/izmeni-platu", HttpMethod.PUT, new HttpEntity<PlataDTO>(ZaposleniConstants.NEW_PLATA_DTO),
+                ZaposleniDTO.class);
 
         Zaposleni actual = zaposleniService.findOneById(ZaposleniConstants.NEW_PLATA_DTO.getZaposleniId());
 

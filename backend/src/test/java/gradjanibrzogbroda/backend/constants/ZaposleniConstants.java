@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.util.Arrays;
+
 import gradjanibrzogbroda.backend.domain.Menadzer;
 import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
@@ -13,29 +15,45 @@ import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 
 public class ZaposleniConstants {
-    public static final Integer NEW_ZAPOSLENI_ID = 4;
-    public static final String NEW_ZAPOSLENI_IME = "Dusan";
-    public static final String NEW_ZAPOSLENI_PREZIME = "Hajduk";
+        public static final String FAKE_IDENTIFICATION_NUMBER = "123132131231312";
 
-    public static final Integer UPDATED_ZAPOSLENI_ID = 1;
-    public static final String UPDATED_ZAPOSLENI_IME = "Luka";
-    public static final String UPDATED_ZAPOSLENI_PREZIME = "Stanisavljevic";
-    
-    public static final Double NEW_VISINA_PLATE = 98000.0;
-    public static final PlataDTO NEW_PLATA_DTO = new PlataDTO(10, NEW_VISINA_PLATE, LocalDate.parse("2021-11-27", DateTimeFormatter.ofPattern("yyyy-MM-dd")), 
-    null, UPDATED_ZAPOSLENI_ID);
+        public static final Integer NEW_ZAPOSLENI_ID = 4;
+        public static final String NEW_ZAPOSLENI_IDENTIFICATION_NUMBER = "67890";
+        public static final String NEW_ZAPOSLENI_IME = "Dusan";
+        public static final String NEW_ZAPOSLENI_PREZIME = "Hajduk";
 
-    public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(new ZaposleniDTO(UPDATED_ZAPOSLENI_ID, "", "",
-            null, null, 52000.0, null, null,  new ArrayList<>()));
+        public static final Integer UPDATED_ZAPOSLENI_ID = 1;
+        public static final String UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER = "12345";
+        public static final String UPDATED_ZAPOSLENI_IME = "Luka";
+        public static final String UPDATED_ZAPOSLENI_PREZIME = "Stanisavljevic";
 
-    public static final Integer DELETED_ZAPOSLENI_ID = 3;
+        public static final Double NEW_VISINA_PLATE = 98000.0;
+        public static final PlataDTO NEW_PLATA_DTO = new PlataDTO(10, NEW_VISINA_PLATE,
+                        LocalDate.parse("2021-11-27", DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        null, UPDATED_ZAPOSLENI_ID);
 
-    public static final Integer DB_ZAPOSLENI_COUNT = 3;
+        public static final ZaposleniDTO UPDATED_ZAPOSLENI_DTO = new ZaposleniDTO(UPDATED_ZAPOSLENI_IME, UPDATED_ZAPOSLENI_PREZIME,
+                        null, null, 52000.0, TipZaposlenja.MENADZER, null, UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
 
-    public static final Integer DB_ZAPOSLENI_ID = 2;
-    public static final String DB_ZAPOSLENI_IME = "Marko";
-    public static final String DB_ZAPOSLENI_PREZIME = "Maric";
-    public static final LocalDate DB_ZAPOSLENI_DATUM_RODJENJA = LocalDate.parse("1990-01-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    
+        public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
+                        null, null, 52000.0, TipZaposlenja.MENADZER, null, NEW_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
+
+        public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(UPDATED_ZAPOSLENI_DTO);
+
+        public static final Menadzer NEW_ZAPOSLENI = new Menadzer(NEW_ZAPOSLENI_DTO);
+
+        public static final List<Zaposleni> ZAPOSLENI = List.of(new Zaposleni[] { NEW_ZAPOSLENI, UPDATED_ZAPOSLENI });
+
+        public static final Integer DELETED_ZAPOSLENI_ID = 3;
+        public static final String DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER = "13245";
+
+        public static final Integer DB_ZAPOSLENI_COUNT = 3;
+
+        public static final String DB_ZAPOSLENI_IDENTIFICATION_NUMBER = "54321";
+        public static final Integer DB_ZAPOSLENI_ID = 2;
+        public static final String DB_ZAPOSLENI_IME = "Marko";
+        public static final String DB_ZAPOSLENI_PREZIME = "Maric";
+        public static final LocalDate DB_ZAPOSLENI_DATUM_RODJENJA = LocalDate.parse("1990-01-01",
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
 }
-

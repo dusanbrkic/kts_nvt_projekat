@@ -18,4 +18,8 @@ public interface ZaposleniRepository extends JpaRepository<Zaposleni, Integer> {
 
     @SuppressWarnings("unchecked")
     Zaposleni save (Zaposleni zaposleni);
+
+    Zaposleni findOneByIdentificationNumber(String identificationNumber);
+
+    void deleteByIdentificationNumber(String idNum);
 }
