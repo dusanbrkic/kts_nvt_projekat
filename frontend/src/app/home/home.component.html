@@ -1,1 +1,141 @@
-<p>home works!</p>
+<div class="center">
+  <div class="grid">
+    <div class="property-card">
+      <a [routerLink]="['/konobar']">
+        <div class="property-image">
+          <div class="property-image-title">
+            <h5>Konobar</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Konobar</h5>
+          <p>Nije potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="property-card">
+      <a [routerLink]="['/']">
+        <div class="property-image sanker">
+          <div class="property-image-title">
+            <h5>Šanker</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Šanker</h5>
+          <p>Nije potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="property-card">
+      <a [routerLink]="['/']">
+        <div class="property-image kuvar">
+          <div class="property-image-title">
+            <h5>Kuvar</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Kuvar</h5>
+          <p>Nije potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="property-card">
+      <a [routerLink]="['/']" (click)="showModalDialog()">
+        <div class="property-image manager">
+          <div class="property-image-title">
+            <h5>Menadzer</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Menadzer</h5>
+          <p>Potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="property-card">
+      <a [routerLink]="['/']" (click)="showModalDialog()">
+        <div class="property-image admin">
+          <div class="property-image-title">
+            <h5>Administrator</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Administrator</h5>
+          <p>Potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="property-card">
+      <a [routerLink]="['/']" (click)="showModalDialog()">
+        <div class="property-image chef">
+          <div class="property-image-title">
+            <h5>Glavni kuvar</h5>
+          </div>
+        </div>
+        <div class="property-description">
+          <h5>Glavni kuvar</h5>
+          <p>Potrebno logovanje</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Prijava"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '15vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="p-grid">
+    <div class="p-col-5 p-d-flex p-ai-center p-jc-center">
+      <div class="p-fluid">
+        <div class="p-field">
+          <div class="p-inputgroup" style="margin-bottom: 10px">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+            </span>
+            <span class="p-float-label">
+              <input
+                style="align-content: center"
+                type="text"
+                id="inputgroup"
+                pInputText
+                [(ngModel)]="username"
+              />
+              <label for="inputgroup">Username</label>
+            </span>
+          </div>
+        </div>
+        <div class="p-field">
+          <p-password
+            [(ngModel)]="password"
+            placeholder="Password"
+            [feedback]="false"
+            [toggleMask]="true"
+          ></p-password>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-angle-right"
+      [routerLink]="['/login']"
+      (click)="displayModal = false"
+      label="Login"
+      class="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,24 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-konobar-page',
+  templateUrl: './konobar-page.component.html',
+  styleUrls: ['./konobar-page.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class KonobarPageComponent implements OnInit {
 
   constructor() { }
-
 
   ngOnInit(): void {
   }
 
   displayModal: boolean = false;
-  username: string="";
-  password: string="";
 
   showModalDialog() {
     this.displayModal = true;
 }
-
 }

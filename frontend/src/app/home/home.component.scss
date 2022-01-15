@@ -1,0 +1,132 @@
+body {
+  font-family: "RobotoDraft", "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h5 {
+  margin: 0px;
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+p {
+  font-size: 12px;
+}
+
+.property-card {
+  margin: 10px;
+  height: 18em;
+  width: 20em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.property-image {
+  height: 18em;
+  width: 20em;
+  padding: 1em 2em;
+  position: Absolute;
+  top: 0px;
+  -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-image: url("/assets/home_images/waiter.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.sanker {
+  background-image: url("/assets/home_images/bartender.jpg");
+}
+
+.kuvar {
+  background-image: url("/assets/home_images/cook.jpg");
+}
+
+.manager {
+  background-image: url("/assets/home_images/manager.jpg");
+}
+
+.admin {
+  background-image: url("/assets/home_images/admin.jpg");
+}
+
+.chef {
+  background-image: url("/assets/home_images/chef.jpg");
+}
+
+.property-description {
+  background: linear-gradient(90deg, #fae596 0%, #dddfd4 100%);
+  height: 0em;
+  width: 20em;
+  position: absolute;
+  bottom: 0em;
+  padding: 0px 1em;
+  -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  padding: 0.5em 1em;
+  text-align: center;
+}
+
+.property-card:hover .property-description {
+  height: 12em;
+}
+.property-card:hover .property-image {
+  height: 6em;
+}
+
+.property-image-title {
+  text-align: left;
+  vertical-align: top;
+  top: 30%;
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.01s;
+  color: #ecd06a;
+  font-size: 1.2em;
+}
+
+.property-card:hover .property-image-title {
+  opacity: 0;
+}
+
+a {
+  color: #0060b6;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00a0c6;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+:host ::ng-deep .p-dialog .p-button {
+  min-width: 6rem;
+}
+
+.center {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 1rem;
+  line-height: 1.5;
+}
