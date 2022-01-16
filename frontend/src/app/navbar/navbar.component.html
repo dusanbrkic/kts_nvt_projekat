@@ -1,0 +1,11 @@
+<p-tabMenu [model]="items" [activeItem]="activeItem">
+    <ng-template pTemplate="item" let-item let-i="index">
+      <div *ngIf="!item.label.includes('Button'); else elseBlock">
+          <i [ngClass]="item.icon"></i>
+          {{ item.label }}
+      </div>
+      <ng-template pTemplate="end" #elseBlock
+        ><button pButton [pTooltip]="item.label.replace('Button ','')" class="p-button-outlined p-button-raised p-button-rounded" [icon]="item.icon"></button></ng-template
+      >
+    </ng-template>
+  </p-tabMenu>

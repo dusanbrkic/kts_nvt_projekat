@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
+import { Inplace } from 'primeng/inplace';
 import Jelo from '../model/Jelo';
 import Pice from '../model/Pice';
 import { JeloService } from '../services/jelo.service';
@@ -23,10 +24,14 @@ export class MenuComponent implements OnInit {
   loadingPica: boolean= false;
   totalPica: number =0;
 
+  @ViewChild('jelaInplace') jelaInplace!: Inplace;
+  @ViewChild('picaInplace') picaInplace!: Inplace;
+
   constructor(private jeloService: JeloService,private piceService:PiceService) {}
 
   ngOnInit(): void {
-    this.jela = this.jeloService.getJelaTest();
+    this.jeloService.loadJelaTest();
+    this.jela = this.jeloService.getJela();
     this.totalJela = this.jela.length;
     this.kategorije = [
       { value: 'PREDJELO', name: 'Predjelo' },
@@ -42,7 +47,8 @@ export class MenuComponent implements OnInit {
       { value: 'BUDGET', name: 'Budget' },
     ];
 
-    this.pica=this.piceService.getPicaTest();
+    this.piceService.loadPicaTest()
+    this.pica=this.piceService.getPica();
     this.totalPica=this.pica.length;
   }
 
@@ -77,5 +83,13 @@ export class MenuComponent implements OnInit {
   showModalDialog(jelo: Jelo) {
     this.displayModal = true;
     this.selectedJelo = jelo;
+  }
+
+  closeJelaInplace(){
+    this.jelaInplace.deactivate()
+  }
+
+  closePicaInplace(){
+    this.picaInplace.deactivate()
   }
 }

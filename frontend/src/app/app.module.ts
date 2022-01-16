@@ -31,6 +31,19 @@ import {DataViewModule} from 'primeng/dataview';
 import {TableModule} from 'primeng/table';
 import {TabViewModule} from 'primeng/tabview';
 import {DragDropModule} from 'primeng/dragdrop';
+import {TabMenuModule} from 'primeng/tabmenu';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SankerPageComponent } from './sanker-page/sanker-page.component';
+import {TooltipModule} from 'primeng/tooltip';
+import { PorudzbineViewSankerComponent } from './porudzbine-view-sanker/porudzbine-view-sanker.component';
+import {AccordionModule} from 'primeng/accordion';
+import {ToastModule} from 'primeng/toast';
+import {ToolbarModule} from 'primeng/toolbar';
+import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
+import {InplaceModule} from 'primeng/inplace';
+import { PorudzbineViewKuvarComponent } from './porudzbine-view-kuvar/porudzbine-view-kuvar.component';
+import {PickListModule} from 'primeng/picklist';
+import {PanelModule} from 'primeng/panel';
 
 @NgModule({
   declarations: [
@@ -41,7 +54,12 @@ import {DragDropModule} from 'primeng/dragdrop';
     PiceComponent,
     JeloComponent,
     KonobarPageComponent,
-    MenuComponent
+    MenuComponent,
+    NavbarComponent,
+    SankerPageComponent,
+    PorudzbineViewSankerComponent,
+    KuvarPageComponent,
+    PorudzbineViewKuvarComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +85,15 @@ import {DragDropModule} from 'primeng/dragdrop';
     DataViewModule,
     TableModule,
     TabViewModule,
-    DragDropModule
+    DragDropModule,
+    TabMenuModule,
+    TooltipModule,
+    AccordionModule,
+    ToastModule,
+    ToolbarModule,
+    InplaceModule,
+    PickListModule,
+    PanelModule
   ],
   providers: [],
   bootstrap: [AppComponent]
