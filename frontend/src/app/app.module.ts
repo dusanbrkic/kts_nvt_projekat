@@ -44,6 +44,12 @@ import {InplaceModule} from 'primeng/inplace';
 import { PorudzbineViewKuvarComponent } from './porudzbine-view-kuvar/porudzbine-view-kuvar.component';
 import {PickListModule} from 'primeng/picklist';
 import {PanelModule} from 'primeng/panel';
+import { LayoutAdminComponent } from './admin-page/layout-admin/layout-admin.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { DragDropModule as DragDropCDKModule} from '@angular/cdk/drag-drop';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import { ZaposleniViewComponent } from './zaposleni-view/zaposleni-view.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +65,10 @@ import {PanelModule} from 'primeng/panel';
     SankerPageComponent,
     PorudzbineViewSankerComponent,
     KuvarPageComponent,
-    PorudzbineViewKuvarComponent
+    PorudzbineViewKuvarComponent,
+    LayoutAdminComponent,
+    AdminPageComponent,
+    ZaposleniViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +102,10 @@ import {PanelModule} from 'primeng/panel';
     ToolbarModule,
     InplaceModule,
     PickListModule,
-    PanelModule
+    PanelModule,
+    DragDropCDKModule,
+    MessageModule,
+    MessagesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

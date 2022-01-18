@@ -6,6 +6,7 @@ import { PiceComponent } from './pice/pice.component';
 import { KonobarPageComponent } from './konobar-page/konobar-page.component';
 import { SankerPageComponent } from './sanker-page/sanker-page.component';
 import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'konobar',component:KonobarPageComponent},
   {path: 'sanker',component:SankerPageComponent},
   {path: 'kuvar',component:KuvarPageComponent},
+  {path: 'admin',component:AdminPageComponent},
 ];
 
 @NgModule({

@@ -1,0 +1,8 @@
+export default interface Sto{
+    id?: number;
+    zauzet:  boolean;
+    brojMesta: number;
+    x: number;
+    y: number;
+    naziv: string;
+}
