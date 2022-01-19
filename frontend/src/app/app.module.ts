@@ -6,8 +6,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
-import { PiceComponent } from './pice/pice.component';
-import { JeloComponent } from './jelo/jelo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { KonobarPageComponent } from './konobar-page/konobar-page.component';
 import { DialogModule } from 'primeng/dialog';
@@ -35,13 +33,13 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SankerPageComponent } from './sanker-page/sanker-page.component';
 import {TooltipModule} from 'primeng/tooltip';
-import { PorudzbineViewSankerComponent } from './porudzbine-view-sanker/porudzbine-view-sanker.component';
+import { PorudzbineViewSankerComponent } from './sanker-page/porudzbine-view-sanker/porudzbine-view-sanker.component';
 import {AccordionModule} from 'primeng/accordion';
 import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
 import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
 import {InplaceModule} from 'primeng/inplace';
-import { PorudzbineViewKuvarComponent } from './porudzbine-view-kuvar/porudzbine-view-kuvar.component';
+import { PorudzbineViewKuvarComponent } from './kuvar-page/porudzbine-view-kuvar/porudzbine-view-kuvar.component';
 import {PickListModule} from 'primeng/picklist';
 import {PanelModule} from 'primeng/panel';
 import { LayoutAdminComponent } from './admin-page/layout-admin/layout-admin.component';
@@ -51,6 +49,10 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import { ZaposleniViewComponent } from './zaposleni-view/zaposleni-view.component';
 import {ContextMenuModule} from 'primeng/contextmenu';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MenuJelaComponent } from './menu/menu-jela/menu-jela.component';
+import { MenuPicaComponent } from './menu/menu-pica/menu-pica.component';
+import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
 
 @NgModule({
   declarations: [
@@ -58,8 +60,6 @@ import {ContextMenuModule} from 'primeng/contextmenu';
     HomeComponent,
     LoginComponent,
     HeaderComponent,
-    PiceComponent,
-    JeloComponent,
     KonobarPageComponent,
     MenuComponent,
     NavbarComponent,
@@ -70,6 +70,9 @@ import {ContextMenuModule} from 'primeng/contextmenu';
     LayoutAdminComponent,
     AdminPageComponent,
     ZaposleniViewComponent,
+    MenuJelaComponent,
+    MenuPicaComponent,
+    MenadzerPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +110,8 @@ import {ContextMenuModule} from 'primeng/contextmenu';
     DragDropCDKModule,
     MessageModule,
     MessagesModule,
-    ContextMenuModule
+    ContextMenuModule,
+    ConfirmDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

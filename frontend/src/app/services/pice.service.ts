@@ -38,18 +38,18 @@ export class PiceService {
         trenutnaCena: 120.0,
       },
       {
-        id: 1,
-        naziv: 'Pice 1',
+        id: 2,
+        naziv: 'Pice 2',
         trenutnaCena: 120.0,
       },
       {
-        id: 1,
-        naziv: 'Pice 1',
+        id: 3,
+        naziv: 'Pice 3',
         trenutnaCena: 120.0,
       },
       {
-        id: 1,
-        naziv: 'Pice 1',
+        id: 4,
+        naziv: 'Pice 4',
         trenutnaCena: 120.0,
       },
     ];

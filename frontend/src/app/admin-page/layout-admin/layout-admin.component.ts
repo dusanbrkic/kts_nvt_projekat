@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import Sto from 'src/app/model/Sto';
 import Zona from 'src/app/model/Zona';
 
@@ -23,7 +24,7 @@ export class LayoutAdminComponent implements OnInit {
   displayModalNazivZone: boolean=false;
   updateNaziv: string="";
 
-  constructor(private elem: ElementRef) {}
+  constructor(private elem: ElementRef,private confirmationService: ConfirmationService,private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.zone = [
@@ -163,11 +164,17 @@ export class LayoutAdminComponent implements OnInit {
   }
 
   deleteZone() {
-    console.log(this.zone);
-    console.log(this.selectedZona);
-    this.zone = this.zone.filter((z) => z.id !== this.selectedZona.id);
-    this.selectedZona=this.zone[0]
-    console.log(this.zone);
+
+    this.confirmationService.confirm({
+      message: 'Da li Ste sigurni da želite da obrišete zonu ' + this.selectedZona.naziv + '?',
+      header: 'Potvrda',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.zone = this.zone.filter((z) => z.id !== this.selectedZona.id);
+        this.selectedZona=this.zone[0]
+          this.messageService.add({severity:'success', summary: 'Uspeh', detail: 'Zona obrisana', life: 3000});
+      }
+  });
   }
 
   openNazivModal(){

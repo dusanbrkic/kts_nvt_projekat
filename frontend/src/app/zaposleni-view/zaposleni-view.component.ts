@@ -59,7 +59,7 @@ export class ZaposleniViewComponent implements OnInit {
       {
         label: 'Delete',
         icon: 'pi pi-fw pi-times',
-        command: () => this.deleteProduct(this.selectedZ),
+        command: () => this.deleteZaposleni(this.selectedZ),
       },
     ];
   }
@@ -115,7 +115,7 @@ export class ZaposleniViewComponent implements OnInit {
     this.editing = false;
   }
 
-  deleteProduct(z: Zaposleni) {
+  deleteZaposleni(z: Zaposleni) {
     this.zaposleni = this.zaposleni.filter(
       (za) => za.identificationNumber !== z.identificationNumber
     );
@@ -147,7 +147,7 @@ export class ZaposleniViewComponent implements OnInit {
     this.submitted = false;
   }
 
-  saveProduct() {
+  saveZaposleni() {
     this.submitted = true;
 
     if (

@@ -1,0 +1,249 @@
+<p-toast></p-toast>
+
+<p-contextMenu #cmPice [model]="items"></p-contextMenu>
+
+<p-inplace #picaInplace class="center">
+  <ng-template pTemplate="display">
+    <div class="p-d-inline-flex p-ai-center">
+      <button
+        pButton
+        pTooltip="Prikazi pica"
+        icon="pi pi-table"
+        class="p-button-raised p-button-rounded"
+        label="Pica"
+      ></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <p-toolbar styleClass="mb-4">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="openNew()"
+        ></button>
+      </ng-template>
+
+      <ng-template pTemplate="right">
+        <button
+          pButton
+          pTooltip="Reload"
+          icon="pi pi-sync"
+          class="p-button-outlined p-button-raised p-button-rounded"
+          style="margin-right: 30px"
+        ></button>
+        <button
+          style="align-content: flex-end"
+          pButton
+          pTooltip="Zatvori prikaz"
+          class="p-button-outlined p-button-raised p-button-rounded"
+          icon="pi pi-times"
+          (click)="closePicaInplace()"
+        ></button>
+      </ng-template>
+    </p-toolbar>
+    <p-table
+      #dtPica
+      [value]="pica"
+      [lazy]="true"
+      (onLazyLoad)="loadPica($event)"
+      [paginator]="true"
+      [rows]="5"
+      [totalRecords]="totalPica"
+      [loading]="loading"
+      dataKey="id"
+      styleClass="p-datatable-customers p-datatable-gridlines"
+      editMode="row"
+      [(contextMenuSelection)]="selectedPice"
+      [contextMenu]="cmPice"
+    >
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="col">
+            <div class="p-d-flex p-ai-center p-jc-between">Pića</div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="naziv">
+            Naziv <p-sortIcon field="naziv"></p-sortIcon>
+          </th>
+          <th>Slika</th>
+          <th pSortableColumn="cena">
+            Cena <p-sortIcon field="cena"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>
+            <input
+              pInputText
+              type="text"
+              (input)="
+                dtPica.filter($any($event.target).value, 'naziv', 'contains')
+              "
+            />
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-pice let-ri="rowIndex">
+        <tr [pEditableRow]="pice" [pContextMenuRow]="pice">
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <div class="flex flex-column">
+                  <div class="flex align-items-center">
+                    <input pInputText type="text" [(ngModel)]="pice.naziv" />
+                  </div>
+                  <div class="flex align-items-center">
+                    <small class="p-error" *ngIf="!pice.naziv.trim()"
+                      >Naziv je obavezan.</small
+                    >
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ pice.naziv }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <img
+              [src]="'assets/home_images/waiter.jpg'"
+              width="100"
+              class="p-shadow-4"
+            />
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <div class="flex flex-column">
+                  <div class="flex align-items-center">
+                    <p-inputNumber
+                      inputId="minmaxfraction"
+                      mode="decimal"
+                      [minFractionDigits]="0"
+                      [maxFractionDigits]="3"
+                      [(ngModel)]="pice.trenutnaCena"
+                    >
+                    </p-inputNumber>
+                  </div>
+                  <div class="flex align-items-center">
+                    <small class="p-error" *ngIf="!(pice.trenutnaCena > 0)"
+                      >Cena mora biti veća od 0.</small
+                    >
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ pice.trenutnaCena }} RSD
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align: center">
+            <button
+              *ngIf="!editing"
+              pButton
+              pRipple
+              type="button"
+              pInitEditableRow
+              icon="pi pi-pencil"
+              (click)="onRowEditInit(pice)"
+              class="p-button-rounded p-button-text"
+            ></button>
+            <button
+              *ngIf="editing"
+              pButton
+              pRipple
+              type="button"
+              pSaveEditableRow
+              icon="pi pi-check"
+              (click)="onRowEditSave(pice, ri)"
+              class="p-button-rounded p-button-text p-button-success mr-2"
+            ></button>
+            <button
+              *ngIf="editing"
+              pButton
+              pRipple
+              type="button"
+              pCancelEditableRow
+              icon="pi pi-times"
+              (click)="onRowEditCancel(pice, ri)"
+              class="p-button-rounded p-button-text p-button-danger"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary"> </ng-template>
+    </p-table>
+  </ng-template>
+</p-inplace>
+
+<p-dialog
+  [(visible)]="piceDialog"
+  [style]="{ width: '450px' }"
+  header="Novo piće"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
+
+    <div class="field">
+      <label for="naziv">Naziv</label>
+      <input
+        type="text"
+        pInputText
+        id="naziv"
+        [(ngModel)]="newPice.naziv"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !newPice.naziv.trim()"
+        >Naziv je obavezan.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="plata">Cena</label>
+      <p-inputNumber
+        id="plata"
+        [(ngModel)]="newPice.trenutnaCena"
+        mode="currency"
+        currency="RSD"
+        locale="en-US"
+      ></p-inputNumber>
+      <small
+        class="p-error"
+        *ngIf="submitted && !(newPice.trenutnaCena > 0)"
+        >Cena mora biti veća od 0.</small
+      >
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="savePice()"
+    ></button>
+  </ng-template>
+</p-dialog>
