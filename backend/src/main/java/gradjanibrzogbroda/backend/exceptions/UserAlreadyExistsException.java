@@ -1,4 +1,4 @@
-package gradjanibrzogbroda.exception;
+package gradjanibrzogbroda.backend.exceptions;
 
 public class UserAlreadyExistsException extends Exception {
     
