@@ -1,1 +1,393 @@
-<p>zaposleni-view works!</p>
+<p-toast></p-toast>
+
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<div class="card" style="margin-top: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="New"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
+        (click)="openNew()"
+      ></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <button
+        pButton
+        pTooltip="Reload"
+        icon="pi pi-sync"
+        class="p-button-outlined p-button-raised p-button-rounded"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+  <p-table
+    #dt
+    [value]="zaposleni"
+    [lazy]="true"
+    (onLazyLoad)="loadZaposleni($event)"
+    [paginator]="true"
+    [rows]="5"
+    [totalRecords]="totalZaposleni"
+    [loading]="loading"
+    dataKey="id"
+    styleClass="p-datatable-customers p-datatable-gridlines"
+    editMode="row"
+    [(contextMenuSelection)]="selectedZ"
+    [contextMenu]="cm"
+  >
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">Zaposleni</div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="ime">Ime<p-sortIcon field="ime"></p-sortIcon></th>
+        <th pSortableColumn="prezime">
+          Prezime <p-sortIcon field="prezime"></p-sortIcon>
+        </th>
+        <th>Slika</th>
+        <th>Pol</th>
+        <th pSortableColumn="datumRodjenja">
+          Datum rodjenja <p-sortIcon field="datumRodjenja"></p-sortIcon>
+        </th>
+        <th pSortableColumn="trenutnaPlata">
+          Plata <p-sortIcon field="trenutnaPlata"></p-sortIcon>
+        </th>
+        <th>Tip zaposlenja</th>
+        <th>Identification number</th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filter($any($event.target).value, 'ime', 'contains')"
+          />
+        </th>
+        <th>
+          <input
+            pInputText
+            type="text"
+            (input)="
+              dt.filter($any($event.target).value, 'prezime', 'contains')
+            "
+          />
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>
+          <p-columnFilter
+            field="kategorijaJela"
+            matchMode="in"
+            [showMenu]="false"
+          >
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filter="filterCallback"
+            >
+              <p-multiSelect
+                [ngModel]="value"
+                [options]="tipovi"
+                placeholder="Any"
+                (onChange)="filter($event.value)"
+                optionLabel="name"
+              >
+                <ng-template let-option pTemplate="item">
+                  <div>
+                    <span class="p-ml-1">{{ option.name }}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-z let-ri="rowIndex">
+      <tr [pEditableRow]="z" [pContextMenuRow]="z">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="flex flex-column">
+                <div class="flex align-items-center">
+                  <input pInputText type="text" [(ngModel)]="z.ime" />
+                </div>
+                <div class="flex align-items-center">
+                  <small class="p-error" *ngIf="!z.ime.trim()"
+                    >Ime je obavezno.</small
+                  >
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.ime }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="flex flex-column">
+                <div class="flex align-items-center">
+                  <input pInputText type="text" [(ngModel)]="z.prezime" />
+                </div>
+                <div class="flex align-items-center">
+                  <small class="p-error" *ngIf="!z.prezime.trim()"
+                    >Prezime je obavezno.</small
+                  >
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.prezime }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <img
+            [src]="'assets/home_images/waiter.jpg'"
+            width="100"
+            class="p-shadow-4"
+          />
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-dropdown
+                [options]="polovi"
+                optionLabel="name"
+                optionValue="value"
+                [(ngModel)]="z.pol"
+                [style]="{ width: '100%' }"
+              ></p-dropdown>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.pol }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="flex flex-column">
+                <div class="flex align-items-center">
+                  <p-calendar [(ngModel)]="z.datumRodjenja"></p-calendar>
+                </div>
+                <div class="flex align-items-center">
+                  <small class="p-error" *ngIf="z.datumRodjenja < today"
+                    >Datum loš.</small
+                  >
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.datumRodjenja.toLocaleDateString("en-US") }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="flex flex-column">
+                <div class="flex align-items-center">
+                  <p-inputNumber
+                    inputId="minmaxfraction"
+                    mode="decimal"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="3"
+                    [(ngModel)]="z.trenutnaPlata"
+                  >
+                  </p-inputNumber>
+                </div>
+                <div class="flex align-items-center">
+                  <small class="p-error" *ngIf="!(z.trenutnaPlata > 0)"
+                    >Plata mora biti veća od 0.</small
+                  >
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.trenutnaPlata }} RSD
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-dropdown
+                [options]="tipovi"
+                optionLabel="name"
+                optionValue="value"
+                [(ngModel)]="z.tipZaposlenja"
+                [style]="{ width: '100%' }"
+              ></p-dropdown>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ z.tipZaposlenja }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>{{ z.identificationNumber }}</td>
+        <td style="text-align: center">
+          <button
+            *ngIf="!editing"
+            pButton
+            pRipple
+            type="button"
+            pInitEditableRow
+            icon="pi pi-pencil"
+            (click)="onRowEditInit(z)"
+            class="p-button-rounded p-button-text"
+          ></button>
+          <button
+            *ngIf="editing"
+            pButton
+            pRipple
+            type="button"
+            pSaveEditableRow
+            icon="pi pi-check"
+            (click)="onRowEditSave(z, ri)"
+            class="p-button-rounded p-button-text p-button-success mr-2"
+          ></button>
+          <button
+            *ngIf="editing"
+            pButton
+            pRipple
+            type="button"
+            pCancelEditableRow
+            icon="pi pi-times"
+            (click)="onRowEditCancel(z, ri)"
+            class="p-button-rounded p-button-text p-button-danger"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary"> </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [(visible)]="zaposleniDialog"
+  [style]="{ width: '450px' }"
+  header="Novi zaposleni"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
+
+    <div class="field">
+      <label for="datum">Datum rodjenja</label>
+      <p-calendar
+        id="datum"
+        [(ngModel)]="newZaposleni.datumRodjenja"
+      ></p-calendar>
+      <small
+        class="p-error"
+        *ngIf="submitted && !(newZaposleni.datumRodjenja < today)"
+        >Loš datum.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="ime">Ime</label>
+      <input
+        type="text"
+        pInputText
+        id="ime"
+        [(ngModel)]="newZaposleni.ime"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !newZaposleni.ime.trim()"
+        >Ime je obavezno.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="prezime">Prezime</label>
+      <input
+        type="text"
+        pInputText
+        id="prezime"
+        [(ngModel)]="newZaposleni.prezime"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !newZaposleni.prezime.trim()"
+        >Prezime je obavezno.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="tip">Tip zaposlenja</label>
+      <p-dropdown
+        [(ngModel)]="newZaposleni.tipZaposlenja"
+        optionLabel="name"
+        optionValue="value"
+        inputId="tip"
+        [options]="tipovi"
+        placeholder="Tip zaposlenja"
+      >
+      </p-dropdown>
+    </div>
+
+    <div class="field">
+      <label for="pol">Pol</label>
+      <p-dropdown
+        [(ngModel)]="newZaposleni.pol"
+        inputId="pol"
+        optionLabel="name"
+        optionValue="value"
+        [options]="polovi"
+        placeholder="Pol"
+      >
+      </p-dropdown>
+    </div>
+
+    <div class="field">
+      <label for="plata">Plata</label>
+      <p-inputNumber
+        id="plata"
+        [(ngModel)]="newZaposleni.trenutnaPlata"
+        mode="currency"
+        currency="RSD"
+        locale="en-US"
+      ></p-inputNumber>
+      <small
+        class="p-error"
+        *ngIf="submitted && !(newZaposleni.trenutnaPlata > 0)"
+        >Plata mora biti veća od 0.</small
+      >
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveProduct()"
+    ></button>
+  </ng-template>
+</p-dialog>

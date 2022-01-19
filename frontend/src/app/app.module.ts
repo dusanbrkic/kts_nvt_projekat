@@ -50,6 +50,7 @@ import { DragDropModule as DragDropCDKModule} from '@angular/cdk/drag-drop';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import { ZaposleniViewComponent } from './zaposleni-view/zaposleni-view.component';
+import {ContextMenuModule} from 'primeng/contextmenu';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { ZaposleniViewComponent } from './zaposleni-view/zaposleni-view.componen
     PanelModule,
     DragDropCDKModule,
     MessageModule,
-    MessagesModule
+    MessagesModule,
+    ContextMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
