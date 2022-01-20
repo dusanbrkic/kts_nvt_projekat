@@ -1,0 +1,40 @@
+<div class="center">
+  <div *ngIf="zone.length > 0">
+    <p-toolbar>
+      <div class="p-toolbar-group-left">
+        <button
+          pButton
+          pTooltip="Reload"
+          icon="pi pi-sync"
+          class="p-button-outlined p-button-raised p-button-rounded"
+        ></button>
+      </div>
+      <div class="p-toolbar-group-right">
+        <p-dropdown
+          [options]="zone"
+          [(ngModel)]="selectedZona"
+          optionLabel="naziv"
+        ></p-dropdown>
+      </div>
+    </p-toolbar>
+    <div
+      style="text-align:center;background-image: url({{selectedZona.template}}); background-size: 100% 100%;background-repeat: no-repeat;"
+      class="container"
+    >
+      <ng-container *ngFor="let table of selectedZona.stolovi">
+        <div
+          [ngStyle]="{ 'left.px': table.x, 'top.px': table.y }"
+          [id]="table.id"
+          class="circle"
+          (dblclick)="openSidebar(table)"
+        >
+          {{ table.naziv }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<p-sidebar [(visible)]="showSidebar">
+  <h2>{{ selectedSto ? selectedSto.naziv : "Greska" }}</h2>
+</p-sidebar>

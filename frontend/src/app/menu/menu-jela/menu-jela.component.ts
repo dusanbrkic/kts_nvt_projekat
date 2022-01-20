@@ -7,10 +7,9 @@ import { JeloService } from 'src/app/services/jelo.service';
 @Component({
   selector: 'app-menu-jela',
   templateUrl: './menu-jela.component.html',
-  styleUrls: ['./menu-jela.component.scss']
+  styleUrls: ['./menu-jela.component.scss'],
 })
 export class MenuJelaComponent implements OnInit {
-
   jela!: Jelo[];
   selectedJelo!: Jelo;
   displayModal: boolean = false;
@@ -25,17 +24,27 @@ export class MenuJelaComponent implements OnInit {
   editing: boolean = false;
   clonedJela: { [s: string]: Jelo } = {};
 
-  addJeloDialog: boolean=false;
-  newJelo!:Jelo;
-  submitted: boolean=false;
+  addJeloDialog: boolean = false;
+  newJelo!: Jelo;
+  submitted: boolean = false;
 
-  predlog: boolean=false;
+  predlog: boolean = false;
 
-  constructor(private jeloService: JeloService,private messageService: MessageService) { }
+  user: any;
+
+  private lastTableLazyLoadEvent!: LazyLoadEvent;
+
+  constructor(
+    private jeloService: JeloService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.jeloService.loadJelaTest();
-    this.jela = this.jeloService.getJela();
+    this.jeloService.jela$.subscribe((value) => {
+      this.jela = value;
+      console.log(value);
+    });
     this.totalJela = this.jela.length;
     this.kategorije = [
       { value: 'PREDJELO', name: 'Predjelo' },
@@ -57,44 +66,48 @@ export class MenuJelaComponent implements OnInit {
         icon: 'pi pi-fw pi-search',
         command: () => this.showModalDialog(),
       },
-      {
+    ];
+
+    this.user = localStorage.getItem('user');
+
+    if (this.user === null) {
+    } else {
+      this.items.push({
         label: 'Predlog izmene',
         icon: 'pi pi-fw pi-plus',
         command: () => this.editJelo(this.selectedJelo),
-      },
-      {
+      });
+      this.items.push({
         label: 'Predlog brisanja',
         icon: 'pi pi-fw pi-times',
         command: () => {},
-      },
-      {
+      });
+      this.items.push({
         label: 'Delete',
         icon: 'pi pi-fw pi-times',
         command: () => this.deleteJelo(this.selectedJelo),
-      },
-    ];
+      });
+    }
   }
 
   loadJela(event: LazyLoadEvent) {
-    //this.loading = true;
+    this.loading = true;
+    this.lastTableLazyLoadEvent = event;
 
     console.log(event);
 
-    setTimeout(() => {
-      /*this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-                this.customers = res.customers;
-                this.totalRecords = res.totalRecords;
-                this.loading = false;
-            })*/
-    }, 1000);
+    //load jela here from backend with pagination
+    this.jeloService.loadJela(event)
+
+    this.loading = false;
   }
 
   showModalDialog() {
     this.displayModal = true;
   }
 
-  closeJelaInplace(){
-    this.jelaInplace.deactivate()
+  closeJelaInplace() {
+    this.jelaInplace.deactivate();
   }
 
   onRowEditInit(jelo: Jelo) {
@@ -110,6 +123,7 @@ export class MenuJelaComponent implements OnInit {
     ) {
       delete this.clonedJela[jelo.id];
       this.editing = false;
+      this.jeloService.updateJelo(this.jela[index])
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -134,14 +148,13 @@ export class MenuJelaComponent implements OnInit {
   }
 
   deleteJelo(jelo: Jelo) {
-    this.jela = this.jela.filter(
-      (j) => j.id !== jelo.id
-    );
+    this.jeloService.removeJelo(jelo)
     this.messageService.add({
       severity: 'info',
       summary: 'Jelo obrisano',
       detail: jelo.naziv,
     });
+    this.loadJela(this.lastTableLazyLoadEvent);
   }
 
   openNew() {
@@ -166,34 +179,31 @@ export class MenuJelaComponent implements OnInit {
   saveJelo() {
     this.submitted = true;
 
-    if(this.predlog){
-      this.predlog=false;
-    }else{
+    if (this.predlog) {
+      this.predlog = false;
+    } else {
       if (
         this.newJelo.naziv.trim() &&
         this.newJelo.trenutnaCena > 0 &&
         this.newJelo.vremePripremeMils > 0
       ) {
-        this.jela.push(this.newJelo);
+        this.jeloService.addJelo(this.newJelo)
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
           detail: 'Kreirano novo jelo',
           life: 3000,
         });
-  
-        this.jela = [...this.jela];
         this.addJeloDialog = false;
+        this.loadJela(this.lastTableLazyLoadEvent);
       }
     }
-
   }
 
-  editJelo(jelo:Jelo){
-    this.newJelo = jelo
+  editJelo(jelo: Jelo) {
+    this.newJelo = jelo;
     this.submitted = false;
-    this.predlog= true
+    this.predlog = true;
     this.addJeloDialog = true;
   }
-
 }

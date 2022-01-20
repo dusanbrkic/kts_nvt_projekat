@@ -1,3 +1,5 @@
+import Porudzbina from "./Porudzbina";
+
 export default interface Sto{
     id?: number;
     zauzet:  boolean;
@@ -5,4 +7,5 @@ export default interface Sto{
     x: number;
     y: number;
     naziv: string;
+    porudzbine: Porudzbina[];
 }

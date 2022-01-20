@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import Jelo from '../model/Jelo';
 import { BehaviorSubject } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,33 @@ export class JeloService {
     this._jelaSource.next(jela);
   }
 
-  getJeloClient(id:number):Jelo | undefined{
+  loadJela(event: LazyLoadEvent){
+    //TO DO get jela sa paginacijom i filterima
+
+  }
+
+  addJelo(jelo: Jelo){
+    //TO DO: dodati jelo na back
+    // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    const jela: Jelo[]=[...this.getJela(),jelo]
+    this._setJela(jela)
+  }
+
+  removeJelo(jelo: Jelo){
+    //TO DO: izbrisati jelo sa backa
+    // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    const jela: Jelo[]=this.getJela().filter(j=>j.id!==jelo.id)
+    this._setJela(jela)
+  }
+
+  updateJelo(jelo: Jelo){
+    //TO DO: update jela na backu
+    // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    const jela: Jelo[]=this.getJela().map(j=>j.id===jelo.id ? jelo : j)
+    this._setJela(jela)
+  }
+
+  /*getJeloClient(id:number):Jelo | undefined{
     return this.getJela().find(j=>j.id===id)
   }
 
@@ -48,7 +75,7 @@ export class JeloService {
 
   deleteJelo(jeloId: any): any {
     return this.http.delete(environment.baseUrl + 'jela/' + jeloId);
-  }
+  }*/
 
   loadJelaTest(): void {
     const jela: Jelo[] = [

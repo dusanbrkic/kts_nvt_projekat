@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import Zaposleni from '../model/Zaposleni';
+import { ZaposleniService } from '../services/zaposleni.service';
 
 @Component({
   selector: 'app-zaposleni-view',
@@ -26,21 +27,19 @@ export class ZaposleniViewComponent implements OnInit {
   newZaposleni!: Zaposleni;
   submitted: boolean = false;
 
-  constructor(private messageService: MessageService) {}
+  private lastTableLazyLoadEvent!: LazyLoadEvent;
+
+  constructor(
+    private messageService: MessageService,
+    private zaposleniService: ZaposleniService
+  ) {}
 
   ngOnInit(): void {
-    this.zaposleni = [
-      {
-        ime: 'Marko',
-        prezime: 'Markovic',
-        pol: 'MUSKI',
-        datumRodjenja: new Date(),
-        trenutnaPlata: 200000,
-        tipZaposlenja: 'GLAVNI_KUVAR',
-        slikaString: '',
-        identificationNumber: '124123',
-      },
-    ];
+    this.zaposleniService.loadZaposleniTest();
+    this.zaposleniService.zaposleni$.subscribe((value) => {
+      this.zaposleni = value;
+      console.log(value);
+    });
 
     this.tipovi = [
       { value: 'SANKER', name: 'Sanker' },
@@ -65,17 +64,16 @@ export class ZaposleniViewComponent implements OnInit {
   }
 
   loadZaposleni(event: LazyLoadEvent) {
-    //this.loading = true;
+    this.loading = true;
+    this.lastTableLazyLoadEvent = event;
 
     console.log(event);
 
-    setTimeout(() => {
-      /*this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-                this.customers = res.customers;
-                this.totalRecords = res.totalRecords;
-                this.loading = false;
-            })*/
-    }, 1000);
+    //load zaposleni here from backend with pagination
+    this.zaposleniService.loadZaposleni(event)
+
+
+    this.loading = false
   }
 
   onRowEditInit(z: Zaposleni) {
@@ -92,6 +90,7 @@ export class ZaposleniViewComponent implements OnInit {
     ) {
       delete this.clonedZaposleni[z.identificationNumber];
       this.editing = false;
+      this.zaposleniService.updateJelo(this.zaposleni[index])
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -116,14 +115,13 @@ export class ZaposleniViewComponent implements OnInit {
   }
 
   deleteZaposleni(z: Zaposleni) {
-    this.zaposleni = this.zaposleni.filter(
-      (za) => za.identificationNumber !== z.identificationNumber
-    );
+    this.zaposleniService.removeZaposleni(z)
     this.messageService.add({
       severity: 'info',
       summary: 'Zaposleni obrisan',
       detail: z.ime + ' ' + z.prezime,
     });
+    this.loadZaposleni(this.lastTableLazyLoadEvent)
   }
 
   openNew() {
@@ -155,16 +153,15 @@ export class ZaposleniViewComponent implements OnInit {
       this.newZaposleni.prezime.trim() &&
       this.newZaposleni.trenutnaPlata > 0
     ) {
-      this.zaposleni.push(this.newZaposleni);
+      this.zaposleniService.addZaposleni(this.newZaposleni)
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
         detail: 'Kreiran novi zaposleni',
         life: 3000,
       });
-
-      this.zaposleni = [...this.zaposleni];
       this.zaposleniDialog = false;
+      this.loadZaposleni(this.lastTableLazyLoadEvent)
     }
   }
 }

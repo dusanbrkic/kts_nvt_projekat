@@ -26,6 +26,8 @@ export class MenuPicaComponent implements OnInit {
   submitted: boolean = false;
   piceDialog: boolean = false;
 
+  private lastTableLazyLoadEvent!: LazyLoadEvent;
+
   constructor(
     private piceService: PiceService,
     private messageService: MessageService
@@ -33,7 +35,10 @@ export class MenuPicaComponent implements OnInit {
 
   ngOnInit(): void {
     this.piceService.loadPicaTest();
-    this.pica = this.piceService.getPica();
+    this.piceService.pica$.subscribe((value) => {
+      this.pica = value;
+      console.log(value);
+    });
     this.totalPica = this.pica.length;
 
     this.items = [
@@ -46,17 +51,16 @@ export class MenuPicaComponent implements OnInit {
   }
 
   loadPica(event: LazyLoadEvent) {
-    //this.loadingPica = true;
+    this.loadingPica = true;
+    this.lastTableLazyLoadEvent = event;
 
     console.log(event);
 
-    setTimeout(() => {
-      /*this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-                this.customers = res.customers;
-                this.totalRecords = res.totalRecords;
-                this.loading = false;
-            })*/
-    }, 1000);
+    //load pica here from backend with pagination
+    this.piceService.loadPica(event)
+
+
+    this.loadingPica = false;
   }
 
   closePicaInplace() {
@@ -85,16 +89,15 @@ export class MenuPicaComponent implements OnInit {
       this.newPice.naziv.trim() &&
       this.newPice.trenutnaCena > 0
     ) {
-      this.pica.push(this.newPice);
+      this.piceService.addPice(this.newPice)
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
         detail: 'Kreirano novo piće',
         life: 3000,
       });
-
-      this.pica = [...this.pica];
       this.piceDialog = false;
+      this.loadPica(this.lastTableLazyLoadEvent)
     }
   }
 
@@ -107,6 +110,7 @@ export class MenuPicaComponent implements OnInit {
     if (pice.trenutnaCena > 0 && pice.naziv !== '') {
       delete this.clonedPica[pice.id];
       this.editing = false;
+      this.piceService.updatePice(this.pica[index])
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -131,11 +135,12 @@ export class MenuPicaComponent implements OnInit {
   }
 
   deletePice(pice: Pice) {
-    this.pica = this.pica.filter((p) => p.id !== pice.id);
+    this.piceService.removePice(pice)
     this.messageService.add({
       severity: 'info',
       summary: 'Piće obrisano',
       detail: pice.naziv,
     });
+    this.loadPica(this.lastTableLazyLoadEvent)
   }
 }

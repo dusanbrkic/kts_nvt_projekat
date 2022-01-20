@@ -14,6 +14,7 @@ export class MenadzerPageComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    localStorage.setItem('user', 'MENADZER');
     this.items = [
       {
         label: 'Zaposleni',

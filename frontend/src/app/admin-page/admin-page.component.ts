@@ -14,6 +14,7 @@ export class AdminPageComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
+    localStorage.setItem('user', 'ADMIN');
     this.items = [
       {
         label: 'Layout',

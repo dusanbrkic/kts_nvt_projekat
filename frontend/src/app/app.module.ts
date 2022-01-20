@@ -53,6 +53,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MenuJelaComponent } from './menu/menu-jela/menu-jela.component';
 import { MenuPicaComponent } from './menu/menu-pica/menu-pica.component';
 import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
+import { LayoutKonobarComponent } from './konobar-page/layout-konobar/layout-konobar.component';
+import {SidebarModule} from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
     MenuJelaComponent,
     MenuPicaComponent,
     MenadzerPageComponent,
+    LayoutKonobarComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,7 +114,8 @@ import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
     MessageModule,
     MessagesModule,
     ContextMenuModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
