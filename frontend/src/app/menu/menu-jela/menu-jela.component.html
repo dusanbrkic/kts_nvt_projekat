@@ -99,50 +99,31 @@
           <th>
             <p-columnFilter
               field="kategorijaJela"
-              matchMode="in"
+              matchMode="equals"
               [showMenu]="false"
             >
-              <ng-template
-                pTemplate="filter"
-                let-value
-                let-filter="filterCallback"
-              >
-                <p-multiSelect
-                  [ngModel]="value"
-                  [options]="kategorije"
-                  placeholder="Any"
-                  (onChange)="filter($event.value)"
-                  optionLabel="name"
-                >
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown [ngModel]="value" [options]="kategorije" (onChange)="filter($event.value)" placeholder="Any" optionLabel="name">
                   <ng-template let-option pTemplate="item">
                     <div>
                       <span class="p-ml-1">{{ option.name }}</span>
                     </div>
                   </ng-template>
-                </p-multiSelect>
+                </p-dropdown>
               </ng-template>
             </p-columnFilter>
           </th>
           <th>
-            <p-columnFilter field="tipJela" matchMode="in" [showMenu]="false">
-              <ng-template
-                pTemplate="filter"
-                let-value
-                let-filter="filterCallback"
-              >
-                <p-multiSelect
-                  [ngModel]="value"
-                  [options]="tipovi"
-                  placeholder="Any"
-                  (onChange)="filter($event.value)"
-                  optionLabel="name"
-                >
+            <p-columnFilter field="tipJela" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown [ngModel]="value" [options]="tipovi" (onChange)="filter($event.value)" placeholder="Any"
+                  optionLabel="name">
                   <ng-template let-option pTemplate="item">
-                    <div class="p-multiselect-representative-option">
+                    <div>
                       <span class="p-ml-1">{{ option.name }}</span>
                     </div>
                   </ng-template>
-                </p-multiSelect>
+                </p-dropdown>
               </ng-template>
             </p-columnFilter>
           </th>
