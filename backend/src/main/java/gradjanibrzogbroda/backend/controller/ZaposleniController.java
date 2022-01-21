@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
+import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
-import gradjanibrzogbroda.exception.UserAlreadyExistsException;
-import gradjanibrzogbroda.exception.UserNotFoundException;
 
 @RestController
 @RequestMapping("/zaposleni")

@@ -19,6 +19,8 @@ import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
+import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,8 +28,6 @@ import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
-import gradjanibrzogbroda.exception.UserAlreadyExistsException;
-import gradjanibrzogbroda.exception.UserNotFoundException;
 
 @Service
 public class ZaposleniService {

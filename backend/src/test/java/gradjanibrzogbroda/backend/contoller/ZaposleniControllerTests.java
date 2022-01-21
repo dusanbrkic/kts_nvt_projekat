@@ -15,8 +15,8 @@ import gradjanibrzogbroda.backend.constants.ZaposleniConstants;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
-import gradjanibrzogbroda.exception.UserNotFoundException;
 
 import java.util.Optional;
 

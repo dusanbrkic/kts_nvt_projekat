@@ -5,9 +5,9 @@ import gradjanibrzogbroda.backend.domain.Menadzer;
 import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
+import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
-import gradjanibrzogbroda.exception.UserAlreadyExistsException;
-import gradjanibrzogbroda.exception.UserNotFoundException;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -107,15 +107,7 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
         given(zaposleniRepositoryMock.save(Mockito.any()))
                 .willReturn(ZaposleniConstants.NEW_ZAPOSLENI);
 
-        Zaposleni z = zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
-
-        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
-
-        Assert.assertEquals(z.getIme(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIme());
-        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getPrezime());
-        Assert.assertEquals(z.getIdentificationNumber(),
-                ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIdentificationNumber());
-
+        zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
     }
 
     @Test
@@ -142,13 +134,6 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
         given(zaposleniRepositoryMock.save(Mockito.any()))
                 .willReturn(ZaposleniConstants.UPDATED_ZAPOSLENI);
 
-        Zaposleni z = zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
-
-        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
-
-        Assert.assertEquals(z.getIme(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIme());
-        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getPrezime());
-        Assert.assertEquals(z.getIdentificationNumber(),
-                ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIdentificationNumber());
+        zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
     }
 }
