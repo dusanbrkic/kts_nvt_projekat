@@ -23,8 +23,8 @@ export class KuvarPageComponent implements OnInit {
         },
       },
       {
-        label: 'Menu',
-        icon: 'pi pi-fw pi-book',
+        label: 'Jelovnik',
+        icon: 'pi pi-fw pi-apple',
         command: (event) => {
           this.selectedTab = 1;
         },

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import Porudzbina from '../model/Porudzbina';
-import { PorudzbinaService } from '../services/porudzbina.service';
+import Porudzbina from '../../model/Porudzbina';
+import { PorudzbinaService } from '../../services/porudzbina.service';
 
 @Component({
   selector: 'app-porudzbine-view-sanker',

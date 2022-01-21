@@ -1,0 +1,418 @@
+<p-toast></p-toast>
+
+<p-contextMenu #cmJela [model]="items"></p-contextMenu>
+
+<p-inplace #jelaInplace>
+  <ng-template pTemplate="display">
+    <div class="p-d-inline-flex p-ai-center">
+      <button
+        pButton
+        pTooltip="Prikazi jela"
+        icon="pi pi-table"
+        class="p-button-raised p-button-rounded"
+        label="Jela"
+      ></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <p-toolbar styleClass="mb-4">
+      <ng-template pTemplate="left">
+        <button
+          *ngIf="user !== null"
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="openNew()"
+        ></button>
+      </ng-template>
+
+      <ng-template pTemplate="right">
+        <button
+          pButton
+          pTooltip="Reload"
+          icon="pi pi-sync"
+          class="p-button-outlined p-button-raised p-button-rounded"
+          style="margin-right: 30px"
+        ></button>
+        <button
+          style="align-content: flex-end"
+          pButton
+          pTooltip="Zatvori prikaz"
+          class="p-button-outlined p-button-raised p-button-rounded"
+          icon="pi pi-times"
+          (click)="closeJelaInplace()"
+        ></button>
+      </ng-template>
+    </p-toolbar>
+    <p-table
+      #dtJela
+      [value]="jela"
+      [lazy]="true"
+      (onLazyLoad)="loadJela($event)"
+      [paginator]="true"
+      [rows]="5"
+      [totalRecords]="totalJela"
+      [loading]="loading"
+      dataKey="id"
+      styleClass="p-datatable-customers p-datatable-gridlines"
+      editMode="row"
+      [(contextMenuSelection)]="selectedJelo"
+      [contextMenu]="cmJela"
+    >
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="col">
+            <div class="p-d-flex p-ai-center p-jc-between">Jela</div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="naziv">
+            Naziv <p-sortIcon field="naziv"></p-sortIcon>
+          </th>
+          <th>Slika</th>
+          <th pSortableColumn="cena">
+            Cena <p-sortIcon field="cena"></p-sortIcon>
+          </th>
+          <th>Kategorija</th>
+          <th>Tip</th>
+          <th pSortableColumn="vremePripremeMils">
+            Vreme Pripreme <p-sortIcon field="vremePripremeMils"></p-sortIcon>
+          </th>
+          <th *ngIf="user!==null"></th>
+        </tr>
+        <tr>
+          <th>
+            <input
+              pInputText
+              type="text"
+              (input)="
+                dtJela.filter($any($event.target).value, 'naziv', 'contains')
+              "
+            />
+          </th>
+          <th></th>
+          <th></th>
+          <th>
+            <p-columnFilter
+              field="kategorijaJela"
+              matchMode="in"
+              [showMenu]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="kategorije"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                  optionLabel="name"
+                >
+                  <ng-template let-option pTemplate="item">
+                    <div>
+                      <span class="p-ml-1">{{ option.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="tipJela" matchMode="in" [showMenu]="false">
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="tipovi"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                  optionLabel="name"
+                >
+                  <ng-template let-option pTemplate="item">
+                    <div class="p-multiselect-representative-option">
+                      <span class="p-ml-1">{{ option.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+          <th></th>
+          <th *ngIf="user!==null"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-jelo let-ri="rowIndex">
+        <tr [pEditableRow]="jelo" [pContextMenuRow]="jelo">
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <div class="flex flex-column">
+                  <div class="flex align-items-center">
+                    <input pInputText type="text" [(ngModel)]="jelo.naziv" />
+                  </div>
+                  <div class="flex align-items-center">
+                    <small class="p-error" *ngIf="!jelo.naziv.trim()"
+                      >Naziv je obavezan.</small
+                    >
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ jelo.naziv }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <img
+              [src]="'assets/home_images/waiter.jpg'"
+              width="100"
+              class="p-shadow-4"
+            />
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <div class="flex flex-column">
+                  <div class="flex align-items-center">
+                    <p-inputNumber
+                      inputId="minmaxfraction"
+                      mode="decimal"
+                      [minFractionDigits]="0"
+                      [maxFractionDigits]="3"
+                      [(ngModel)]="jelo.trenutnaCena"
+                    >
+                    </p-inputNumber>
+                  </div>
+                  <div class="flex align-items-center">
+                    <small class="p-error" *ngIf="!(jelo.trenutnaCena > 0)"
+                      >Cena mora biti veća od 0.</small
+                    >
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ jelo.trenutnaCena }} RSD
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown
+                  [options]="kategorije"
+                  optionLabel="name"
+                  optionValue="value"
+                  [(ngModel)]="jelo.kategorijaJela"
+                  [style]="{ width: '100%' }"
+                ></p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ jelo.kategorijaJela }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-dropdown
+                  [options]="tipovi"
+                  optionLabel="name"
+                  optionValue="value"
+                  [(ngModel)]="jelo.tipJela"
+                  [style]="{ width: '100%' }"
+                ></p-dropdown>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ jelo.tipJela }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <div class="flex flex-column">
+                  <div class="flex align-items-center">
+                    <p-inputNumber [(ngModel)]="jelo.vremePripremeMils">
+                    </p-inputNumber>
+                  </div>
+                  <div class="flex align-items-center">
+                    <small class="p-error" *ngIf="!(jelo.vremePripremeMils > 0)"
+                      >Vreme primpreme mora biti veća od 0.</small
+                    >
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ jelo.vremePripremeMils / 1000 / 60 }} min
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td style="text-align: center" *ngIf="user!==null">
+            <button
+              *ngIf="!editing"
+              pButton
+              pRipple
+              type="button"
+              pInitEditableRow
+              icon="pi pi-pencil"
+              (click)="onRowEditInit(jelo)"
+              class="p-button-rounded p-button-text"
+            ></button>
+            <button
+              *ngIf="editing"
+              pButton
+              pRipple
+              type="button"
+              pSaveEditableRow
+              icon="pi pi-check"
+              (click)="onRowEditSave(jelo, ri)"
+              class="p-button-rounded p-button-text p-button-success mr-2"
+            ></button>
+            <button
+              *ngIf="editing"
+              pButton
+              pRipple
+              type="button"
+              pCancelEditableRow
+              icon="pi pi-times"
+              (click)="onRowEditCancel(jelo, ri)"
+              class="p-button-rounded p-button-text p-button-danger"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary"> </ng-template>
+    </p-table>
+  </ng-template>
+</p-inplace>
+
+<p-dialog
+  header="Opis jela"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '15vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="p-grid">
+    <div class="p-col-5 p-d-flex p-ai-center p-jc-center">
+      <div class="p-fluid">
+        {{ selectedJelo ? selectedJelo.opis : "Greska" }}
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="addJeloDialog"
+  [style]="{ width: '450px' }"
+  header="Jelo"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
+
+    <div class="field">
+      <label for="naziv">Naziv</label>
+      <input
+        type="text"
+        pInputText
+        id="naziv"
+        [(ngModel)]="newJelo.naziv"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !newJelo.naziv.trim()"
+        >Naziv je obavezan.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="kategorija">Kategorija jela</label>
+      <p-dropdown
+        [(ngModel)]="newJelo.kategorijaJela"
+        optionLabel="name"
+        optionValue="value"
+        inputId="kategorija"
+        [options]="kategorije"
+        placeholder="Kategorija jela"
+      >
+      </p-dropdown>
+    </div>
+
+    <div class="field">
+      <label for="tip">Tip jela</label>
+      <p-dropdown
+        [(ngModel)]="newJelo.tipJela"
+        optionLabel="name"
+        optionValue="value"
+        inputId="tip"
+        [options]="tipovi"
+        placeholder="Tip jela"
+      >
+      </p-dropdown>
+    </div>
+
+    <div class="field">
+      <label for="cena">Cena</label>
+      <p-inputNumber
+        id="cena"
+        [(ngModel)]="newJelo.trenutnaCena"
+        mode="currency"
+        currency="RSD"
+        locale="en-US"
+      ></p-inputNumber>
+      <small class="p-error" *ngIf="submitted && !(newJelo.trenutnaCena > 0)"
+        >Cena mora biti veća od 0.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="vreme">Vreme pripreme</label>
+      <p-inputNumber
+        id="vreme"
+        [(ngModel)]="newJelo.vremePripremeMils"
+      ></p-inputNumber>
+      <small
+        class="p-error"
+        *ngIf="submitted && !(newJelo.vremePripremeMils > 0)"
+        >Vreme mora biti veće od 0.</small
+      >
+    </div>
+
+    <div class="field">
+      <label for="opis">Opis</label>
+      <textarea id="opis" pInputTextarea [(ngModel)]="newJelo.opis"></textarea>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveJelo()"
+    ></button>
+  </ng-template>
+</p-dialog>

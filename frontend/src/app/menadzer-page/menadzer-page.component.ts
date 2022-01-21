@@ -3,31 +3,38 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
-  selector: 'app-admin-page',
-  templateUrl: './admin-page.component.html',
-  styleUrls: ['./admin-page.component.scss'],
+  selector: 'app-menadzer-page',
+  templateUrl: './menadzer-page.component.html',
+  styleUrls: ['./menadzer-page.component.scss']
 })
-export class AdminPageComponent implements OnInit {
+export class MenadzerPageComponent implements OnInit {
   items!: MenuItem[];
   selectedTab: number = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-    localStorage.setItem('user', 'ADMIN');
+    localStorage.setItem('user', 'MENADZER');
     this.items = [
       {
-        label: 'Layout',
-        icon: 'pi pi-fw pi-th-large',
+        label: 'Zaposleni',
+        icon: 'pi pi-fw pi-users',
         command: (event) => {
           this.selectedTab = 0;
         },
       },
       {
-        label: 'Zaposleni',
-        icon: 'pi pi-fw pi-users',
+        label: 'Menu',
+        icon: 'pi pi-fw pi-book',
         command: (event) => {
           this.selectedTab = 1;
+        },
+      },
+      {
+        label: 'Izvestaji',
+        icon: 'pi pi-fw pi-chart-bar',
+        command: (event) => {
+          this.selectedTab = 2;
         },
       },
       {
@@ -40,4 +47,5 @@ export class AdminPageComponent implements OnInit {
       },
     ];
   }
+
 }

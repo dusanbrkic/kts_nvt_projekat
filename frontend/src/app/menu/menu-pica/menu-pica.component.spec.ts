@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PiceComponent } from './pice.component';
+import { MenuPicaComponent } from './menu-pica.component';
 
-describe('PiceComponent', () => {
-  let component: PiceComponent;
-  let fixture: ComponentFixture<PiceComponent>;
+describe('MenuPicaComponent', () => {
+  let component: MenuPicaComponent;
+  let fixture: ComponentFixture<MenuPicaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PiceComponent ]
+      declarations: [ MenuPicaComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PiceComponent);
+    fixture = TestBed.createComponent(MenuPicaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

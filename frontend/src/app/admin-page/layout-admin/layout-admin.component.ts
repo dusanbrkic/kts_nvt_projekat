@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import Sto from 'src/app/model/Sto';
 import Zona from 'src/app/model/Zona';
+import { ZonaService } from 'src/app/services/zona-service.service';
 
 @Component({
   selector: 'app-layout-admin',
@@ -17,55 +19,25 @@ export class LayoutAdminComponent implements OnInit {
   newBroj: number = 0;
   errors: boolean = false;
 
-  displayModalNewZone: boolean=false;
-  newZoneNaziv: string="";
+  displayModalNewZone: boolean = false;
+  newZoneNaziv: string = '';
 
-  displayModalNazivZone: boolean=false;
-  updateNaziv: string="";
+  displayModalNazivZone: boolean = false;
+  updateNaziv: string = '';
 
-  constructor(private elem: ElementRef) {}
+  constructor(
+    private elem: ElementRef,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private zonaService: ZonaService
+  ) {}
 
   ngOnInit(): void {
-    this.zone = [
-      {
-        id: 1,
-        naziv: 'Prizemlje',
-        stolovi: [
-          {
-            id: 1,
-            zauzet: false,
-            brojMesta: 4,
-            x: 651.5,
-            y: 227.046875,
-            naziv: 'Sto 1',
-          },
-          {
-            id: 2,
-            zauzet: false,
-            brojMesta: 3,
-            x: 195.5,
-            y: 469.609375,
-            naziv: 'Sto 2',
-          },
-        ],
-        template: '/assets/zones/zone1.png',
-      },
-      {
-        id: 2,
-        naziv: 'Sprat I',
-        stolovi: [
-          {
-            id: 3,
-            zauzet: false,
-            brojMesta: 4,
-            x: 30,
-            y: 30,
-            naziv: 'Sto 1',
-          },
-        ],
-        template: '/assets/zones/zone2.png',
-      },
-    ];
+    this.zonaService.zone$.subscribe((value) => {
+      this.zone = value;
+      console.log(value);
+    });
+    this.zonaService.loadZoneTest();
 
     this.selectedZona = this.zone[0];
   }
@@ -82,8 +54,14 @@ export class LayoutAdminComponent implements OnInit {
     );
     this.selectedZona.stolovi.forEach((sto) => {
       if (sto.id == element.id) {
-        sto.x += boundingClientRect.x - parentPosition.left;
-        sto.y += boundingClientRect.y - parentPosition.top;
+        this.zonaService.updateTable(
+          {
+            ...sto,
+            x: sto.x + boundingClientRect.x - parentPosition.left,
+            y: sto.y + boundingClientRect.y - parentPosition.top,
+          },
+          this.selectedZona
+        );
       }
     });
     event.source._dragRef.reset();
@@ -101,24 +79,23 @@ export class LayoutAdminComponent implements OnInit {
   }
 
   addTable() {
-    //this.tables.push('Table ' + (this.tables.length + 1));
-
     const uuid = Math.floor(Math.random() * (1000000 - 0 + 1) + 0);
-    this.selectedZona.stolovi.push({
-      id: uuid,
-      zauzet: false,
-      brojMesta: 4,
-      x: 0,
-      y: 0,
-      naziv: 'Novi sto',
-    });
-    console.log(this.selectedZona.stolovi);
+    this.zonaService.addTable(
+      {
+        id: uuid,
+        zauzet: false,
+        brojMesta: 4,
+        x: 0,
+        y: 0,
+        naziv: 'Novi sto',
+        porudzbine: [],
+      },
+      this.selectedZona
+    );
   }
 
   deleteTable() {
-    this.selectedZona.stolovi = this.selectedZona.stolovi.filter(
-      (s) => s.id !== this.selectedSto.id
-    );
+    this.zonaService.removeTable(this.selectedSto, this.selectedZona);
     this.displayModal = false;
   }
 
@@ -140,46 +117,64 @@ export class LayoutAdminComponent implements OnInit {
       return;
     }
     this.errors = false;
-    this.selectedSto.naziv = this.newNaziv;
-    this.selectedSto.brojMesta = this.newBroj;
+    this.zonaService.updateTable(
+      { ...this.selectedSto, naziv: this.newNaziv, brojMesta: this.newBroj },
+      this.selectedZona
+    );
     this.displayModal = false;
   }
 
   addZone() {
-    this.displayModalNewZone=true;
+    this.displayModalNewZone = true;
   }
 
-  addNewZone(){
-    if(this.newZoneNaziv===""){
-      return
+  addNewZone() {
+    if (this.newZoneNaziv === '') {
+      return;
     }
-    this.zone.push({
+    this.zonaService.addZone({
       id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
       naziv: this.newZoneNaziv,
       stolovi: [],
       template: '/assets/zones/zone1.png',
-    })
-    this.displayModalNewZone=false;
+    });
+    this.displayModalNewZone = false;
   }
 
   deleteZone() {
-    console.log(this.zone);
-    console.log(this.selectedZona);
-    this.zone = this.zone.filter((z) => z.id !== this.selectedZona.id);
-    this.selectedZona=this.zone[0]
-    console.log(this.zone);
+    this.confirmationService.confirm({
+      message:
+        'Da li Ste sigurni da želite da obrišete zonu ' +
+        this.selectedZona.naziv +
+        '?',
+      header: 'Potvrda',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.zonaService.removeZone(this.selectedZona);
+        this.selectedZona = this.zone[0];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Uspeh',
+          detail: 'Zona obrisana',
+          life: 3000,
+        });
+      },
+    });
   }
 
-  openNazivModal(){
-    this.displayModalNazivZone=true;
-    this.updateNaziv=this.selectedZona.naziv;
+  openNazivModal() {
+    this.displayModalNazivZone = true;
+    this.updateNaziv = this.selectedZona.naziv;
   }
 
-  changeNaziv(){
-    if(this.updateNaziv.length===0){
-      return
+  changeNaziv() {
+    if (this.updateNaziv.length === 0) {
+      return;
     }
-    this.selectedZona.naziv=this.updateNaziv
-    this.displayModalNazivZone=false;
+    this.zonaService.updateZone({
+      ...this.selectedZona,
+      naziv: this.updateNaziv,
+    });
+    this.displayModalNazivZone = false;
   }
 }
