@@ -40,7 +40,7 @@ export class MenuJelaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jeloService.loadJelaTest();
+    //this.jeloService.loadJelaTest();
     this.jeloService.jela$.subscribe((value) => {
       this.jela = value;
       //console.log(value);

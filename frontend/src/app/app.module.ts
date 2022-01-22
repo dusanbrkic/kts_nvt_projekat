@@ -58,6 +58,7 @@ import {SidebarModule} from 'primeng/sidebar';
 import {CardModule} from 'primeng/card';
 import {SplitterModule} from 'primeng/splitter';
 import { TagModule } from 'primeng/tag';
+import {CarouselModule} from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { TagModule } from 'primeng/tag';
     CardModule,
     SplitterModule,
     TagModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    CarouselModule
   ],
   providers: [],
   bootstrap: [AppComponent]

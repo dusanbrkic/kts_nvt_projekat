@@ -71,7 +71,7 @@ export class LayoutKonobarComponent implements OnInit {
     this.showSidebar = true;
     this.isNewPorudzbina = false;
     let por = this.porudzbinaService.getPorudzbinaById(
-      this.selectedSto.porudzbinaId
+      this.selectedSto.porudzbinaId!
     );
     if (por) {
       this.selectedPorudzbina = JSON.parse(JSON.stringify(por));
@@ -150,13 +150,26 @@ export class LayoutKonobarComponent implements OnInit {
     );
     if (this.isNewPorudzbina) {
       this.zonaService.updateTable(
-        { ...this.selectedSto, porudzbinaId: this.selectedPorudzbina.id },
+        { ...this.selectedSto, porudzbinaId: this.selectedPorudzbina.id,zauzet: true },
         this.selectedZona
       );
     }
   }
 
   naplatiPorudzbinu(){
-    
+    this.porudzbinaService.savePorudzbina({...this.selectedPorudzbina,statusPorudzbine: 'NAPLACENO'},false)
+    this.zonaService.updateTable(
+      { ...this.selectedSto, porudzbinaId: null,zauzet: false },
+      this.selectedZona
+    );
+    this.showSidebar=false
+  }
+
+  dostavi(pice: PicePorudzbine){
+    pice.statusPica="DOSTAVLJENO"
+  }
+
+  dostaviJelo(jelo: JeloPorudzbine){
+    jelo.statusJela="DOSTAVLJENO"
   }
 }

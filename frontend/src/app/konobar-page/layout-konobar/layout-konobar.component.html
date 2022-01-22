@@ -111,6 +111,7 @@
           pButton
           class="p-button-rounded p-button-outlined green"
           *ngIf="jelo.statusJela === 'PRIPREMLJENO'"
+          (click)='dostaviJelo(jelo)'
         >
           Dostavi
         </button>
@@ -191,6 +192,7 @@
           pButton
           class="p-button-rounded p-button-outlined green"
           *ngIf="pice.statusPica === 'PRIPREMLJENO'"
+          (click)='dostavi(pice)'
         >
           Dostavi
         </button>
