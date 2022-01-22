@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import JeloPorudzbine from '../model/JeloPorudzbine';
+import PicePorudzbine from '../model/PicePorudzbine';
 import Porudzbina from '../model/Porudzbina';
 
 @Injectable({
@@ -22,7 +24,41 @@ export class PorudzbinaService {
     this._porudzbineSource.next(porudzbine);
   }
 
-  loadPorudzbine(): any {
+  getPorudzbinaById(porudzbinaId: number): Porudzbina {
+    //TO DO poziv na back umesto ovaj for each
+    let por: Porudzbina
+    this.getPorudzbine().forEach(p=>{
+      if(p.id===porudzbinaId){
+        por=p
+        return
+      }
+    })
+    return por!
+  }
+
+  addJeloToPorudzbina(jelo: JeloPorudzbine,porudzbinaId: number){
+    const porudzbine= this.getPorudzbine().map(p=> p.id===porudzbinaId ? {...p,jelaPorudzbine: [...p.jelaPorudzbine,jelo]} : p)
+    this._setPorudzbine(porudzbine)
+  }
+
+  addPiceToPorudzbina(pice: PicePorudzbine,porudzbinaId: number){
+    const porudzbine= this.getPorudzbine().map(p=> p.id===porudzbinaId ? {...p,picaPorudzbine: [...p.picaPorudzbine,pice]} : p)
+    this._setPorudzbine(porudzbine)
+  }
+
+  savePorudzbina(porudzbina: Porudzbina,isNewPorudzbina: boolean){
+    //TO DO dodati na back
+
+    if(!isNewPorudzbina){
+      const porudzbine=this.getPorudzbine().map(p=> p.id===porudzbina.id ? porudzbina : p)
+      this._setPorudzbine(porudzbine)
+    }else{
+      const porudzbine=[...this.getPorudzbine(),porudzbina]
+      this._setPorudzbine(porudzbine)
+    }
+  }
+
+  /*loadPorudzbine(): any {
     this.http.get(environment.baseUrl + 'porudzbine');
   }
 
@@ -53,7 +89,7 @@ export class PorudzbinaService {
 
   deletePorudzbina(porudzbinaId: any): any {
     return this.http.delete(environment.baseUrl + 'porudzbine/' + porudzbinaId);
-  }
+  }*/
 
   loadPorudzbineTest(): void {
     const porudzbine: Porudzbina[] = [
@@ -71,16 +107,32 @@ export class PorudzbinaService {
             kolicina: 2,
             napomena: 'Napomena dsadadas',
             statusJela: 'KREIRANO',
-            jeloId: 1,
             porudzbinaId: 1,
+            jelo:{
+              id: 1,
+              naziv: 'Jelo 1',
+              trenutnaCena: 250.0,
+              vremePripremeMils: 30000,
+              opis: 'Opis 1',
+              kategorijaJela: 'PREDJELO',
+              tipJela: 'LUX',
+            }
           },
           {
             id: 2,
             kolicina: 1,
             napomena: 'Napomena dsadadas',
             statusJela: 'KREIRANO',
-            jeloId: 1,
             porudzbinaId: 1,
+            jelo: {
+              id: 1,
+              naziv: 'Jelo 1',
+              trenutnaCena: 250.0,
+              vremePripremeMils: 30000,
+              opis: 'Opis 1',
+              kategorijaJela: 'PREDJELO',
+              tipJela: 'LUX',
+            }
           },
         ],
         picaPorudzbine: [
@@ -89,22 +141,30 @@ export class PorudzbinaService {
             kolicina: 2,
             napomena: 'Napomena dsadadas',
             statusPica: 'KREIRANO',
-            piceId: 1,
             porudzbinaId: 1,
+            pice: {
+              id: 1,
+              naziv: 'Pice 1',
+              trenutnaCena: 120.0,
+            }
           },
           {
             id: 2,
             kolicina: 1,
             napomena: '',
             statusPica: 'KREIRANO',
-            piceId: 2,
             porudzbinaId: 1,
+            pice: {
+              id: 2,
+              naziv: 'Pice 2',
+              trenutnaCena: 120.0,
+            }
           },
         ],
       },
       {
         id: 2,
-        statusPorudzbine: 'KREIRANO',
+        statusPorudzbine: 'DOSTAVLJENO',
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 1040.0,
@@ -116,9 +176,13 @@ export class PorudzbinaService {
             id: 3,
             kolicina: 4,
             napomena: '',
-            statusPica: 'KREIRANO',
-            piceId: 1,
+            statusPica: 'DOSTAVLJENO',
             porudzbinaId: 2,
+            pice: {
+              id: 1,
+              naziv: 'Pice 1',
+              trenutnaCena: 120.0,
+            }
           },
         ],
       },
