@@ -2,9 +2,20 @@ package gradjanibrzogbroda.backend.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
+
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
@@ -17,6 +28,25 @@ public class JeloService {
 	
 	@Autowired
 	private JeloRepository jeloRep;
+	
+	public Page<Jelo> findPage(Integer first, Integer rows, String naziv, Optional<String> sortField, int sortOrder, Optional<KategorijaJela> kategorijaJela, Optional<TipJela> tipJela){
+		Sort.Direction sd = Sort.Direction.ASC;
+		if(sortOrder < 0) {
+			sd = Sort.Direction.DESC;
+			}
+		if(sortField.isPresent()) {
+			if(sortField.get().equals("cena")) {
+				sortField = Optional.of("trenutnaCena");
+			}
+			if(sortField.get().equals("undefined")) {
+				sortField = Optional.of("trenutnaCena");
+			}
+		}
+		int pageIndex = first/rows;
+		
+		
+		return jeloRep.findAllByKategorijaJelaAndTipJela(kategorijaJela, tipJela, naziv.toLowerCase(), (PageRequest.of(pageIndex, rows).withSort(sd, sortField.orElse("id"))));
+	}
 	
 	public List<Jelo> findAll(){
 		return jeloRep.findAll();

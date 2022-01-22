@@ -1,15 +1,22 @@
 package gradjanibrzogbroda.backend.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Converter;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
+import gradjanibrzogbroda.backend.domain.KategorijaJela;
+import gradjanibrzogbroda.backend.domain.TipJela;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.service.JeloService;
 
@@ -34,6 +41,38 @@ public class JeloController {
 		}
 		
 		return new ResponseEntity<List<JeloDTO>>(dtos,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/page/{sankerIdNum}/")
+	public ResponseEntity<Map<String, Object>> getAllJelaPage(
+			@PathVariable("sankerIdNum") String sId,
+			@RequestParam("first") Integer first,
+			@RequestParam("rows") Integer rows,
+			@RequestParam(value="naziv", defaultValue="", required=false) String naziv,
+			@RequestParam("sortField") Optional<String> sortField,
+			@RequestParam("sortOrder") Integer sortOrder,
+			@RequestParam(value="kategorijaJela") Optional<KategorijaJela> kategorijaJela,
+			@RequestParam(value="tipJela" ) Optional<TipJela> tipJela
+			){
+		
+		Page<Jelo> pageJela=jeloService.findPage(first, rows, naziv, sortField, sortOrder, kategorijaJela, tipJela);
+		
+		List<Jelo> jela = pageJela.getContent();
+        ArrayList<JeloDTO> dtos=new ArrayList<JeloDTO>();
+
+        for(Jelo j:jela) {
+            dtos.add(new JeloDTO(j));
+        }
+		
+        Map<String, Object> response = new HashMap<>();
+        response.put("jela", dtos);
+        response.put("currentPage", pageJela.getNumber());
+        response.put("totalItems", pageJela.getTotalElements());
+        response.put("totalPages", pageJela.getTotalPages());
+		
+		
+		return new ResponseEntity<>(response,HttpStatus.OK);
 		
 	}
 	
