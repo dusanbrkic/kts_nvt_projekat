@@ -18,7 +18,7 @@ export class PorudzbineViewSankerComponent implements OnInit {
 
   ngOnInit(): void {
     this.porudzbinaService.loadPorudzbineTest()
-    this.porudzbine=this.porudzbinaService.getPorudzbine()
+    this.porudzbinaService.porudzbine$.subscribe(value=>this.porudzbine=this.porudzbinaService.porudzbineZaPripremuSanker())
   }
 
   showModalDialog(napomena: string) {
@@ -27,9 +27,10 @@ export class PorudzbineViewSankerComponent implements OnInit {
   }
 
   pripremiPica(porudzbina: Porudzbina){
-    porudzbina.picaPorudzbine.forEach(pice => {
+    /*porudzbina.picaPorudzbine.forEach(pice => {
       this.messageService.add({severity:'success', summary:'Service Message', detail:'Via MessageService'});
-    });
+    });*/
+    this.porudzbinaService.spremiPica(porudzbina)
   }
 
   undoAction(){

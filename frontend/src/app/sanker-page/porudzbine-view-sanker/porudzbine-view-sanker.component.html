@@ -56,8 +56,8 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-pice>
-              <tr>
-                <td>{{ pice.id }}</td>
+              <tr *ngIf="pice.statusPica==='KREIRANO'">
+                <td>{{ pice.pice.naziv }}</td>
                 <td>{{ pice.kolicina }}</td>
                 <td>
                   <button

@@ -28,7 +28,7 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-jelo>
-              <tr *ngIf="jelo.statusJela==='KREIRANO'">
+              <tr *ngIf="jelo.statusJela === 'KREIRANO'">
                 <td>{{ jelo.jelo.naziv }}</td>
                 <td>{{ jelo.kolicina }}</td>
                 <td>{{ jelo.jelo.kategorijaJela }}</td>
@@ -41,7 +41,7 @@
                     style="margin-right: 10px"
                     pTooltip="Opis"
                     icon="pi pi-ellipsis-h"
-                    (click)="showModalDialog(jelo.jelo.opis,'Opis')"
+                    (click)="showModalDialog(jelo.jelo.opis, 'Opis')"
                   ></button
                   ><button
                     pButton
@@ -49,7 +49,7 @@
                     class="p-button-outlined p-button-raised p-button-rounded"
                     pTooltip="Napomena"
                     icon="pi pi-info"
-                    (click)="showModalDialog(jelo.napomena,'Napomena')"
+                    (click)="showModalDialog(jelo.napomena, 'Napomena')"
                   ></button>
                 </td>
               </tr>
@@ -71,33 +71,63 @@
   </ng-template>
 </p-carousel>
 
-<p-carousel [value]="jelaUPripremi" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
+<p-carousel
+  [value]="jelaUPripremi"
+  [numVisible]="3"
+  [numScroll]="3"
+  [circular]="false"
+  [responsiveOptions]="responsiveOptions"
+>
   <ng-template pTemplate="header">
-      <h5>Jela u pripremi</h5>
+    <h5>Jela u pripremi</h5>
   </ng-template>
   <ng-template let-jelo pTemplate="item">
-      <div class="product-item">
-          <div class="product-item-content">
-              <div class="p-mb-3">
+    <div class="product-item">
+      <div class="product-item-content">
+        <div class="p-mb-3"></div>
+        <div>
+          <h4 class="p-mb-1">{{ jelo.jelo.naziv }}</h4>
+          <h6 class="p-mt-0 p-mb-3">Porudzbina {{ jelo.porudzbinaId }}</h6>
+          <h6 class="p-mt-0 p-mb-3">Količina: {{ jelo.kolicina}}</h6>
+          <h6 class="p-mt-0 p-mb-3">{{ jelo.jelo.tipJela }}</h6>
+          <h6 class="p-mt-0 p-mb-3">{{ jelo.jelo.kategorijaJela }}</h6>
+          <div class="car-buttons p-mt-5">
+            <p-toolbar>
+              <div class="p-toolbar-group-left">
+                <button
+                  pButton
+                  type="button"
+                  class="p-button-outlined p-button-raised p-button-rounded"
+                  style="margin-right: 10px"
+                  pTooltip="Opis"
+                  icon="pi pi-ellipsis-h"
+                  (click)="showModalDialog(jelo.jelo.opis, 'Opis')"
+                ></button
+                ><button
+                  pButton
+                  type="button"
+                  class="p-button-outlined p-button-raised p-button-rounded"
+                  pTooltip="Napomena"
+                  icon="pi pi-info"
+                  (click)="showModalDialog(jelo.napomena, 'Napomena')"
+                ></button>
               </div>
-              <div>
-                  <h4 class="p-mb-1">{{jelo.jelo.naziv}}</h4>
-                  <h6 class="p-mt-0 p-mb-3">Porudzbina {{jelo.porudzbinaId}}</h6>
-                  <h6 class="p-mt-0 p-mb-3">{{jelo.jelo.tipJela}}</h6>
-                  <h6 class="p-mt-0 p-mb-3">{{jelo.jelo.kategorijaJela}}</h6>
-                  <div class="car-buttons p-mt-5">
-                    <button
-                    pButton
-                    type="button"
-                    styleClass="p-button p-button-rounded"
-                    (click)="spremiJelo(jelo)"
-                  >
-                    Spremi
-                  </button>
-                  </div>
+
+              <div class="p-toolbar-group-right">
+                <button
+                  pButton
+                  type="button"
+                  styleClass="p-button p-button-rounded"
+                  (click)="spremiJelo(jelo)"
+                >
+                  Spremi
+                </button>
               </div>
+            </p-toolbar>
           </div>
+        </div>
       </div>
+    </div>
   </ng-template>
 </p-carousel>
 

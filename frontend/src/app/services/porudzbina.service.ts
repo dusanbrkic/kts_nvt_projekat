@@ -76,6 +76,14 @@ export class PorudzbinaService {
     return porudzbine;
   }
 
+  porudzbineZaPripremuSanker(): Porudzbina[] {
+    // TO DO umesto ovog, treba na backu nace sve porudzbine
+    const porudzbine = this.getPorudzbine().filter(
+      (p) => p.statusPorudzbine === 'KREIRANO' && p.picaPorudzbine.length > 0
+    );
+    return porudzbine;
+  }
+
   jelaUPripremi(): JeloPorudzbine[] {
     //TO DO umesto ovoga sa backa dobaviti
     let jela: JeloPorudzbine[] = [];
@@ -90,6 +98,7 @@ export class PorudzbinaService {
   }
 
   spremiJelo(jelo: JeloPorudzbine) {
+    // TO DO poslati na back
     const porudzbine = this.getPorudzbine().map((p) =>
       p.id === jelo.porudzbinaId
         ? {
@@ -97,6 +106,19 @@ export class PorudzbinaService {
             jelaPorudzbine: p.jelaPorudzbine.map((j) =>
               j.id === jelo.id ? { ...j, statusJela: 'PRIPREMLJENO' } : j
             ),
+          }
+        : p
+    );
+    this._setPorudzbine(porudzbine);
+  }
+
+  spremiPica(porudzbina: Porudzbina){
+    //TO DO poslati na back
+    const porudzbine = this.getPorudzbine().map((p) =>
+      p.id === porudzbina.id
+        ? {
+            ...p,
+            picaPorudzbine: p.picaPorudzbine.map(pice=> pice.statusPica==='KREIRANO' ? {...pice,statusPica: 'PRIPREMLJENO'} : pice)
           }
         : p
     );
