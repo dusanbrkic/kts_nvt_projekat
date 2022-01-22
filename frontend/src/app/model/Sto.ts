@@ -7,5 +7,5 @@ export default interface Sto{
     x: number;
     y: number;
     naziv: string;
-    porudzbine: Porudzbina[];
+    porudzbinaId: number;
 }

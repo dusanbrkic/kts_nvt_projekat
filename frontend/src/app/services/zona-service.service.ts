@@ -9,7 +9,7 @@ import Zona from '../model/Zona';
 export class ZonaService {
   private readonly _zoneSource = new BehaviorSubject<Zona[]>([]);
 
-  readonly zone$:Observable<Zona[]> = this._zoneSource.asObservable();
+  readonly zone$: Observable<Zona[]> = this._zoneSource.asObservable();
 
   constructor() {}
 
@@ -21,15 +21,15 @@ export class ZonaService {
     this._zoneSource.next(zone);
   }
 
-  loadZones(){
+  loadZones() {
     //TO DO: ucitavanje sa backa
   }
 
-  saveZone(): boolean{
+  saveZone(): boolean {
     //TO DO: sacuvati zonu na back;
     // true-uspeh false-greska( uraditi reload ako dodje do greske)
 
-    return true
+    return true;
   }
 
   addZone(zone: Zona): void {
@@ -46,31 +46,37 @@ export class ZonaService {
     this._setZones(zones);
   }
 
-  updateZone(zona: Zona): void{
+  updateZone(zona: Zona): void {
     //TO DO: ovde ne mora nista, kad se uradi save tek treba upit na back
-    const zones= this.getZones().map(z=> z.id === zona.id ? zona : z);
-    this._setZones(zones)
+    const zones = this.getZones().map((z) => (z.id === zona.id ? zona : z));
+    this._setZones(zones);
   }
 
-  addTable(sto: Sto,zona: Zona){
+  addTable(sto: Sto, zona: Zona) {
     //TO DO: ovde ne mora nista, kad se uradi save tek treba upit na back
-    const stolovi: Sto[]=[...zona.stolovi,sto]
-    const zones= this.getZones().map(z=> z.id === zona.id ? {...zona,stolovi: stolovi} : z);
-    this._setZones(zones)
+    const stolovi: Sto[] = [...zona.stolovi, sto];
+    const zones = this.getZones().map((z) =>
+      z.id === zona.id ? { ...zona, stolovi: stolovi } : z
+    );
+    this._setZones(zones);
   }
 
-  removeTable(sto: Sto,zona: Zona){
+  removeTable(sto: Sto, zona: Zona) {
     //TO DO: ovde ne mora nista, kad se uradi save tek treba upit na back
-    const stolovi: Sto[]=zona.stolovi.filter(s=> s.id !==sto.id)
-    const zones= this.getZones().map(z=> z.id === zona.id ? {...zona,stolovi: stolovi} : z);
-    this._setZones(zones)
+    const stolovi: Sto[] = zona.stolovi.filter((s) => s.id !== sto.id);
+    const zones = this.getZones().map((z) =>
+      z.id === zona.id ? { ...zona, stolovi: stolovi } : z
+    );
+    this._setZones(zones);
   }
 
-  updateTable(sto: Sto,zona: Zona){
+  updateTable(sto: Sto, zona: Zona) {
     //TO DO: ovde ne mora nista, kad se uradi save tek treba upit na back
-    const stolovi: Sto[]=zona.stolovi.map(s=> s.id ===sto.id ? sto: s)
-    const zones= this.getZones().map(z=> z.id === zona.id ? {...zona,stolovi: stolovi} : z);
-    this._setZones(zones)
+    const stolovi: Sto[] = zona.stolovi.map((s) => (s.id === sto.id ? sto : s));
+    const zones = this.getZones().map((z) =>
+      z.id === zona.id ? { ...zona, stolovi: stolovi } : z
+    );
+    this._setZones(zones);
   }
 
   loadZoneTest() {
@@ -86,17 +92,17 @@ export class ZonaService {
             x: 651.5,
             y: 227.046875,
             naziv: 'Sto 1',
-            porudzbine: [],
+            porudzbinaId: -1,
           },
           {
             id: 2,
-            zauzet: false,
+            zauzet: true,
             brojMesta: 3,
             x: 195.5,
             y: 469.609375,
             naziv: 'Sto 2',
-            porudzbine: [],
-          },
+            porudzbinaId: 1
+          }
         ],
         template: '/assets/zones/zone1.png',
       },
@@ -106,12 +112,22 @@ export class ZonaService {
         stolovi: [
           {
             id: 3,
-            zauzet: false,
+            zauzet: true,
             brojMesta: 4,
             x: 30,
             y: 30,
             naziv: 'Sto 1',
-            porudzbine: [],
+            porudzbinaId: 2,
+          },
+          {
+            id: 4,
+            zauzet: true,
+            brojMesta: 4,
+            x: 150,
+            y: 150,
+            naziv: 'Sto 2',
+            porudzbinaId: 3,
+
           },
         ],
         template: '/assets/zones/zone2.png',

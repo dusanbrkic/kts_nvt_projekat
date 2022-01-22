@@ -55,6 +55,9 @@ import { MenuPicaComponent } from './menu/menu-pica/menu-pica.component';
 import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
 import { LayoutKonobarComponent } from './konobar-page/layout-konobar/layout-konobar.component';
 import {SidebarModule} from 'primeng/sidebar';
+import {CardModule} from 'primeng/card';
+import {SplitterModule} from 'primeng/splitter';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -115,7 +118,11 @@ import {SidebarModule} from 'primeng/sidebar';
     MessagesModule,
     ContextMenuModule,
     ConfirmDialogModule,
-    SidebarModule
+    SidebarModule,
+    CardModule,
+    SplitterModule,
+    TagModule,
+    AutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -88,7 +88,7 @@ export class LayoutAdminComponent implements OnInit {
         x: 0,
         y: 0,
         naziv: 'Novi sto',
-        porudzbine: [],
+        porudzbinaId: -1,
       },
       this.selectedZona
     );
