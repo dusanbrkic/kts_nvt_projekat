@@ -6,6 +6,7 @@ import org.hibernate.annotations.Where;
 
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
+import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -42,8 +43,8 @@ public abstract class Zaposleni {
     private Double trenutnaPlata;
     @Column(name = "zaposlenje", nullable = false)
     private TipZaposlenja tipZaposlenja;
-    @Column(name = "putanja_slike", nullable = false)
-    private String putanjaSlike;
+    @Column(name = "naziv_slike", nullable = false)
+    private String nazivSlike;
     @Column(name = "identification_number", nullable = false, unique = true)
     private String identificationNumber;
 
@@ -65,12 +66,11 @@ public abstract class Zaposleni {
         datumRodjenja = zDto.getDatumRodjenja();
         trenutnaPlata = zDto.getTrenutnaPlata();
         tipZaposlenja = zDto.getTipZaposlenja();
-        putanjaSlike = sacuvajSliku(zDto.getSlikaString());
         identificationNumber = zDto.getIdentificationNumber();
+        nazivSlike = generateProfilePicName();
     }
 
-    public String sacuvajSliku(String slika){
-        // TODO: logika cuvanja slike iz string-a u filesistem i cuvanje u path-u
-        return "";
+    public String generateProfilePicName(){
+        return this.identificationNumber + ".jpg";
     }
 }

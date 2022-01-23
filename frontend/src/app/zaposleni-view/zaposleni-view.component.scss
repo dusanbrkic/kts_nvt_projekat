@@ -1,1 +1,24 @@
 p-table { cdk-virtual-scroll-viewport { overflow-y: scroll !important; } }
+
+
+.imgPrevDiv{
+  display: grid;
+  place-items: center;
+}
+
+#imgPrev{
+  width: 400px;
+  height: auto;
+  max-height: 800px;
+  padding-bottom: 10px;
+}
+
+.imgInpDiv{
+  display: grid;
+  place-items: center;
+  padding-bottom: 10px;
+}
+
+content{
+  display: none;
+}

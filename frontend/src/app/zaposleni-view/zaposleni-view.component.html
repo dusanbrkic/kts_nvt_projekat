@@ -285,91 +285,121 @@
 >
   <ng-template pTemplate="content">
     <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
+      <div class="noviZaposleniContainer">
+        <div class="field" class="imgPrevDiv">
+          <img
+            id="imgPrev"
+            [src]="noviZaposleniprofilePicPreview"
+            alt="Vasa slika"/>
+        </div>
 
-    <div class="field">
-      <label for="datum">Datum rodjenja</label>
-      <p-calendar
-        id="datum"
-        [(ngModel)]="newZaposleni.datumRodjenja"
-      ></p-calendar>
-      <small
-        class="p-error"
-        *ngIf="submitted && !(newZaposleni.datumRodjenja < today)"
-        >Loš datum.</small
-      >
-    </div>
+        <div class="field" class="imgInpDiv">
+          <p-fileUpload
 
-    <div class="field">
-      <label for="ime">Ime</label>
-      <input
-        type="text"
-        pInputText
-        id="ime"
-        [(ngModel)]="newZaposleni.ime"
-        required
-        autofocus
-      />
-      <small class="p-error" *ngIf="submitted && !newZaposleni.ime.trim()"
-        >Ime je obavezno.</small
-      >
-    </div>
+            mode="basic"
+            name="uploadedFile"
+            (onSelect)="onProfilePicUpload($event)"
+            accept="image/*"
+            chooseLabel="Izaberite profilnu sliku"
+            [customUpload]=true
+            [showUploadButton]=false
+            [showCancelButton]=false
+            [maxFileSize]=1000000
+            (uploadHandler)="doNothing($event)"
 
-    <div class="field">
-      <label for="prezime">Prezime</label>
-      <input
-        type="text"
-        pInputText
-        id="prezime"
-        [(ngModel)]="newZaposleni.prezime"
-        required
-        autofocus
-      />
-      <small class="p-error" *ngIf="submitted && !newZaposleni.prezime.trim()"
-        >Prezime je obavezno.</small
-      >
-    </div>
+          >
+          </p-fileUpload>
+        </div>
 
-    <div class="field">
-      <label for="tip">Tip zaposlenja</label>
-      <p-dropdown
-        [(ngModel)]="newZaposleni.tipZaposlenja"
-        optionLabel="name"
-        optionValue="value"
-        inputId="tip"
-        [options]="tipovi"
-        placeholder="Tip zaposlenja"
-      >
-      </p-dropdown>
-    </div>
+        <div class="field" class="imgShow"></div>
 
-    <div class="field">
-      <label for="pol">Pol</label>
-      <p-dropdown
-        [(ngModel)]="newZaposleni.pol"
-        inputId="pol"
-        optionLabel="name"
-        optionValue="value"
-        [options]="polovi"
-        placeholder="Pol"
-      >
-      </p-dropdown>
-    </div>
+        <div class="field">
+          <label for="datum">Datum rodjenja</label>
+          <p-calendar
+            id="datum"
+            [(ngModel)]="newZaposleni.datumRodjenja"
+          ></p-calendar>
+          <small
+            class="p-error"
+            *ngIf="submitted && !(newZaposleni.datumRodjenja < today)"
+            >Loš datum.</small
+          >
+        </div>
 
-    <div class="field">
-      <label for="plata">Plata</label>
-      <p-inputNumber
-        id="plata"
-        [(ngModel)]="newZaposleni.trenutnaPlata"
-        mode="currency"
-        currency="RSD"
-        locale="en-US"
-      ></p-inputNumber>
-      <small
-        class="p-error"
-        *ngIf="submitted && !(newZaposleni.trenutnaPlata > 0)"
-        >Plata mora biti veća od 0.</small
-      >
-    </div>
+        <div class="field">
+          <label for="ime">Ime</label>
+          <input
+            type="text"
+            pInputText
+            id="ime"
+            [(ngModel)]="newZaposleni.ime"
+            required
+            autofocus
+          />
+          <small class="p-error" *ngIf="submitted && !newZaposleni.ime.trim()"
+            >Ime je obavezno.</small
+          >
+        </div>
+
+        <div class="field">
+          <label for="prezime">Prezime</label>
+          <input
+            type="text"
+            pInputText
+            id="prezime"
+            [(ngModel)]="newZaposleni.prezime"
+            required
+            autofocus
+          />
+          <small
+            class="p-error"
+            *ngIf="submitted && !newZaposleni.prezime.trim()"
+            >Prezime je obavezno.</small
+          >
+        </div>
+
+        <div class="field">
+          <label for="tip">Tip zaposlenja</label>
+          <p-dropdown
+            [(ngModel)]="newZaposleni.tipZaposlenja"
+            optionLabel="name"
+            optionValue="value"
+            inputId="tip"
+            [options]="tipovi"
+            placeholder="Tip zaposlenja"
+          >
+          </p-dropdown>
+        </div>
+
+        <div class="field">
+          <label for="pol">Pol</label>
+          <p-dropdown
+            [(ngModel)]="newZaposleni.pol"
+            inputId="pol"
+            optionLabel="name"
+            optionValue="value"
+            [options]="polovi"
+            placeholder="Pol"
+          >
+          </p-dropdown>
+        </div>
+
+        <div class="field">
+          <label for="plata">Plata</label>
+          <p-inputNumber
+            id="plata"
+            [(ngModel)]="newZaposleni.trenutnaPlata"
+            mode="currency"
+            currency="RSD"
+            locale="en-US"
+          ></p-inputNumber>
+          <small
+            class="p-error"
+            *ngIf="submitted && !(newZaposleni.trenutnaPlata > 0)"
+            >Plata mora biti veća od 0.</small
+          >
+        </div>
+      </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
@@ -391,4 +421,3 @@
     ></button>
   </ng-template>
 </p-dialog>
-

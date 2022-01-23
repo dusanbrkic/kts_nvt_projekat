@@ -1,5 +1,6 @@
 package gradjanibrzogbroda.backend.contoller;
 
+import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,7 +16,6 @@ import gradjanibrzogbroda.backend.constants.ZaposleniConstants;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
-import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
 
 import java.util.Optional;

@@ -1,7 +1,9 @@
 package gradjanibrzogbroda.backend.dto;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.core.io.Resource;
 
 @Getter
 @Setter
@@ -31,19 +34,14 @@ public class ZaposleniDTO {
 
     private List<PlataDTO> plate;
 
-    public ZaposleniDTO(Zaposleni zaposleni){
+    public ZaposleniDTO(Zaposleni zaposleni, String _slikaString) throws IOException {
         ime = zaposleni.getIme();
         prezime = zaposleni.getPrezime();
         pol = zaposleni.getPol();
         datumRodjenja = zaposleni.getDatumRodjenja();
         trenutnaPlata = zaposleni.getTrenutnaPlata();
         tipZaposlenja = zaposleni.getTipZaposlenja();
-        slikaString = konvertujSliku(zaposleni.getPutanjaSlike());
+        slikaString = _slikaString;
         identificationNumber = zaposleni.getIdentificationNumber();
-    }
-
-    public String konvertujSliku(String slikaPath){
-        // TODO: logika konvertovanja slike iz lokalnog path-a u string
-        return "";
     }
 }

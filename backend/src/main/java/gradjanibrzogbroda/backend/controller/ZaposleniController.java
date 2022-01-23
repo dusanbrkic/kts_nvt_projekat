@@ -1,11 +1,15 @@
 package gradjanibrzogbroda.backend.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import gradjanibrzogbroda.backend.domain.*;
+import gradjanibrzogbroda.backend.service.StorageService;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +27,7 @@ import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/zaposleni")
@@ -30,6 +35,9 @@ public class ZaposleniController {
 
 	@Autowired
 	private ZaposleniService zaposleniService;
+
+	@Autowired
+	private StorageService storageService;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleni() {
@@ -43,31 +51,26 @@ public class ZaposleniController {
 	public ResponseEntity<ZaposleniDTO> getOneByIdentificationNumber(@PathVariable("id") String id) {
 		try {
 			Zaposleni z = zaposleniService.findOneByIdentificationNumber(id);
-			return new ResponseEntity<ZaposleniDTO>(new ZaposleniDTO(z), HttpStatus.OK);
 
-		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			return new ResponseEntity<ZaposleniDTO>(new ZaposleniDTO(z, storageService.loadAsString(z.getNazivSlike())), HttpStatus.OK);
+
+		} catch (UserNotFoundException | IOException e) {
 			return new ResponseEntity<ZaposleniDTO>(HttpStatus.NOT_FOUND);
 		}
 	}
 
+
+
 	@PostMapping(value = "/update")
 	public ResponseEntity<ZaposleniDTO> updateZaposleni(
-			@RequestParam String ime,
-			@RequestParam String prezime,
-			@RequestParam String pol,
-			@RequestParam String datumRodjenja,
-			@RequestParam Double trenutnaPlata,
-			@RequestParam String tipZaposlenja,
-			@RequestParam String slikaString,
-			@RequestParam String identificationNumber) {
+			@RequestBody ZaposleniDTO zaposleniDTO) {
 
 		try {
-			ZaposleniDTO zaposleniDTO = new ZaposleniDTO(zaposleniService.updateZaposleni(new ZaposleniDTO(ime, prezime, Pol.valueOf(pol),
-			LocalDate.parse(datumRodjenja, DateTimeFormatter.ofPattern("yyyy-MM-dd")), trenutnaPlata,
-			TipZaposlenja.valueOf(tipZaposlenja), slikaString, identificationNumber, null)));
+			Zaposleni z = zaposleniService.updateZaposleni(zaposleniDTO);
 
-			return new ResponseEntity<ZaposleniDTO>(zaposleniDTO, HttpStatus.OK);
+			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
+
+			return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return new ResponseEntity<ZaposleniDTO>(HttpStatus.NOT_FOUND);
 		}
@@ -75,21 +78,14 @@ public class ZaposleniController {
 
 	@PostMapping(value = "/add")
 	public ResponseEntity<ZaposleniDTO> addZaposleni(
-			@RequestParam String ime,
-			@RequestParam String prezime,
-			@RequestParam String pol,
-			@RequestParam String datumRodjenja,
-			@RequestParam Double trenutnaPlata,
-			@RequestParam String tipZaposlenja,
-			@RequestParam String slikaString,
-			@RequestParam String identificationNumber) {
+			@RequestBody ZaposleniDTO zaposleniDTO) {
 
 		try {
-			ZaposleniDTO zaposleniDTO = new ZaposleniDTO(zaposleniService.addZaposleni(new ZaposleniDTO(ime, prezime, Pol.valueOf(pol),
-			LocalDate.parse(datumRodjenja, DateTimeFormatter.ofPattern("yyyy-MM-dd")), trenutnaPlata,
-			TipZaposlenja.valueOf(tipZaposlenja), slikaString, identificationNumber, null)));
+			Zaposleni z = zaposleniService.addZaposleni(zaposleniDTO);
 
-			return new ResponseEntity<ZaposleniDTO>(zaposleniDTO, HttpStatus.OK);
+			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
+
+			return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
 
 		} catch (UserAlreadyExistsException e) {
 			return new ResponseEntity<ZaposleniDTO>(HttpStatus.BAD_REQUEST);
@@ -111,6 +107,6 @@ public class ZaposleniController {
 	public ResponseEntity<ZaposleniDTO> izmeniPlatu(@RequestBody PlataDTO dto) {
 		Zaposleni z = zaposleniService.izmeniPlatu(dto);
 
-		return new ResponseEntity<ZaposleniDTO>(new ZaposleniDTO(z), HttpStatus.OK);
+		return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
 	}
 }

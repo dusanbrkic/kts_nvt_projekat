@@ -34,6 +34,11 @@ export class ZaposleniService {
   addZaposleni(zap: Zaposleni){
     //TO DO: dodati zaposlenog na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    this.http.post(environment.baseUrl + "zaposleni/add", zap).subscribe((data:any)=>{
+      console.log(data);
+
+    });
+
     const zaposleni: Zaposleni[]=[...this.getZaposleni(),zap]
     this._setZaposleni(zaposleni)
   }

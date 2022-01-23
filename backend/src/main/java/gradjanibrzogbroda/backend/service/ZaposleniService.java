@@ -22,7 +22,9 @@ import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,9 @@ public class ZaposleniService {
 
 	@Autowired
 	private ZaposleniRepository zaposleniRepository;
+
+	@Autowired
+	private StorageService storageService;
 
 	public List<Zaposleni> findAll() {
 		return zaposleniRepository.findAll();
@@ -83,9 +88,11 @@ public class ZaposleniService {
 		List<Zaposleni> zaposleni = zaposleniRepository.findAll();
 
 		List<ZaposleniDTO> zaposleniDTOs = zaposleni.stream().map(new Function<Zaposleni, ZaposleniDTO>() {
+			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
-				return new ZaposleniDTO(zaposleni);
+				String slikaString = storageService.loadAsString(zaposleni.getNazivSlike());
+				return new ZaposleniDTO(zaposleni, slikaString);
 			}
 		}).collect(Collectors.toList());
 

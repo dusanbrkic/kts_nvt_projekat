@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import Zaposleni from '../model/Zaposleni';
+import { Base64Service } from '../utils/base64.service';
 import { ZaposleniService } from '../services/zaposleni.service';
 
 @Component({
@@ -27,12 +29,20 @@ export class ZaposleniViewComponent implements OnInit {
   newZaposleni!: Zaposleni;
   submitted: boolean = false;
 
+  noviZaposleniprofilePic: any={name: "", size: ""};
+  noviZaposleniprofilePicPreview: any="http://localhost:4200/assets/home_images/waiter.jpg";
+
   private lastTableLazyLoadEvent!: LazyLoadEvent;
 
   constructor(
     private messageService: MessageService,
-    private zaposleniService: ZaposleniService
+    private zaposleniService: ZaposleniService,
+    private base64Service: Base64Service,
+    private sanitizer:DomSanitizer,
   ) {}
+
+  //  this is how to use sanitizer and decode stringpics
+  //  this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(imgstring)));
 
   ngOnInit(): void {
     this.zaposleniService.loadZaposleniTest();
@@ -62,6 +72,13 @@ export class ZaposleniViewComponent implements OnInit {
       },
     ];
   }
+
+  onProfilePicUpload(event: any) {
+    this.noviZaposleniprofilePic = event.currentFiles[0];
+    this.noviZaposleniprofilePicPreview =  this.noviZaposleniprofilePic.objectURL;
+  }
+
+  doNothing(event: any) {}
 
   loadZaposleni(event: LazyLoadEvent) {
     this.loading = true;
@@ -153,7 +170,16 @@ export class ZaposleniViewComponent implements OnInit {
       this.newZaposleni.prezime.trim() &&
       this.newZaposleni.trenutnaPlata > 0
     ) {
-      this.zaposleniService.addZaposleni(this.newZaposleni)
+
+      let that = this;
+      this.base64Service.encode(this.noviZaposleniprofilePic, (slikaString : any) => {
+        that.newZaposleni.slikaString = slikaString;
+        that.zaposleniService.addZaposleni(that.newZaposleni);
+      });
+
+      this.noviZaposleniprofilePic = {};
+      this.noviZaposleniprofilePicPreview = "http://localhost:4200/assets/home_images/waiter.jpg";
+
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
