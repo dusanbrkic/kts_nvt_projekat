@@ -40,10 +40,10 @@ export class MenuJelaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jeloService.loadJelaTest();
+    //this.jeloService.loadJelaTest();
     this.jeloService.jela$.subscribe((value) => {
       this.jela = value;
-      console.log(value);
+      //console.log(value);
     });
     this.totalJela = this.jela.length;
     this.kategorije = [
@@ -94,7 +94,7 @@ export class MenuJelaComponent implements OnInit {
     this.loading = true;
     this.lastTableLazyLoadEvent = event;
 
-    console.log(event);
+    //console.log(event);
 
     //load jela here from backend with pagination
     this.jeloService.loadJela(event)

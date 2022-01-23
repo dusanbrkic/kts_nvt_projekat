@@ -1,7 +1,12 @@
 package gradjanibrzogbroda.backend.contoller;
 
-import static org.testng.Assert.assertEquals;
 
+
+
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -10,20 +15,18 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.Test;
 
 import gradjanibrzogbroda.backend.constants.JeloConstants;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class JelaControllerTests extends AbstractTestNGSpringContextTests{
+public class JelaControllerTests{
 	
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
-	@Test(priority = -1)
+	@Test // prio -1
 	public void testGetAllJela() {
 		ResponseEntity<JeloDTO[]> responseEntity = restTemplate.getForEntity("/jela/all", JeloDTO[].class);
 		
@@ -81,7 +84,7 @@ public class JelaControllerTests extends AbstractTestNGSpringContextTests{
 		assertEquals(actual.getNaziv(),JeloConstants.UPDATED_JELO_NAZIV);
 	}
 	
-	@Test(priority = 2)
+	@Test//prio -2
 	public void testDeleteJelo() {
 		ResponseEntity<Object> responseEntity = restTemplate.exchange("/jela/"+JeloConstants.DELETED_JELO_ID, HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);
 		

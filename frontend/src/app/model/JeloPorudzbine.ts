@@ -1,8 +1,10 @@
+import Jelo from "./Jelo";
+
 export default interface JeloPorudzbine{
     id: number;
     kolicina: number;
     napomena: string;
     statusJela: string;
-    jeloId: number;
+    jelo: Jelo,
     porudzbinaId: number;
 }

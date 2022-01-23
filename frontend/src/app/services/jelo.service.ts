@@ -24,8 +24,48 @@ export class JeloService {
   }
 
   loadJela(event: LazyLoadEvent){
+    console.log(event);
     //TO DO get jela sa paginacijom i filterima
+    let naziv;
+    let kategorijaJela;
+    let tipJela;
+    if(event.filters?.naziv?.value === undefined){
+      naziv = "";
+    }else{
+      naziv = event.filters?.naziv?.value;
+    }
+    if(event.filters?.kategorijaJela?.value?.value === undefined){
+      kategorijaJela = null;
+    }else{
+      kategorijaJela = event.filters?.kategorijaJela?.value?.value;
+    }
+    if(event.filters?.tipJela?.value?.value === undefined){
+      tipJela = null;
+    }else{
+      tipJela = event.filters?.tipJela?.value?.value;
+    }
+    
 
+
+    let params:any = {
+      first : event.first,
+      rows : event.rows,
+      naziv: naziv,
+      kategorijaJela: kategorijaJela,
+      tipJela: tipJela,
+      sortField:event.sortField,
+      sortOrder:event.sortOrder,
+    };
+    if(params.kategorijaJela===null){
+      delete params.kategorijaJela;
+    }
+    if(params.tipJela===null){
+      delete params.tipJela;
+    }
+    (this.http.get(environment.baseUrl + "jela/page/322/",{params})).subscribe((data:any)=>{
+      //console.log(data.jela);
+      this._setJela(data.jela);
+    })
   }
 
   addJelo(jelo: Jelo){

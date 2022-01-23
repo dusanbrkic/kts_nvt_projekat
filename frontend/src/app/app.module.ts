@@ -57,6 +57,10 @@ import { LayoutKonobarComponent } from './konobar-page/layout-konobar/layout-kon
 import {SidebarModule} from 'primeng/sidebar';
 import { FileUploadModule } from 'primeng/fileupload';
 import {ImageModule} from 'primeng/image';
+import {CardModule} from 'primeng/card';
+import {SplitterModule} from 'primeng/splitter';
+import { TagModule } from 'primeng/tag';
+import {CarouselModule} from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -119,7 +123,12 @@ import {ImageModule} from 'primeng/image';
     MessagesModule,
     ContextMenuModule,
     ConfirmDialogModule,
-    SidebarModule
+    SidebarModule,
+    CardModule,
+    SplitterModule,
+    TagModule,
+    AutoCompleteModule,
+    CarouselModule
   ],
   providers: [],
   bootstrap: [AppComponent]
