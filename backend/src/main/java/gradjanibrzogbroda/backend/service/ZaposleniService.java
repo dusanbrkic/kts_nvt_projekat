@@ -1,9 +1,7 @@
 package gradjanibrzogbroda.backend.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -11,21 +9,23 @@ import gradjanibrzogbroda.backend.domain.GlavniKuvar;
 import gradjanibrzogbroda.backend.domain.Konobar;
 import gradjanibrzogbroda.backend.domain.Kuvar;
 import gradjanibrzogbroda.backend.domain.Menadzer;
-import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.domain.Plata;
-import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.Sanker;
-import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
+import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.mediatype.PropertyUtils;
 import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Zaposleni;
@@ -51,6 +51,67 @@ public class ZaposleniService {
 			throw new UserNotFoundException();
 		}
 		return zaposleni;
+	}
+
+	public List<ZaposleniDTO> getAllPaged(Integer page, Integer size, String sortByString, Boolean sortDesc, String pretragaIme, String pretragaPrezime, String filterTipZaposlenjaString) {
+		ZaposleniSortFields sortBy = null;
+		if(sortByString.isEmpty()){
+			sortBy = ZaposleniSortFields.PREZIME;
+		} else {
+			sortBy = ZaposleniSortFields.valueOf(sortByString);
+		}
+
+		//get the corresponding Zaposleni Property
+		String sortByAttr = Zaposleni.Fields.prezime;
+		if (sortBy == ZaposleniSortFields.IME){
+			sortByAttr = Zaposleni.Fields.ime;
+		} else if(sortBy == ZaposleniSortFields.PREZIME){
+			sortByAttr = Zaposleni.Fields.prezime;
+		} else if (sortBy == ZaposleniSortFields.DATUMRODJENJA){
+			sortByAttr = Zaposleni.Fields.datumRodjenja;
+		} else if(sortBy == ZaposleniSortFields.TRENUTNAPLATA){
+			sortByAttr = Zaposleni.Fields.trenutnaPlata;
+		}
+
+
+				Set<TipZaposlenja> filterTipZaposlenja = null;
+		if (filterTipZaposlenjaString.isEmpty()) {
+			filterTipZaposlenja = new HashSet<>();
+			filterTipZaposlenja.add(TipZaposlenja.KONOBAR);
+			filterTipZaposlenja.add(TipZaposlenja.GLAVNI_KUVAR);
+			filterTipZaposlenja.add(TipZaposlenja.KUVAR);
+			filterTipZaposlenja.add(TipZaposlenja.MENADZER);
+			filterTipZaposlenja.add(TipZaposlenja.SANKER);
+		}
+		else {
+			filterTipZaposlenja = Arrays.asList(filterTipZaposlenjaString.split(",")).stream().map(new Function<String, TipZaposlenja>() {
+				@Override
+				public TipZaposlenja apply(String tipZaposlenjaString) {
+					return TipZaposlenja.valueOf(tipZaposlenjaString);
+				}
+			}).collect(Collectors.toSet());
+		}
+
+		pretragaIme = "%" + pretragaIme + "%";
+		pretragaPrezime = "%" + pretragaPrezime + "%";
+
+		Sort sort = Sort.by(sortByAttr);
+		if (sortDesc)
+			sort = sort.descending();
+		else
+			sort = sort.ascending();
+
+		Pageable pageable = PageRequest.of(page, size, sort);
+		Page<Zaposleni> result = zaposleniRepository.getAllPaged(pageable, pretragaIme, pretragaPrezime, filterTipZaposlenja);
+
+		return result.getContent().stream().map(new Function<Zaposleni, ZaposleniDTO>() {
+			@SneakyThrows
+			@Override
+			public ZaposleniDTO apply(Zaposleni zaposleni) {
+				String slikaString = storageService.loadAsString(zaposleni.getNazivSlike());
+				return new ZaposleniDTO(zaposleni, slikaString);
+			}
+		}).collect(Collectors.toList());
 	}
 
 	public Zaposleni updateAddZaposleni(Zaposleni z) {

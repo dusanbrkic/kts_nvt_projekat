@@ -3,10 +3,14 @@ package gradjanibrzogbroda.backend.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import gradjanibrzogbroda.backend.domain.*;
+import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
 import gradjanibrzogbroda.backend.service.StorageService;
+import lombok.SneakyThrows;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -43,6 +47,23 @@ public class ZaposleniController {
 	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleni() {
 
 		List<ZaposleniDTO> zaposleniDTOs = zaposleniService.getAllZaposleni();
+
+		return new ResponseEntity<List<ZaposleniDTO>>(zaposleniDTOs, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/allPaged")
+	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleniPaged(
+			@RequestParam("page") Integer page,
+			@RequestParam("size") Integer size,
+			@RequestParam("sortBy") String sortByString,
+			@RequestParam("sortDesc") Boolean sortDesc,
+			@RequestParam("pretragaIme") String pretragaIme,
+			@RequestParam("pretragaPrezime") String pretragaPrezime,
+			@RequestParam("filterTipZaposlenja") String filterTipZaposlenjaString
+
+	) {
+
+		List<ZaposleniDTO> zaposleniDTOs = zaposleniService.getAllPaged(page, size, sortByString, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenjaString);
 
 		return new ResponseEntity<List<ZaposleniDTO>>(zaposleniDTOs, HttpStatus.OK);
 	}

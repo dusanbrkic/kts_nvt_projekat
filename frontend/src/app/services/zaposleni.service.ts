@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
@@ -15,7 +15,7 @@ export class ZaposleniService {
   readonly zaposleni$ = this._zaposleniSource.asObservable();
 
   constructor(
-    private http:HttpClient
+    private http: HttpClient
   ) { }
 
   getZaposleni(): Zaposleni[] {
@@ -26,34 +26,52 @@ export class ZaposleniService {
     this._zaposleniSource.next(zaposleni);
   }
 
-  loadZaposleni(event: LazyLoadEvent){
-    //TO DO get zaposleni sa paginacijom i filterima
+  loadZaposleni(event: LazyLoadEvent) {
+    let size:number = event.rows || 10;
+    let page:number = event.first || 0;
+    page = page/size;
+    let sortBy:string = event.sortField?.toUpperCase() || "";
+    let sortDesc:boolean = event.sortOrder && event.sortOrder > 0 ? false : true;
+    let pretragaIme:string = event.filters?.ime?.value || "";
+    let pretragaPrezime:string = event.filters?.prezime?.value || "";
+    let filterTipZaposlenja:string = event.filters?.tipZaposlenja?.value?.map(function(elem:any) { return elem.value; }).join(",") || "";
+
+    let params = { page, size, sortBy, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenja }
+
+    this.http.get<Zaposleni[]>(environment.baseUrl + "zaposleni/allPaged", {params}).subscribe((data: any) => {
+      //sredi datum
+      data.map(function(elem:any){
+        elem.datumRodjenja = new Date(elem.datumRodjenja);
+      })
+
+      this._setZaposleni(data);
+    });
 
   }
 
-  addZaposleni(zap: Zaposleni){
+  addZaposleni(zap: Zaposleni) {
     //TO DO: dodati zaposlenog na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    this.http.post(environment.baseUrl + "zaposleni/add", zap).subscribe((data:any)=>{
+    this.http.post(environment.baseUrl + "zaposleni/add", zap).subscribe((data: any) => {
       console.log(data);
 
     });
 
-    const zaposleni: Zaposleni[]=[...this.getZaposleni(),zap]
+    const zaposleni: Zaposleni[] = [...this.getZaposleni(), zap]
     this._setZaposleni(zaposleni)
   }
 
-  removeZaposleni(zap: Zaposleni){
+  removeZaposleni(zap: Zaposleni) {
     //TO DO: izbrisati zaposlenog sa backa
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const zaposleni: Zaposleni[]=this.getZaposleni().filter(z=>z.identificationNumber!==zap.identificationNumber)
+    const zaposleni: Zaposleni[] = this.getZaposleni().filter(z => z.identificationNumber !== zap.identificationNumber)
     this._setZaposleni(zaposleni)
   }
 
-  updateJelo(zap: Zaposleni){
+  updateJelo(zap: Zaposleni) {
     //TO DO: update zaposlenog na backu
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const zaposleni: Zaposleni[]=this.getZaposleni().map(z=>z.identificationNumber===zap.identificationNumber ? zap : z)
+    const zaposleni: Zaposleni[] = this.getZaposleni().map(z => z.identificationNumber === zap.identificationNumber ? zap : z)
     this._setZaposleni(zaposleni)
   }
 
@@ -65,8 +83,8 @@ export class ZaposleniService {
     return this.http.get(environment.baseUrl+ "zaposleni/id/" + zaposleniId);
   }*/
 
-  loadZaposleniTest(){
-    const zaposleni:Zaposleni[]=[{
+  loadZaposleniTest() {
+    const zaposleni: Zaposleni[] = [{
       ime: 'Marko',
       prezime: 'Markovic',
       pol: 'MUSKI',

@@ -1,6 +1,7 @@
 package gradjanibrzogbroda.backend.domain;
 
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldNameConstants
 public abstract class Zaposleni {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
