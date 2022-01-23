@@ -7,9 +7,9 @@ p-table { cdk-virtual-scroll-viewport { overflow-y: scroll !important; } }
 }
 
 #imgPrev{
-  width: 400px;
+  max-width: 400px;
   height: auto;
-  max-height: 800px;
+  max-height: 600px;
   padding-bottom: 10px;
 }
 

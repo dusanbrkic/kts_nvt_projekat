@@ -1,6 +1,4 @@
-package gradjanibrzogbroda.backend.util;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
+package gradjanibrzogbroda.backend.config;
 
 public class StorageProperties {
 

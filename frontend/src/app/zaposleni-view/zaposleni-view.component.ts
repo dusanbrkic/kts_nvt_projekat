@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import Zaposleni from '../model/Zaposleni';
@@ -33,6 +33,9 @@ export class ZaposleniViewComponent implements OnInit {
   noviZaposleniprofilePicPreview: any="http://localhost:4200/assets/home_images/waiter.jpg";
 
   private lastTableLazyLoadEvent!: LazyLoadEvent;
+
+  @ViewChild('fileUpload')
+  fileUpload: any;
 
   constructor(
     private messageService: MessageService,
@@ -78,7 +81,9 @@ export class ZaposleniViewComponent implements OnInit {
     this.noviZaposleniprofilePicPreview =  this.noviZaposleniprofilePic.objectURL;
   }
 
-  doNothing(event: any) {}
+  doNothing(event: any) {
+    this.fileUpload.clear();
+  }
 
   loadZaposleni(event: LazyLoadEvent) {
     this.loading = true;

@@ -295,9 +295,9 @@
 
         <div class="field" class="imgInpDiv">
           <p-fileUpload
-
+            #fileUpload
             mode="basic"
-            name="uploadedFile"
+            name="uploadedFile[]"
             (onSelect)="onProfilePicUpload($event)"
             accept="image/*"
             chooseLabel="Izaberite profilnu sliku"
@@ -306,7 +306,7 @@
             [showCancelButton]=false
             [maxFileSize]=1000000
             (uploadHandler)="doNothing($event)"
-
+            [auto]=true
           >
           </p-fileUpload>
         </div>

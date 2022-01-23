@@ -4,27 +4,18 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
-import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.ResourceUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import gradjanibrzogbroda.backend.exceptions.StorageException;
 import gradjanibrzogbroda.backend.exceptions.StorageFileNotFoundException;
-import gradjanibrzogbroda.backend.util.StorageProperties;
+import gradjanibrzogbroda.backend.config.StorageProperties;
 
 @Service
 public class StorageService {
