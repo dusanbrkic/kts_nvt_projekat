@@ -155,7 +155,7 @@
         </td>
         <td>
           <img
-            [src]="'assets/home_images/waiter.jpg'"
+            [src]="getProfilePic(z)"
             width="100"
             class="p-shadow-4"
           />
@@ -309,6 +309,11 @@
             [auto]=true
           >
           </p-fileUpload>
+          <p-button
+            label="Cancel"
+            [disabled]="cancelProfilePicBtnDisabled"
+            (onClick)="cancelProfilePicBtnClicked($event)"
+          ></p-button>
         </div>
 
         <div class="field" class="imgShow"></div>

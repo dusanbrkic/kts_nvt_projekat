@@ -1,9 +1,6 @@
-package gradjanibrzogbroda.backend.service;
+package gradjanibrzogbroda.backend.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -21,6 +18,8 @@ import gradjanibrzogbroda.backend.config.StorageProperties;
 public class StorageService {
 	public void store(String fileBase64, String filename) {
 		try {
+			if (fileBase64.isEmpty()){ return; }
+
 			byte[] slikaDecoded =  Base64.getDecoder().decode(fileBase64.split(",")[1]);
 
 			if (slikaDecoded == null) {
@@ -41,9 +40,10 @@ public class StorageService {
 
 	public String loadAsString(String filename) {
 		try {
-			Resource resource = new ClassPathResource(StorageProperties.getZaposleniProfilePicsLocation() + System.getProperty("file.separator") + filename);
-			if (resource.exists() || resource.isReadable()) {
-				return Base64.getEncoder().withoutPadding().encodeToString(resource.getInputStream().readAllBytes());
+			File file = new File(StorageProperties.getResourceFolderRelativePath() + System.getProperty("file.separator") +
+					StorageProperties.getZaposleniProfilePicsLocation() + System.getProperty("file.separator") + filename);
+			if (file.exists() || file.isFile()) {
+				return Base64.getEncoder().withoutPadding().encodeToString(new FileInputStream(file).readAllBytes());
 			}
 			else {
 				throw new StorageFileNotFoundException(
@@ -52,7 +52,7 @@ public class StorageService {
 			}
 		} catch (StorageFileNotFoundException | IOException e) {
 			e.printStackTrace();
-			return null;
+			return "";
 		}
 	}
 }

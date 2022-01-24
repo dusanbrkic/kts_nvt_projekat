@@ -18,6 +18,7 @@ import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
 import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
+import gradjanibrzogbroda.backend.util.StorageService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,7 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.mediatype.PropertyUtils;
 import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Zaposleni;

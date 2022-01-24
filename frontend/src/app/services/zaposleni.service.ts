@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
@@ -49,16 +49,13 @@ export class ZaposleniService {
 
   }
 
-  addZaposleni(zap: Zaposleni) {
+  async addZaposleni(zap: Zaposleni, alertSuccessCallback:any) {
     //TO DO: dodati zaposlenog na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    this.http.post(environment.baseUrl + "zaposleni/add", zap).subscribe((data: any) => {
-      console.log(data);
+    const httpZaposleni = await this.http.post(environment.baseUrl + "zaposleni/add", zap, {responseType : 'text'}).toPromise()
 
-    });
-
-    const zaposleni: Zaposleni[] = [...this.getZaposleni(), zap]
-    this._setZaposleni(zaposleni)
+    // const zaposleni: Zaposleni[] = [...this.getZaposleni(), zap]
+    // this._setZaposleni(zaposleni)
   }
 
   removeZaposleni(zap: Zaposleni) {

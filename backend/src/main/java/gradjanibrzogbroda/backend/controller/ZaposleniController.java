@@ -1,19 +1,11 @@
 package gradjanibrzogbroda.backend.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import gradjanibrzogbroda.backend.domain.*;
-import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
-import gradjanibrzogbroda.backend.service.StorageService;
-import lombok.SneakyThrows;
-import org.apache.tomcat.util.codec.binary.Base64;
+import gradjanibrzogbroda.backend.util.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +23,6 @@ import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import gradjanibrzogbroda.backend.service.ZaposleniService;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/zaposleni")
@@ -98,7 +89,7 @@ public class ZaposleniController {
 	}
 
 	@PostMapping(value = "/add")
-	public ResponseEntity<ZaposleniDTO> addZaposleni(
+	public ResponseEntity<String> addZaposleni(
 			@RequestBody ZaposleniDTO zaposleniDTO) {
 
 		try {
@@ -106,10 +97,10 @@ public class ZaposleniController {
 
 			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
 
-			return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
+			return new ResponseEntity<String>("Success!", HttpStatus.OK);
 
 		} catch (UserAlreadyExistsException e) {
-			return new ResponseEntity<ZaposleniDTO>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Failure!", HttpStatus.BAD_REQUEST);
 		}
 
 	}

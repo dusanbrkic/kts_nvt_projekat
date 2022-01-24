@@ -29,13 +29,17 @@ export class ZaposleniViewComponent implements OnInit {
   newZaposleni!: Zaposleni;
   submitted: boolean = false;
 
-  noviZaposleniprofilePic: any={name: "", size: ""};
-  noviZaposleniprofilePicPreview: any="http://localhost:4200/assets/home_images/waiter.jpg";
+  userGenericImgSrc: any = "http://localhost:4200/assets/home_images/generic_user.jpg";
+
+  noviZaposleniprofilePic: any={};
+  noviZaposleniprofilePicPreview: any = this.userGenericImgSrc;
 
   private lastTableLazyLoadEvent!: LazyLoadEvent;
 
   @ViewChild('fileUpload')
   fileUpload: any;
+
+  cancelProfilePicBtnDisabled: any = true;
 
   constructor(
     private messageService: MessageService,
@@ -44,8 +48,12 @@ export class ZaposleniViewComponent implements OnInit {
     private sanitizer:DomSanitizer,
   ) {}
 
-  //  this is how to use sanitizer and decode stringpics
-  //  this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(imgstring)));
+  getProfilePic(zaposleni: Zaposleni){
+    // this is how to use the sanitizer and decode stringpics
+    if (zaposleni.slikaString.length > 0){
+      return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(zaposleni.slikaString)));
+    } else return this.userGenericImgSrc;
+  }
 
   ngOnInit(): void {
     this.zaposleniService.loadZaposleniTest();
@@ -79,6 +87,13 @@ export class ZaposleniViewComponent implements OnInit {
   onProfilePicUpload(event: any) {
     this.noviZaposleniprofilePic = event.currentFiles[0];
     this.noviZaposleniprofilePicPreview =  this.noviZaposleniprofilePic.objectURL;
+    this.cancelProfilePicBtnDisabled = false;
+  }
+
+  cancelProfilePicBtnClicked(event:any){
+    this.noviZaposleniprofilePic = {};
+    this.noviZaposleniprofilePicPreview = this.userGenericImgSrc;
+    this.cancelProfilePicBtnDisabled = true;
   }
 
   doNothing(event: any) {
@@ -167,7 +182,7 @@ export class ZaposleniViewComponent implements OnInit {
     this.submitted = false;
   }
 
-  saveZaposleni() {
+  async saveZaposleni() {
     this.submitted = true;
 
     if (
@@ -177,13 +192,32 @@ export class ZaposleniViewComponent implements OnInit {
     ) {
 
       let that = this;
-      this.base64Service.encode(this.noviZaposleniprofilePic, (slikaString : any) => {
-        that.newZaposleni.slikaString = slikaString;
-        that.zaposleniService.addZaposleni(that.newZaposleni);
-      });
+      if(Object.keys(this.noviZaposleniprofilePic).length!==0){
+        this.base64Service.encode(this.noviZaposleniprofilePic, async (slikaString : any) => {
+          that.newZaposleni.slikaString = slikaString;
+          await that.zaposleniService.addZaposleni(that.newZaposleni, (responseMessage:string) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: responseMessage,
+              life: 3000,
+            });
+          });
+        });
+      } else {
+        that.newZaposleni.slikaString = "";
+        await that.zaposleniService.addZaposleni(that.newZaposleni, (responseMessage:string) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: responseMessage,
+            life: 3000,
+          });
+        });
+      }
 
       this.noviZaposleniprofilePic = {};
-      this.noviZaposleniprofilePicPreview = "http://localhost:4200/assets/home_images/waiter.jpg";
+      this.noviZaposleniprofilePicPreview = this.userGenericImgSrc;
 
       this.messageService.add({
         severity: 'success',
