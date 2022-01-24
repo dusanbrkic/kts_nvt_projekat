@@ -7,4 +7,5 @@ export default interface PicePorudzbine{
     statusPica: string;
     pice: Pice,
     porudzbinaId: number;
+    piceId: number;
 }

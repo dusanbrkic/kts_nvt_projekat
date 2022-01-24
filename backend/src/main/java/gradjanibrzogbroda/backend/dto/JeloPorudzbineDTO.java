@@ -1,5 +1,6 @@
 package gradjanibrzogbroda.backend.dto;
 
+import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
 import gradjanibrzogbroda.backend.domain.StatusJela;
 import lombok.*;
@@ -16,7 +17,7 @@ public class JeloPorudzbineDTO {
     private Double kolicina;
     private String napomena;
     private StatusJela statusJela;
-    private Integer jeloId;
+    private JeloDTO jelo;
     private Integer porudzbinaId;
 
     public JeloPorudzbineDTO(JeloPorudzbine jp){
@@ -24,8 +25,12 @@ public class JeloPorudzbineDTO {
         this.kolicina = jp.getKolicina();
         this.napomena = jp.getNapomena();
         this.statusJela = jp.getStatusJela();
-        this.jeloId = jp.getJelo().getId();
+        this.jelo = new JeloDTO(jp.getJelo());
         this.porudzbinaId = jp.getPorudzbina().getId();
+    }
+    
+    public int getJeloId() {
+    	return this.getJelo().getId();
     }
 
 }

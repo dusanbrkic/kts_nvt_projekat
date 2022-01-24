@@ -32,6 +32,17 @@ public class PorudzbinaService {
     public List <Porudzbina> findAll(){
         return porudzbinaRepository.findAll();
     }
+    
+    public List <Porudzbina> findAllZaSankera(){
+    	ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
+    	for(Porudzbina p : porudzbinaRepository.findAllZaSankera()) {
+    		if(p.getPicePorudzbine().size()>0) {
+    			porudzbine.add(p);
+    		}
+    	}
+    	
+        return porudzbine;
+    }
 
     public Porudzbina findOne(Integer id){
         return porudzbinaRepository.findOneById(id);

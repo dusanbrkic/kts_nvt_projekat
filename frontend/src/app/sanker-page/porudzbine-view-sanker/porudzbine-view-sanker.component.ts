@@ -17,8 +17,15 @@ export class PorudzbineViewSankerComponent implements OnInit {
   constructor(private porudzbinaService:PorudzbinaService,private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.porudzbinaService.loadPorudzbineTest()
-    this.porudzbinaService.porudzbine$.subscribe(value=>this.porudzbine=this.porudzbinaService.porudzbineZaPripremuSanker())
+    this.porudzbinaService.porudzbineZaPripremuSanker();
+    this.porudzbinaService.porudzbine$.subscribe(value=>{
+      this.porudzbine=value;
+      //console.log(value);
+    });
+  }
+
+  test(test:any){
+    console.log(test);
   }
 
   showModalDialog(napomena: string) {

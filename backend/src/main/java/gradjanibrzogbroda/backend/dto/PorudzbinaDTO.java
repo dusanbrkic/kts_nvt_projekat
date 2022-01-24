@@ -23,7 +23,7 @@ public class PorudzbinaDTO {
     private Integer konobarId;
     private Integer stoId;
     private List<JeloPorudzbineDTO> jelaPorudzbine=new ArrayList<JeloPorudzbineDTO>();
-    private List<PicePorudzbineDTO> picePorudzbine=new ArrayList<PicePorudzbineDTO>();
+    private List<PicePorudzbineDTO> picaPorudzbine=new ArrayList<PicePorudzbineDTO>();
 
     public PorudzbinaDTO(Porudzbina p){
         this.id = p.getId();
@@ -39,9 +39,9 @@ public class PorudzbinaDTO {
             this.jelaPorudzbine.add(new JeloPorudzbineDTO(jp));
         }
 
-        this.picePorudzbine = new ArrayList<>();
+        this.picaPorudzbine = new ArrayList<>();
         for (PicePorudzbine pp: p.getPicePorudzbine()) {
-            this.picePorudzbine.add(new PicePorudzbineDTO(pp));
+            this.picaPorudzbine.add(new PicePorudzbineDTO(pp));
         }
     }
 }

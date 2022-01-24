@@ -76,12 +76,22 @@ export class PorudzbinaService {
     return porudzbine;
   }
 
-  porudzbineZaPripremuSanker(): Porudzbina[] {
+    async porudzbineZaPripremuSanker() {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
+    let porudzbine: Porudzbina[];
+    let answ;
+    await this.http.get(environment.baseUrl + "/porudzbine/zaSankera").subscribe((data:any)=>{
+      porudzbine = data;
+      console.log(porudzbine);
+      this._setPorudzbine(porudzbine);
+    })
+    
+    /*
     const porudzbine = this.getPorudzbine().filter(
       (p) => p.statusPorudzbine === 'KREIRANO' && p.picaPorudzbine.length > 0
     );
     return porudzbine;
+    */
   }
 
   jelaUPripremi(): JeloPorudzbine[] {
@@ -158,6 +168,7 @@ export class PorudzbinaService {
     return this.http.delete(environment.baseUrl + 'porudzbine/' + porudzbinaId);
   }*/
 
+  
   loadPorudzbineTest(): void {
     const porudzbine: Porudzbina[] = [
       {
@@ -214,6 +225,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -226,7 +238,9 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
+          
         ],
       },
       {
@@ -250,6 +264,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 3,
           },
         ],
       },
@@ -274,6 +289,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 3,
           },
         ],
       },
@@ -331,6 +347,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -343,6 +360,7 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
         ],
       },
@@ -400,6 +418,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -412,10 +431,12 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
         ],
       },
     ];
     this._setPorudzbine(porudzbine);
   }
+  
 }

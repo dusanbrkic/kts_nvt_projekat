@@ -125,6 +125,7 @@ export class LayoutKonobarComponent implements OnInit {
           statusPica: 'KREIRANO',
           pice: this.selectedPice!,
           porudzbinaId: this.selectedPorudzbina.id,
+          piceId: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
         };
         this.selectedPorudzbina.picaPorudzbine.push(newItem);
       } else {

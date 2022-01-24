@@ -18,7 +18,7 @@ public class PicePorudzbineDTO {
     private Double kolicina;
     private String napomena;
     private StatusPica statusPica;
-    private Integer piceId;
+    private PiceDTO pice;
     private Integer porudzbinaId;
 
     public PicePorudzbineDTO(PicePorudzbine pp){
@@ -26,8 +26,12 @@ public class PicePorudzbineDTO {
         this.kolicina = pp.getKolicina();
         this.napomena = pp.getNapomena();
         this.statusPica = pp.getStatusPica();
-        this.piceId = pp.getPice().getId();
+        this.pice = new PiceDTO(pp.getPice());
         this.porudzbinaId = pp.getPorudzbina().getId();
+    }
+    
+    public int getPiceId() {
+    	return this.getPice().getId();
     }
 
 }
