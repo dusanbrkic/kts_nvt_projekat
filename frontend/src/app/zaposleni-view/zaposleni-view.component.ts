@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import Zaposleni from '../model/Zaposleni';
 import { Base64Service } from '../utils/base64.service';
@@ -31,7 +31,7 @@ export class ZaposleniViewComponent implements OnInit {
 
   userGenericImgSrc: any = "http://localhost:4200/assets/home_images/generic_user.jpg";
 
-  noviZaposleniprofilePic: any={};
+  noviZaposleniprofilePic: any = {};
   noviZaposleniprofilePicPreview: any = this.userGenericImgSrc;
 
   private lastTableLazyLoadEvent!: LazyLoadEvent;
@@ -45,12 +45,12 @@ export class ZaposleniViewComponent implements OnInit {
     private messageService: MessageService,
     private zaposleniService: ZaposleniService,
     private base64Service: Base64Service,
-    private sanitizer:DomSanitizer,
-  ) {}
+    private sanitizer: DomSanitizer,
+  ) { }
 
-  getProfilePic(zaposleni: Zaposleni){
+  getProfilePic(zaposleni: Zaposleni) {
     // this is how to use the sanitizer and decode stringpics
-    if (zaposleni.slikaString.length > 0){
+    if (zaposleni.slikaString.length > 0) {
       return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(zaposleni.slikaString)));
     } else return this.userGenericImgSrc;
   }
@@ -86,11 +86,11 @@ export class ZaposleniViewComponent implements OnInit {
 
   onProfilePicUpload(event: any) {
     this.noviZaposleniprofilePic = event.currentFiles[0];
-    this.noviZaposleniprofilePicPreview =  this.noviZaposleniprofilePic.objectURL;
+    this.noviZaposleniprofilePicPreview = this.noviZaposleniprofilePic.objectURL;
     this.cancelProfilePicBtnDisabled = false;
   }
 
-  cancelProfilePicBtnClicked(event:any){
+  cancelProfilePicBtnClicked(event: any) {
     this.noviZaposleniprofilePic = {};
     this.noviZaposleniprofilePicPreview = this.userGenericImgSrc;
     this.cancelProfilePicBtnDisabled = true;
@@ -107,7 +107,9 @@ export class ZaposleniViewComponent implements OnInit {
     console.log(event);
 
     //load zaposleni here from backend with pagination
-    this.zaposleniService.loadZaposleni(event)
+    this.zaposleniService.loadZaposleni(event, (totalItems: any) => {
+      this.totalZaposleni = totalItems;
+    })
 
 
     this.loading = false
@@ -127,11 +129,12 @@ export class ZaposleniViewComponent implements OnInit {
     ) {
       delete this.clonedZaposleni[z.identificationNumber];
       this.editing = false;
-      this.zaposleniService.updateJelo(this.zaposleni[index])
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Zaposleni ažuriran',
+      this.zaposleniService.updateZaposleni(this.zaposleni[index], (response: any) => {
+        this.messageService.add({
+          severity: response.ok ? 'success' : 'error',
+          summary: response.ok ? 'Success' : 'Error',
+          detail: response.body,
+        })
       });
     } else {
       this.zaposleni[index] = this.clonedZaposleni[z.identificationNumber];
@@ -152,12 +155,13 @@ export class ZaposleniViewComponent implements OnInit {
   }
 
   deleteZaposleni(z: Zaposleni) {
-    this.zaposleniService.removeZaposleni(z)
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Zaposleni obrisan',
-      detail: z.ime + ' ' + z.prezime,
-    });
+    this.zaposleniService.removeZaposleni(z, (response: any) => {
+      this.messageService.add({
+        severity: response.ok ? 'info' : 'error',
+        summary: response.ok ? 'Info' : 'Error',
+        detail: response.body,
+      })
+    })
     this.loadZaposleni(this.lastTableLazyLoadEvent)
   }
 
@@ -192,25 +196,25 @@ export class ZaposleniViewComponent implements OnInit {
     ) {
 
       let that = this;
-      if(Object.keys(this.noviZaposleniprofilePic).length!==0){
-        this.base64Service.encode(this.noviZaposleniprofilePic, async (slikaString : any) => {
+      if (Object.keys(this.noviZaposleniprofilePic).length !== 0) {
+        this.base64Service.encode(this.noviZaposleniprofilePic, async (slikaString: any) => {
           that.newZaposleni.slikaString = slikaString;
-          await that.zaposleniService.addZaposleni(that.newZaposleni, (responseMessage:string) => {
+          await that.zaposleniService.addZaposleni(that.newZaposleni, (response: any) => {
             this.messageService.add({
-              severity: 'success',
-              summary: 'Successful',
-              detail: responseMessage,
+              severity: response.ok ? 'success' : 'error',
+              summary: response.ok ? 'Success' : 'Error',
+              detail: response.body,
               life: 3000,
             });
           });
         });
       } else {
         that.newZaposleni.slikaString = "";
-        await that.zaposleniService.addZaposleni(that.newZaposleni, (responseMessage:string) => {
+        await that.zaposleniService.addZaposleni(that.newZaposleni, (response: any) => {
           this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: responseMessage,
+            severity: response.ok ? 'success' : 'error',
+            summary: response.ok ? 'Success' : 'Error',
+            detail: response.body,
             life: 3000,
           });
         });
@@ -219,12 +223,6 @@ export class ZaposleniViewComponent implements OnInit {
       this.noviZaposleniprofilePic = {};
       this.noviZaposleniprofilePicPreview = this.userGenericImgSrc;
 
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Kreiran novi zaposleni',
-        life: 3000,
-      });
       this.zaposleniDialog = false;
       this.loadZaposleni(this.lastTableLazyLoadEvent)
     }

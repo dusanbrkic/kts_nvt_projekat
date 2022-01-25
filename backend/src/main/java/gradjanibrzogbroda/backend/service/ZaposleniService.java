@@ -53,7 +53,7 @@ public class ZaposleniService {
 		return zaposleni;
 	}
 
-	public List<ZaposleniDTO> getAllPaged(Integer page, Integer size, String sortByString, Boolean sortDesc, String pretragaIme, String pretragaPrezime, String filterTipZaposlenjaString) {
+	public Map<String, Object> getAllPaged(Integer page, Integer size, String sortByString, Boolean sortDesc, String pretragaIme, String pretragaPrezime, String filterTipZaposlenjaString) {
 		ZaposleniSortFields sortBy = null;
 		if(sortByString.isEmpty()){
 			sortBy = ZaposleniSortFields.PREZIME;
@@ -74,7 +74,7 @@ public class ZaposleniService {
 		}
 
 
-				Set<TipZaposlenja> filterTipZaposlenja = null;
+		Set<TipZaposlenja> filterTipZaposlenja = null;
 		if (filterTipZaposlenjaString.isEmpty()) {
 			filterTipZaposlenja = new HashSet<>();
 			filterTipZaposlenja.add(TipZaposlenja.KONOBAR);
@@ -102,9 +102,9 @@ public class ZaposleniService {
 			sort = sort.ascending();
 
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Zaposleni> result = zaposleniRepository.getAllPaged(pageable, pretragaIme, pretragaPrezime, filterTipZaposlenja);
+		Page<Zaposleni> queryResult = zaposleniRepository.getAllPaged(pageable, pretragaIme, pretragaPrezime, filterTipZaposlenja);
 
-		return result.getContent().stream().map(new Function<Zaposleni, ZaposleniDTO>() {
+		List<ZaposleniDTO> zaposleniDTOS =  queryResult.getContent().stream().map(new Function<Zaposleni, ZaposleniDTO>() {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
@@ -112,6 +112,15 @@ public class ZaposleniService {
 				return new ZaposleniDTO(zaposleni, slikaString);
 			}
 		}).collect(Collectors.toList());
+
+		Map<String, Object> mapResult = new HashMap<>();
+		mapResult.put("zaposleni", zaposleniDTOS);
+		mapResult.put("currentPage", queryResult.getNumber());
+		mapResult.put("totalItems", queryResult.getTotalElements());
+		mapResult.put("totalPages", queryResult.getTotalPages());
+
+		return mapResult;
+
 	}
 
 	public Zaposleni updateAddZaposleni(Zaposleni z) {

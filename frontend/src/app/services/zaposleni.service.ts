@@ -26,7 +26,7 @@ export class ZaposleniService {
     this._zaposleniSource.next(zaposleni);
   }
 
-  loadZaposleni(event: LazyLoadEvent) {
+  loadZaposleni(event: LazyLoadEvent, setTotalZaposleni:any) {
     let size:number = event.rows || 10;
     let page:number = event.first || 0;
     page = page/size;
@@ -38,37 +38,63 @@ export class ZaposleniService {
 
     let params = { page, size, sortBy, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenja }
 
-    this.http.get<Zaposleni[]>(environment.baseUrl + "zaposleni/allPaged", {params}).subscribe((data: any) => {
+    this.http.get<Zaposleni[]>(environment.baseUrl + "zaposleni/allPaged", {
+      "params" : params,
+      "responseType": 'json',
+      "observe": 'response'
+    }).subscribe((response: any) => {
       //sredi datum
-      data.map(function(elem:any){
+      response.body.zaposleni.map(function(elem:any){
         elem.datumRodjenja = new Date(elem.datumRodjenja);
       })
 
-      this._setZaposleni(data);
+      setTotalZaposleni(response.body.totalItems);
+
+      this._setZaposleni(response.body.zaposleni);
     });
 
   }
 
-  async addZaposleni(zap: Zaposleni, alertSuccessCallback:any) {
+  async addZaposleni(zap: Zaposleni, alertCallback:any) {
     //TO DO: dodati zaposlenog na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const httpZaposleni = await this.http.post(environment.baseUrl + "zaposleni/add", zap, {responseType : 'text'}).toPromise()
+    const httpZaposleni = await this.http.post(environment.baseUrl + "zaposleni/add", zap, {responseType : 'text', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        alertCallback(response);
+      })
+      .catch((response:any)=>{
+        alertCallback(response);
+      });
 
     // const zaposleni: Zaposleni[] = [...this.getZaposleni(), zap]
     // this._setZaposleni(zaposleni)
   }
 
-  removeZaposleni(zap: Zaposleni) {
-    //TO DO: izbrisati zaposlenog sa backa
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const zaposleni: Zaposleni[] = this.getZaposleni().filter(z => z.identificationNumber !== zap.identificationNumber)
-    this._setZaposleni(zaposleni)
+  async updateZaposleni(zap: Zaposleni, alertCallback:any) {
+    const httpZaposleni = await this.http.post(environment.baseUrl + "zaposleni/update", zap, {responseType : 'json', "observe": 'response'}).toPromise()
+    .then((response:any)=>{
+      alertCallback(response);
+    })
+    .catch((response:any)=>{
+      alertCallback(response);
+    });
+
+    // const zaposleni: Zaposleni[] = this.getZaposleni().map(z => z.identificationNumber === zap.identificationNumber ? zap : z)
+    // this._setZaposleni(zaposleni)
   }
 
-  updateJelo(zap: Zaposleni) {
-    //TO DO: update zaposlenog na backu
+  async removeZaposleni(zap: Zaposleni, alertCallback:any) {
+    //TO DO: izbrisati zaposlenog sa backa
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const zaposleni: Zaposleni[] = this.getZaposleni().map(z => z.identificationNumber === zap.identificationNumber ? zap : z)
+    const httpZaposleni = await this.http.delete(environment.baseUrl + "zaposleni/delete/" + zap.identificationNumber, {responseType : 'text'}).toPromise()
+    .then((response:any)=>{
+      alertCallback(response);
+    })
+    .catch((response:any)=>{
+      alertCallback(response);
+    });
+
+    const zaposleni: Zaposleni[] = this.getZaposleni().filter(z => z.identificationNumber !== zap.identificationNumber)
     this._setZaposleni(zaposleni)
   }
 

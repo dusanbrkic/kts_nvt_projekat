@@ -17,10 +17,18 @@ import gradjanibrzogbroda.backend.config.StorageProperties;
 @Service
 public class StorageService {
 	public void store(String fileBase64, String filename) {
+
 		try {
+			String parsedFileBase64 = fileBase64;
+
 			if (fileBase64.isEmpty()){ return; }
 
-			byte[] slikaDecoded =  Base64.getDecoder().decode(fileBase64.split(",")[1]);
+			String[] splittedFile = fileBase64.split(",");
+			if(splittedFile.length!=1){
+				parsedFileBase64 = splittedFile[1];
+			}
+
+			byte[] slikaDecoded = Base64.getDecoder().decode(parsedFileBase64);
 
 			if (slikaDecoded == null) {
 				throw new StorageException("Failed to store empty file.");

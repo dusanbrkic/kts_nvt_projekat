@@ -43,7 +43,7 @@ public class ZaposleniController {
 	}
 
 	@GetMapping(value = "/allPaged")
-	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleniPaged(
+	public ResponseEntity<Map<String, Object>> getAllZaposleniPaged(
 			@RequestParam("page") Integer page,
 			@RequestParam("size") Integer size,
 			@RequestParam("sortBy") String sortByString,
@@ -54,9 +54,9 @@ public class ZaposleniController {
 
 	) {
 
-		List<ZaposleniDTO> zaposleniDTOs = zaposleniService.getAllPaged(page, size, sortByString, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenjaString);
+		Map<String, Object> response = zaposleniService.getAllPaged(page, size, sortByString, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenjaString);
 
-		return new ResponseEntity<List<ZaposleniDTO>>(zaposleniDTOs, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/id/{id}")
@@ -74,7 +74,7 @@ public class ZaposleniController {
 
 
 	@PostMapping(value = "/update")
-	public ResponseEntity<ZaposleniDTO> updateZaposleni(
+	public ResponseEntity<String> updateZaposleni(
 			@RequestBody ZaposleniDTO zaposleniDTO) {
 
 		try {
@@ -82,9 +82,9 @@ public class ZaposleniController {
 
 			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
 
-			return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
+			return new ResponseEntity<String>("Zaposleni " + z.getIme() + " " + z.getPrezime() + " uspesno azuriran!", HttpStatus.OK);
 		} catch (UserNotFoundException e) {
-			return new ResponseEntity<ZaposleniDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -97,21 +97,21 @@ public class ZaposleniController {
 
 			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
 
-			return new ResponseEntity<String>("Success!", HttpStatus.OK);
+			return new ResponseEntity<String>("Zaposleni " + z.getIme() + " " + z.getPrezime() + " uspesno dodat!", HttpStatus.OK);
 
 		} catch (UserAlreadyExistsException e) {
-			return new ResponseEntity<String>("Failure!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<Object> deleteZaposleni(@PathVariable("id") String id) {
+	public ResponseEntity<String> deleteZaposleni(@PathVariable("id") String id) {
 		try {
 			zaposleniService.deleteZaposleni(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<String>("Zaposleni uspesno obrisan!", HttpStatus.OK);
 		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.NOT_FOUND);
 		} 
 	}
 
