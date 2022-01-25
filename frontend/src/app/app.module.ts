@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KonobarPageComponent } from './konobar-page/konobar-page.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -59,6 +59,7 @@ import {CardModule} from 'primeng/card';
 import {SplitterModule} from 'primeng/splitter';
 import { TagModule } from 'primeng/tag';
 import {CarouselModule} from 'primeng/carousel';
+import { InterInterceptor } from './interceptor/inter.interceptor';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,9 @@ import {CarouselModule} from 'primeng/carousel';
     AutoCompleteModule,
     CarouselModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: InterInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

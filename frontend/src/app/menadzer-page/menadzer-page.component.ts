@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-menadzer-page',
@@ -11,7 +12,7 @@ export class MenadzerPageComponent implements OnInit {
   items!: MenuItem[];
   selectedTab: number = 0;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private authService: AuthService) { }
 
   ngOnInit(): void {
     localStorage.setItem('user', 'MENADZER');
@@ -42,6 +43,7 @@ export class MenadzerPageComponent implements OnInit {
         icon: 'pi pi-fw pi-power-off',
         style: { 'margin-left': 'auto' },
         command: (event) => {
+          this.authService.logout()
           this.router.navigateByUrl('/');
         },
       },

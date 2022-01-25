@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="center">
   <div class="grid">
     <div class="property-card">
@@ -45,7 +46,7 @@
 
   <div class="grid">
     <div class="property-card">
-      <a [routerLink]="['/menadzer']" (click)="showModalDialog()">
+      <a (click)="showModalDialog()">
         <div class="property-image manager">
           <div class="property-image-title">
             <h5>Menadzer</h5>
@@ -59,7 +60,7 @@
     </div>
 
     <div class="property-card">
-      <a [routerLink]="['/admin']" (click)="showModalDialog()">
+      <a (click)="showModalDialog()">
         <div class="property-image admin">
           <div class="property-image-title">
             <h5>Administrator</h5>
@@ -73,7 +74,7 @@
     </div>
 
     <div class="property-card">
-      <a [routerLink]="['/kuvar']" (click)="showModalDialog()">
+      <a (click)="showModalDialog()">
         <div class="property-image chef">
           <div class="property-image-title">
             <h5>Glavni kuvar</h5>
@@ -116,6 +117,9 @@
               <label for="inputgroup">Username</label>
             </span>
           </div>
+          <small class="p-error" *ngIf="username === ''"
+            >Polje se mora popuniti</small
+          >
         </div>
         <div class="p-field">
           <p-password
@@ -124,6 +128,9 @@
             [feedback]="false"
             [toggleMask]="true"
           ></p-password>
+          <small class="p-error" *ngIf="password === ''"
+            >Polje se mora popuniti</small
+          >
         </div>
       </div>
     </div>
@@ -132,8 +139,7 @@
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-angle-right"
-      [routerLink]="['/login']"
-      (click)="displayModal = false"
+      (click)="login()"
       label="Login"
       class="p-button-text"
     ></p-button>

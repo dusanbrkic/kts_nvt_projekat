@@ -86,7 +86,7 @@ public class PorudzbinaService {
 
         }
 
-        for (PicePorudzbineDTO p: dto.getPicePorudzbine()) {
+        for (PicePorudzbineDTO p: dto.getPicaPorudzbine()) {
             Pice pice =piceRepository.findOneById(p.getPiceId());
             PicePorudzbine pp = PicePorudzbine.builder()
                     .kolicina(p.getKolicina())
