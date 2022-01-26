@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
           }
         },
         (error) => {
+          console.log(error)
           this.messageService.add({severity:'error', summary:'Bad credentials', detail:'Username or password are wrong'});
         }
       );

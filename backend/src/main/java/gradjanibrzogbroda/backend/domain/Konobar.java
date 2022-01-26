@@ -22,7 +22,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 //@NoArgsConstructor
 public class Konobar extends Zaposleni{
-        public Konobar(ZaposleniDTO zaposleniDTO){
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+		public Konobar(ZaposleniDTO zaposleniDTO){
                 super(zaposleniDTO);
         }
 }

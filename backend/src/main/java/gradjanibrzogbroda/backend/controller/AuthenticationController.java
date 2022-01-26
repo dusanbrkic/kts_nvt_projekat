@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gradjanibrzogbroda.backend.domain.User;
+import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.JwtAuthenticationRequest;
 import gradjanibrzogbroda.backend.dto.UserTokenState;
 import gradjanibrzogbroda.backend.util.TokenUtils;
@@ -39,16 +39,16 @@ public class AuthenticationController {
 				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		User user = (User) authentication.getPrincipal();
+		Zaposleni zap = (Zaposleni) authentication.getPrincipal();
 		
-		if(user.getLastPasswordResetDate()!=null) {
+		if(zap.getLastPasswordResetDate()!=null) {
 			return new ResponseEntity<>("User disabled",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		String jwt = tokenUtils.generateToken(user);
+		String jwt = tokenUtils.generateToken(zap);
 		Long expiresIn = (long) tokenUtils.getExpiredIn();
 
-		return new ResponseEntity<>(new UserTokenState(jwt, user.getUsername(), user.getRoles().get(0).getRole(), expiresIn),HttpStatus.OK);
+		return new ResponseEntity<>(new UserTokenState(jwt, zap.getUsername(), zap.getRoles().get(0).getRole(), expiresIn),HttpStatus.OK);
 	}
 
 }
