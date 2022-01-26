@@ -111,7 +111,7 @@ public class JeloController {
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
 	
-	@PutMapping()
+	@PutMapping("/update")
 	public ResponseEntity<JeloDTO> updateJelo(@RequestBody Jelo jelo){
 		Jelo j = jeloService.updateJelo(jelo);
 		

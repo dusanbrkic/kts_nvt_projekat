@@ -76,16 +76,18 @@ export class PorudzbinaService {
     return porudzbine;
   }
 
-    async porudzbineZaPripremuSanker() {
+  async porudzbineZaPripremuSanker() {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
     let porudzbine: Porudzbina[];
     let answ;
-    await this.http.get(environment.baseUrl + "/porudzbine/zaSankera").subscribe((data:any)=>{
-      porudzbine = data;
-      console.log(porudzbine);
-      this._setPorudzbine(porudzbine);
-    })
-    
+    await this.http
+      .get(environment.baseUrl + '/porudzbine/zaSankera')
+      .subscribe((data: any) => {
+        porudzbine = data;
+        console.log(porudzbine);
+        this._setPorudzbine(porudzbine);
+      });
+
     /*
     const porudzbine = this.getPorudzbine().filter(
       (p) => p.statusPorudzbine === 'KREIRANO' && p.picaPorudzbine.length > 0
@@ -122,17 +124,25 @@ export class PorudzbinaService {
     this._setPorudzbine(porudzbine);
   }
 
-  spremiPica(porudzbina: Porudzbina){
-    //TO DO poslati na back
-    const porudzbine = this.getPorudzbine().map((p) =>
-      p.id === porudzbina.id
-        ? {
-            ...p,
-            picaPorudzbine: p.picaPorudzbine.map(pice=> pice.statusPica==='KREIRANO' ? {...pice,statusPica: 'PRIPREMLJENO'} : pice)
-          }
-        : p
-    );
-    this._setPorudzbine(porudzbine);
+  spremiPica(porudzbina: Porudzbina) {
+    this.http
+      .get(environment.baseUrl + 'porudzbine/spremiPica/' + porudzbina.id)
+      .subscribe((data: any) => {
+        const porudzbine = this.getPorudzbine().map((p) =>
+          p.id === porudzbina.id
+            ? {
+                ...p,
+                picaPorudzbine: p.picaPorudzbine.map((pice) =>
+                  pice.statusPica === 'KREIRANO'
+                    ? { ...pice, statusPica: 'PRIPREMLJENO' }
+                    : pice
+                ),
+              }
+            : p
+        );
+        this._setPorudzbine(porudzbine);
+      });
+    this.porudzbineZaPripremuSanker();
   }
 
   /*loadPorudzbine(): any {
@@ -168,7 +178,6 @@ export class PorudzbinaService {
     return this.http.delete(environment.baseUrl + 'porudzbine/' + porudzbinaId);
   }*/
 
-  
   loadPorudzbineTest(): void {
     const porudzbine: Porudzbina[] = [
       {
@@ -240,7 +249,6 @@ export class PorudzbinaService {
             },
             piceId: 2,
           },
-          
         ],
       },
       {
@@ -438,5 +446,4 @@ export class PorudzbinaService {
     ];
     this._setPorudzbine(porudzbine);
   }
-  
 }

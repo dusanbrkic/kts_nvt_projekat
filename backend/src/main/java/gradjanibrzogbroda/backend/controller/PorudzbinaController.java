@@ -5,6 +5,7 @@ import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
+import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.service.PorudzbinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -75,6 +76,18 @@ public class PorudzbinaController {
         Porudzbina porudzbina = porudzbinaService.napraviPorudzbinu(dto);
 
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
+    }
+    
+    @GetMapping("/spremiPica/{pId}")
+    public ResponseEntity<PorudzbinaDTO> spremiPica(@PathVariable("pId") int pId) {
+        try {
+			porudzbinaService.spremiPica(pId);
+		} catch (PorudzbinaNotFoundException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @PutMapping()
