@@ -15,7 +15,7 @@ public class JeloPorudzbineConstants {
             .id(NEW_JELO_PORUDZBINE_ID)
             .kolicina(NEW_JELO_PORUDZBINE_KOLICINA)
             .napomena(NEW_JELO_PORUDZBINE_NAPOMENA)
-            .jeloId(NEW_JELO_PORUDZBINE_JELO)
+//            .jeloId(NEW_JELO_PORUDZBINE_JELO)
             .porudzbinaId(NEW_JELO_PORUDZBINE_PORUDZBINA)
             .statusJela(StatusJela.KREIRANO)
             .build();
@@ -29,7 +29,7 @@ public class JeloPorudzbineConstants {
             .id(UPDATED_JELO_PORUDZBINE_ID)
             .kolicina(UPDATED_JELO_PORUDZBINE_KOLICINA)
             .napomena(UPDATED_JELO_PORUDZBINE_NAPOMENA)
-            .jeloId(UPDATED_JELO_PORUDZBINE_JELO)
+//            .jeloId(UPDATED_JELO_PORUDZBINE_JELO)
             .porudzbinaId(UPDATED_JELO_PORUDZBINE_PORUDZBINA)
             .statusJela(StatusJela.KREIRANO)
             .build();

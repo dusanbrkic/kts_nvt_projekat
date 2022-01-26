@@ -1,10 +1,12 @@
 package gradjanibrzogbroda.backend.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.GlavniKuvar;
 import gradjanibrzogbroda.backend.domain.Konobar;
 import gradjanibrzogbroda.backend.domain.Kuvar;
@@ -18,7 +20,7 @@ import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
 import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
-import gradjanibrzogbroda.backend.util.StorageService;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,20 +39,20 @@ public class ZaposleniService {
 	@Autowired
 	private ZaposleniRepository zaposleniRepository;
 
-	@Autowired
-	private StorageService storageService;
-
 	public List<Zaposleni> findAll() {
 		return zaposleniRepository.findAll();
 	}
 
-	public Zaposleni findOneByIdentificationNumber(String id) throws UserNotFoundException {
+	public ZaposleniDTO findOneByIdentificationNumber(String id) throws UserNotFoundException{
 		Zaposleni zaposleni = zaposleniRepository.findOneByIdentificationNumber(id);
 
 		if (zaposleni == null) {
 			throw new UserNotFoundException();
 		}
-		return zaposleni;
+
+		ZaposleniDTO zaposleniDTO = new ZaposleniDTO(zaposleni, StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike()));
+
+		return zaposleniDTO;
 	}
 
 	public Map<String, Object> getAllPaged(Integer page, Integer size, String sortByString, Boolean sortDesc, String pretragaIme, String pretragaPrezime, String filterTipZaposlenjaString) {
@@ -108,7 +110,7 @@ public class ZaposleniService {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
-				String slikaString = storageService.loadAsString(zaposleni.getNazivSlike());
+				String slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
 				return new ZaposleniDTO(zaposleni, slikaString);
 			}
 		}).collect(Collectors.toList());
@@ -161,7 +163,7 @@ public class ZaposleniService {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
-				String slikaString = storageService.loadAsString(zaposleni.getNazivSlike());
+				String slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
 				return new ZaposleniDTO(zaposleni, slikaString);
 			}
 		}).collect(Collectors.toList());
@@ -180,12 +182,17 @@ public class ZaposleniService {
 
 		zaposleni.updateFields(zaposleniDTO);
 		zaposleni = zaposleniRepository.save(zaposleni);
+
+		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
+
 		return zaposleni;
 	}
 
 	public Zaposleni addZaposleni(ZaposleniDTO zaposleniDTO) throws UserAlreadyExistsException {
 
 		Zaposleni zaposleni = zaposleniRepository.findOneByIdentificationNumber(zaposleniDTO.getIdentificationNumber());
+
+		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
 
 		if (zaposleni != null) {
 			throw new UserAlreadyExistsException();

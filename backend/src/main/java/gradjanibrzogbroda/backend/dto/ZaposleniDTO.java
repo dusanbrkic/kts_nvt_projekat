@@ -34,7 +34,7 @@ public class ZaposleniDTO {
 
     private List<PlataDTO> plate;
 
-    public ZaposleniDTO(Zaposleni zaposleni, String _slikaString) throws IOException {
+    public ZaposleniDTO(Zaposleni zaposleni, String _slikaString) {
         ime = zaposleni.getIme();
         prezime = zaposleni.getPrezime();
         pol = zaposleni.getPol();

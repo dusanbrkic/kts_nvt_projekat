@@ -6,20 +6,15 @@ import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.JeloPorudzbineRepository;
 import gradjanibrzogbroda.backend.repository.JeloRepository;
 import gradjanibrzogbroda.backend.repository.PorudzbinaRepository;
-import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.testng.Assert.*;
-import org.testng.internal.junit.ArrayAsserts;
 
 import java.util.ArrayList;
 
@@ -172,7 +167,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(NEW_JELO_PORUDZBINE_ID)
                 .kolicina(NEW_JELO_PORUDZBINE_KOLICINA)
                 .napomena(NEW_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(NEW_JELO_PORUDZBINE_JELO)
+//                .jeloId(NEW_JELO_PORUDZBINE_JELO)
                 .porudzbinaId(NON_EXISTANT_PORUDZBINA_ID)
                 .statusJela(StatusJela.KREIRANO)
                 .build();
@@ -187,7 +182,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(NEW_JELO_PORUDZBINE_ID)
                 .kolicina(NEW_JELO_PORUDZBINE_KOLICINA)
                 .napomena(NEW_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(NON_EXISTANT_JELO_ID)
+//                .jeloId(NON_EXISTANT_JELO_ID)
                 .porudzbinaId(NEW_JELO_PORUDZBINE_PORUDZBINA)
                 .statusJela(StatusJela.KREIRANO)
                 .build();
@@ -203,7 +198,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(NEW_JELO_PORUDZBINE_ID)
                 .kolicina(NEW_JELO_PORUDZBINE_KOLICINA)
                 .napomena(NEW_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(NEW_JELO_PORUDZBINE_JELO)
+//                .jeloId(NEW_JELO_PORUDZBINE_JELO)
                 .porudzbinaId(NAPLACENA_PORUDZBINA_ID)
                 .statusJela(StatusJela.KREIRANO)
                 .build();
@@ -218,7 +213,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(NEW_JELO_PORUDZBINE_ID)
                 .kolicina(NEGATIVNA_KOLICINA)
                 .napomena(NEW_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(NEW_JELO_PORUDZBINE_JELO)
+//                .jeloId(NEW_JELO_PORUDZBINE_JELO)
                 .porudzbinaId(NEW_JELO_PORUDZBINE_PORUDZBINA)
                 .statusJela(StatusJela.KREIRANO)
                 .build();
@@ -234,7 +229,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(DB_JELO_PORUDZBINE_ID)
                 .kolicina(UPDATED_JELO_PORUDZBINE_KOLICINA)
                 .napomena(UPDATED_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(DB_JELO_ID)
+//                .jeloId(DB_JELO_ID)
                 .porudzbinaId(DB_PORUDZBINA_ID)
                 .statusJela(StatusJela.KREIRANO)
                 .build();
@@ -257,7 +252,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(NON_EXISTANT_JELO_PORUDZBINE_ID)
                 .kolicina(UPDATED_JELO_PORUDZBINE_KOLICINA)
                 .napomena(UPDATED_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(DB_JELO_ID)
+//                .jeloId(DB_JELO_ID)
                 .porudzbinaId(DB_PORUDZBINA_ID)
                 .statusJela(StatusJela.PREUZETO)
                 .build();
@@ -274,7 +269,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(PREUZETO_JELO_PORUDZBINE_ID)
                 .kolicina(UPDATED_JELO_PORUDZBINE_KOLICINA)
                 .napomena(UPDATED_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(DB_JELO_ID)
+//                .jeloId(DB_JELO_ID)
                 .porudzbinaId(DB_PORUDZBINA_ID)
                 .statusJela(StatusJela.PREUZETO)
                 .build();
@@ -291,7 +286,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
                 .id(DB_JELO_PORUDZBINE_ID)
                 .kolicina(NEGATIVNA_KOLICINA)
                 .napomena(UPDATED_JELO_PORUDZBINE_NAPOMENA)
-                .jeloId(DB_JELO_ID)
+//                .jeloId(DB_JELO_ID)
                 .porudzbinaId(DB_PORUDZBINA_ID)
                 .statusJela(StatusJela.PREUZETO)
                 .build();

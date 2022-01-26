@@ -6,17 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
-
 import gradjanibrzogbroda.backend.exceptions.StorageException;
 import gradjanibrzogbroda.backend.exceptions.StorageFileNotFoundException;
 import gradjanibrzogbroda.backend.config.StorageProperties;
 
-@Service
-public class StorageService {
-	public void store(String fileBase64, String filename) {
+public class StorageUtil {
+	public static void store(String fileBase64, String path, String filename) {
 
 		try {
 			String parsedFileBase64 = fileBase64;
@@ -34,8 +29,7 @@ public class StorageService {
 				throw new StorageException("Failed to store empty file.");
 			}
 
-			File file = new File(StorageProperties.getResourceFolderRelativePath() + System.getProperty("file.separator") +
-					StorageProperties.getZaposleniProfilePicsLocation() + System.getProperty("file.separator") + filename);
+			File file = new File(path + filename);
 			file.createNewFile();
 			try (InputStream inputStream = new ByteArrayInputStream(slikaDecoded)) {
 				Files.copy(inputStream, Path.of(file.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
@@ -46,10 +40,9 @@ public class StorageService {
 		}
 	}
 
-	public String loadAsString(String filename) {
+	public static String loadAsString(String path, String filename) {
 		try {
-			File file = new File(StorageProperties.getResourceFolderRelativePath() + System.getProperty("file.separator") +
-					StorageProperties.getZaposleniProfilePicsLocation() + System.getProperty("file.separator") + filename);
+			File file = new File(path + filename);
 			if (file.exists() || file.isFile()) {
 				return Base64.getEncoder().withoutPadding().encodeToString(new FileInputStream(file).readAllBytes());
 			}
@@ -59,7 +52,6 @@ public class StorageService {
 
 			}
 		} catch (StorageFileNotFoundException | IOException e) {
-			e.printStackTrace();
 			return "";
 		}
 	}

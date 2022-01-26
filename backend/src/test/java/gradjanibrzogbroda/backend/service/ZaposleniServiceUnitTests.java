@@ -2,7 +2,6 @@ package gradjanibrzogbroda.backend.service;
 
 import gradjanibrzogbroda.backend.constants.ZaposleniConstants;
 import gradjanibrzogbroda.backend.domain.Menadzer;
-import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
@@ -12,17 +11,12 @@ import gradjanibrzogbroda.backend.repository.ZaposleniRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
-import org.testng.Assert.*;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static org.mockito.BDDMockito.given;
@@ -39,7 +33,7 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
 
     @InjectMocks
     @Autowired
-    ZaposleniService zaposleniService;
+	ZaposleniService zaposleniService;
 
     @BeforeMethod
     public void initMock() {

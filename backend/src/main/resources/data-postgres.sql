@@ -75,4 +75,18 @@ insert into users (username,password,deleted) values ('user3','$2a$12$XG8yzdx3Rg
 
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (1, 1); 
 INSERT INTO USER_ROLE (user_id, role_id) VALUES (2, 2); 
-INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 6); 
+INSERT INTO USER_ROLE (user_id, role_id) VALUES (3, 6);
+
+--zones
+insert into zone (identification_number, naziv, template_path) values ('12345', 'Terasica', 'terasica.jpg');
+insert into zone (identification_number, naziv, template_path) values ('56789', 'Potkrovlje', 'potkrovljice.jpg');
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y)values ('false', '1234512', 'astal1', 4, 195.5, 469.603);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y)values ('false', '1234512', 'astal2', 4, 195.5, 221.603);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y)values ('false', '1234512', 'astal3', 4, 651.5, 469.603);
+
+insert into zone_stolovi (zone_id, stolovi_id) values (1,1);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,2);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,3);
+
+

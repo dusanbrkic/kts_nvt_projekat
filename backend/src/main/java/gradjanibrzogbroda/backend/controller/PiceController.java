@@ -3,8 +3,6 @@ package gradjanibrzogbroda.backend.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import gradjanibrzogbroda.backend.domain.Jelo;
-import gradjanibrzogbroda.backend.dto.JeloDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

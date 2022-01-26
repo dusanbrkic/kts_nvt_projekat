@@ -1,9 +1,6 @@
 package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.domain.*;
-import gradjanibrzogbroda.backend.dto.JeloDTO;
-import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
-import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.service.PorudzbinaService;

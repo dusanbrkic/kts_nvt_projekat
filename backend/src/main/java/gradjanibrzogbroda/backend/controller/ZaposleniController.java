@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import gradjanibrzogbroda.backend.domain.*;
-import gradjanibrzogbroda.backend.util.StorageService;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +30,6 @@ public class ZaposleniController {
 
 	@Autowired
 	private ZaposleniService zaposleniService;
-
-	@Autowired
-	private StorageService storageService;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleni() {
@@ -62,11 +59,11 @@ public class ZaposleniController {
 	@GetMapping(value = "/id/{id}")
 	public ResponseEntity<ZaposleniDTO> getOneByIdentificationNumber(@PathVariable("id") String id) {
 		try {
-			Zaposleni z = zaposleniService.findOneByIdentificationNumber(id);
+			ZaposleniDTO zaposleniDTO = zaposleniService.findOneByIdentificationNumber(id);
 
-			return new ResponseEntity<ZaposleniDTO>(new ZaposleniDTO(z, storageService.loadAsString(z.getNazivSlike())), HttpStatus.OK);
+			return new ResponseEntity<ZaposleniDTO>(zaposleniDTO, HttpStatus.OK);
 
-		} catch (UserNotFoundException | IOException e) {
+		} catch (UserNotFoundException e) {
 			return new ResponseEntity<ZaposleniDTO>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -79,9 +76,6 @@ public class ZaposleniController {
 
 		try {
 			Zaposleni z = zaposleniService.updateZaposleni(zaposleniDTO);
-
-			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
-
 			return new ResponseEntity<String>("Zaposleni " + z.getIme() + " " + z.getPrezime() + " uspesno azuriran!", HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.NOT_FOUND);
@@ -94,8 +88,6 @@ public class ZaposleniController {
 
 		try {
 			Zaposleni z = zaposleniService.addZaposleni(zaposleniDTO);
-
-			storageService.store(zaposleniDTO.getSlikaString(), z.getNazivSlike());
 
 			return new ResponseEntity<String>("Zaposleni " + z.getIme() + " " + z.getPrezime() + " uspesno dodat!", HttpStatus.OK);
 

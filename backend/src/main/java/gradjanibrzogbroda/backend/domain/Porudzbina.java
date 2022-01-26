@@ -40,10 +40,13 @@ public class Porudzbina {
     @Column(name = "ukupna_cena")
     private Double ukupnaCena;
 
+    @Column(name = "identification_number")
+    private String identificationNumber;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Konobar konobar;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     private Sto sto;
 
     @OneToMany(mappedBy = "porudzbina", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
