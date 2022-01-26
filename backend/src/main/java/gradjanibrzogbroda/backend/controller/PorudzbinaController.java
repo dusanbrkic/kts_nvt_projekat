@@ -42,6 +42,16 @@ public class PorudzbinaController {
         return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
     }
 
+    @GetMapping("/zaKuvara")
+    public ResponseEntity<List<PorudzbinaDTO>> getAllKreiraneSaJelom(){
+        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaSankera();
+        ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
+        for (Porudzbina p: porudzbine) {
+            dtos.add(new PorudzbinaDTO(p));
+        }
+        return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PorudzbinaDTO> getOne(@PathVariable("id") Integer id){
         Porudzbina porudzbina = porudzbinaService.findOne(id);

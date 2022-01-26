@@ -14,6 +14,10 @@ export class PorudzbinaService {
 
   readonly porudzbine$ = this._porudzbineSource.asObservable();
 
+  private readonly _jelaPorudzbineSource = new BehaviorSubject<JeloPorudzbine[]>([]);
+
+  readonly jelaPorudzbine$ = this._jelaPorudzbineSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
   getPorudzbine(): Porudzbina[] {
@@ -22,6 +26,14 @@ export class PorudzbinaService {
 
   private _setPorudzbine(porudzbine: Porudzbina[]): void {
     this._porudzbineSource.next(porudzbine);
+  }
+
+  getJelaPorudzbine(): JeloPorudzbine[] {
+    return this._jelaPorudzbineSource.getValue();
+  }
+
+  private _setJelaPorudzbine(jelaPorudzbine: JeloPorudzbine[]): void {
+    this._jelaPorudzbineSource.next(jelaPorudzbine);
   }
 
   getPorudzbinaById(porudzbinaId: number): Porudzbina {
@@ -68,12 +80,18 @@ export class PorudzbinaService {
     }
   }
 
-  porudzbineZaPripremuKuvar(): Porudzbina[] {
+  async porudzbineZaPripremuKuvar() {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
-    const porudzbine = this.getPorudzbine().filter(
-      (p) => p.statusPorudzbine === 'KREIRANO' && p.jelaPorudzbine.length > 0
-    );
-    return porudzbine;
+    
+    let porudzbine: Porudzbina[];
+    let answ;
+    await this.http
+      .get(environment.baseUrl + 'porudzbine/zaKuvara')
+      .subscribe((data: any) => {
+        porudzbine = data;
+        console.log(porudzbine);
+        this._setPorudzbine(porudzbine);
+      });
   }
 
   async porudzbineZaPripremuSanker() {
@@ -81,7 +99,7 @@ export class PorudzbinaService {
     let porudzbine: Porudzbina[];
     let answ;
     await this.http
-      .get(environment.baseUrl + '/porudzbine/zaSankera')
+      .get(environment.baseUrl + 'porudzbine/zaSankera')
       .subscribe((data: any) => {
         porudzbine = data;
         console.log(porudzbine);
@@ -96,17 +114,16 @@ export class PorudzbinaService {
     */
   }
 
-  jelaUPripremi(): JeloPorudzbine[] {
-    //TO DO umesto ovoga sa backa dobaviti
-    let jela: JeloPorudzbine[] = [];
-    this.getPorudzbine().forEach((p) => {
-      p.jelaPorudzbine.forEach((j) => {
-        if (j.statusJela === 'PREUZETO') {
-          jela.push(j);
-        }
+  async jelaUPripremi() {
+    
+    let jela:  JeloPorudzbine[]
+    let answ;
+    await this.http
+      .get(environment.baseUrl + 'jelo-porudzbine/preuzeta')
+      .subscribe((data: any) => {
+        jela = data;
+        this._setJelaPorudzbine(jela)
       });
-    });
-    return jela;
   }
 
   spremiJelo(jelo: JeloPorudzbine) {

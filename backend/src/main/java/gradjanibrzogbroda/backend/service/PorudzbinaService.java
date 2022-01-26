@@ -47,6 +47,18 @@ public class PorudzbinaService {
         return porudzbine;
     }
 
+    //vraca porudzbine koje kuvar treba da vidi
+    public List <Porudzbina> findAllZaKuvara(){
+        ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
+        for(Porudzbina p : porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.KREIRANO)) {
+            if (!p.getJelaPorudzbine().isEmpty()){
+                porudzbine.add(p);
+            }
+        }
+
+        return porudzbine;
+    }
+
     public Porudzbina findOne(Integer id){
         return porudzbinaRepository.findOneById(id);
     }

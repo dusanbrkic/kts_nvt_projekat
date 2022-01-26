@@ -52,6 +52,10 @@ insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konob
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 1, false);
 
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-11-10', 'Posluziti hranu brzo, gladne musterije.', false, 1, 3, 1, 690.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Lepo spremiti.', 1, 2, 2, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 1, 6, 2, false);
+
 --roles
 
 insert into roles (role,deleted) values ('ROLE_ADMIN',false);

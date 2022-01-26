@@ -25,6 +25,10 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.findAll();
     }
 
+    public List<JeloPorudzbine> getAllPreuzeto(){
+        return jeloPorudzbineRepository.findAllByStatusJela(StatusJela.PREUZETO);
+    }
+
     public JeloPorudzbine findOne(Integer id) throws JeloPorudzbineNotFoundException {
         JeloPorudzbine pronadjeno = jeloPorudzbineRepository.findOneById(id);
         if (pronadjeno == null){
