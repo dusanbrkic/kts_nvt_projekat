@@ -15,7 +15,6 @@ export class MenadzerPageComponent implements OnInit {
   constructor(private router: Router,private authService: AuthService) { }
 
   ngOnInit(): void {
-    localStorage.setItem('user', 'MENADZER');
     this.items = [
       {
         label: 'Zaposleni',
@@ -36,6 +35,13 @@ export class MenadzerPageComponent implements OnInit {
         icon: 'pi pi-fw pi-chart-bar',
         command: (event) => {
           this.selectedTab = 2;
+        },
+      },
+      {
+        label: 'Predlozi',
+        icon: 'pi pi-fw pi-file',
+        command: (event) => {
+          this.selectedTab = 3;
         },
       },
       {

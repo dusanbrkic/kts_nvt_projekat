@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import { Inplace } from 'primeng/inplace';
 import Jelo from 'src/app/model/Jelo';
+import { AuthService } from 'src/app/services/auth.service';
 import { JeloService } from 'src/app/services/jelo.service';
+import { PredlogService } from 'src/app/services/predlog.service';
 
 @Component({
   selector: 'app-menu-jela',
@@ -17,6 +19,7 @@ export class MenuJelaComponent implements OnInit {
   tipovi!: any[];
   loading: boolean = false;
   totalJela: number = 0;
+  userRole: string = '';
 
   @ViewChild('jelaInplace') jelaInplace!: Inplace;
 
@@ -30,20 +33,19 @@ export class MenuJelaComponent implements OnInit {
 
   predlog: boolean = false;
 
-  user: any;
-
   private lastTableLazyLoadEvent!: LazyLoadEvent;
 
   constructor(
     private jeloService: JeloService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService,
+    private predlogService: PredlogService
   ) {}
 
   ngOnInit(): void {
-    //this.jeloService.loadJelaTest();
+    this.userRole = this.authService.getCurrentRole();
     this.jeloService.jela$.subscribe((value) => {
       this.jela = value;
-      //console.log(value);
     });
     this.totalJela = this.jela.length;
     this.kategorije = [
@@ -68,25 +70,26 @@ export class MenuJelaComponent implements OnInit {
       },
     ];
 
-    this.user = localStorage.getItem('user');
-
-    if (this.user === null) {
-    } else {
-      this.items.push({
-        label: 'Predlog izmene',
-        icon: 'pi pi-fw pi-plus',
-        command: () => this.editJelo(this.selectedJelo),
-      });
-      this.items.push({
-        label: 'Predlog brisanja',
-        icon: 'pi pi-fw pi-times',
-        command: () => {},
-      });
-      this.items.push({
-        label: 'Delete',
-        icon: 'pi pi-fw pi-times',
-        command: () => this.deleteJelo(this.selectedJelo),
-      });
+    if (this.authService.isLoggedIn()) {
+      if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
+        this.items.push({
+          label: 'Predlog izmene',
+          icon: 'pi pi-fw pi-plus',
+          command: () => this.openEditJelo(this.selectedJelo),
+        });
+        this.items.push({
+          label: 'Predlog brisanja',
+          icon: 'pi pi-fw pi-times',
+          command: () => this.openEditJelo(this.selectedJelo),
+        });
+      }
+      if (this.userRole === 'ROLE_MANAGER') {
+        this.items.push({
+          label: 'Delete',
+          icon: 'pi pi-fw pi-times',
+          command: () => this.deleteJelo(this.selectedJelo),
+        });
+      }
     }
   }
 
@@ -97,7 +100,7 @@ export class MenuJelaComponent implements OnInit {
     //console.log(event);
 
     //load jela here from backend with pagination
-    this.jeloService.loadJela(event)
+    this.jeloService.loadJela(event);
 
     this.loading = false;
   }
@@ -123,7 +126,7 @@ export class MenuJelaComponent implements OnInit {
     ) {
       delete this.clonedJela[jelo.id];
       this.editing = false;
-      this.jeloService.updateJelo(this.jela[index])
+      this.jeloService.updateJelo(this.jela[index]);
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -148,7 +151,7 @@ export class MenuJelaComponent implements OnInit {
   }
 
   deleteJelo(jelo: Jelo) {
-    this.jeloService.removeJelo(jelo)
+    this.jeloService.removeJelo(jelo);
     this.messageService.add({
       severity: 'info',
       summary: 'Jelo obrisano',
@@ -180,6 +183,7 @@ export class MenuJelaComponent implements OnInit {
     this.submitted = true;
 
     if (this.predlog) {
+      this.predlogService.addPredlog('IZMENA', this.newJelo, this.newJelo.id);
       this.predlog = false;
     } else {
       if (
@@ -187,23 +191,32 @@ export class MenuJelaComponent implements OnInit {
         this.newJelo.trenutnaCena > 0 &&
         this.newJelo.vremePripremeMils > 0
       ) {
-        this.jeloService.addJelo(this.newJelo)
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Kreirano novo jelo',
-          life: 3000,
-        });
-        this.addJeloDialog = false;
-        this.loadJela(this.lastTableLazyLoadEvent);
+        if (this.userRole === 'ROLE_MANAGER') {
+          this.jeloService.addJelo(this.newJelo);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Kreirano novo jelo',
+            life: 3000,
+          });
+          this.addJeloDialog = false;
+          this.loadJela(this.lastTableLazyLoadEvent);
+        }
+        else if(this.userRole === 'ROLE_GLAVNI_KUVAR'){
+          this.predlogService.addPredlog('DODAVANJE', this.newJelo, undefined);
+        }
       }
     }
   }
 
-  editJelo(jelo: Jelo) {
+  openEditJelo(jelo: Jelo) {
     this.newJelo = jelo;
     this.submitted = false;
     this.predlog = true;
     this.addJeloDialog = true;
+  }
+
+  predlogBrisanja(jelo: Jelo) {
+    this.predlogService.addPredlog('BRISANJE', undefined, jelo.id);
   }
 }

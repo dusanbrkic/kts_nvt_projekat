@@ -29,6 +29,8 @@ public interface ZaposleniRepository extends JpaRepository<Zaposleni, Integer> {
     Zaposleni findOneByIdentificationNumber(String identificationNumber);
 
     void deleteByIdentificationNumber(String idNum);
+    
+    Zaposleni findOneByUsername(String username);
 
     @Query(value = "SELECT z FROM Zaposleni z where UPPER(z.ime) LIKE UPPER(:pretragaIme) and UPPER(z.prezime) LIKE UPPER(:pretragaPrezime) and z.tipZaposlenja in :filterTipZaposlenja")
     Page<Zaposleni> getAllPaged(Pageable pageable, @Param("pretragaIme") String pretragaIme, @Param("pretragaPrezime") String pretragaPrezime, @Param("filterTipZaposlenja") Set<TipZaposlenja> filterTipZaposlenja);

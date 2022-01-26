@@ -9,10 +9,7 @@ import java.util.stream.Collectors;
 import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.GlavniKuvar;
 import gradjanibrzogbroda.backend.domain.Konobar;
-import gradjanibrzogbroda.backend.domain.Kuvar;
-import gradjanibrzogbroda.backend.domain.Menadzer;
 import gradjanibrzogbroda.backend.domain.Plata;
-import gradjanibrzogbroda.backend.domain.Sanker;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
@@ -197,7 +194,7 @@ public class ZaposleniService {
 		if (zaposleni != null) {
 			throw new UserAlreadyExistsException();
 		} else {
-			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.GLAVNI_KUVAR)
+			/*if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.GLAVNI_KUVAR)
 				zaposleni = zaposleniRepository.save(new GlavniKuvar(zaposleniDTO));
 			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.KONOBAR)
 				zaposleni = zaposleniRepository.save(new Konobar(zaposleniDTO));
@@ -206,7 +203,7 @@ public class ZaposleniService {
 			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.MENADZER)
 				zaposleni = zaposleniRepository.save(new Menadzer(zaposleniDTO));
 			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.SANKER)
-				zaposleni = zaposleniRepository.save(new Sanker(zaposleniDTO));
+				zaposleni = zaposleniRepository.save(new Sanker(zaposleniDTO));*/
 			return zaposleni;
 		}
 	}

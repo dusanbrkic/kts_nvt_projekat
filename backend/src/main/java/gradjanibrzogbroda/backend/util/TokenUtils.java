@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import gradjanibrzogbroda.backend.domain.User;
+import gradjanibrzogbroda.backend.domain.Zaposleni;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,11 +33,11 @@ public class TokenUtils {
 
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 	
-	public String generateToken(User user) {
+	public String generateToken(Zaposleni zap) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(user.getUsername())
-				.claim("roles", user.getRoles().get(0).getRole())
+				.setSubject(zap.getUsername())
+				.claim("roles", zap.getRoles().get(0).getRole())
 				.setAudience(generateAudience())
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
@@ -134,13 +134,13 @@ public class TokenUtils {
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		User user = (User) userDetails;
+		Zaposleni zap = (Zaposleni) userDetails;
 		final String username = getUsernameFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
 		
 		return (username != null 
 			&& username.equals(userDetails.getUsername()) 
-			&& !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())); 
+			&& !isCreatedBeforeLastPasswordReset(created, zap.getLastPasswordResetDate())); 
 	}
 	
 	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {

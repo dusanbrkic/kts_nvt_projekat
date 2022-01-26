@@ -28,5 +28,4 @@ public class Konobar extends Zaposleni{
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Porudzbina> porudzbine;
-
 }
