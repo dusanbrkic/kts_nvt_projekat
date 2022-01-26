@@ -62,6 +62,7 @@ import {SplitterModule} from 'primeng/splitter';
 import { TagModule } from 'primeng/tag';
 import {CarouselModule} from 'primeng/carousel';
 import { InterInterceptor } from './interceptor/inter.interceptor';
+import { PredloziViewComponent } from './menadzer-page/predlozi-view/predlozi-view.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { InterInterceptor } from './interceptor/inter.interceptor';
     MenuPicaComponent,
     MenadzerPageComponent,
     LayoutKonobarComponent,
+    PredloziViewComponent,
   ],
   imports: [
     ImageModule,

@@ -18,7 +18,7 @@
     <p-toolbar styleClass="mb-4">
       <ng-template pTemplate="left">
         <button
-          *ngIf="user !== null"
+          *ngIf="userRole==='ROLE_MANAGER' || userRole==='ROLE_GLAVNI_KUVAR'"
           pButton
           pRipple
           label="New"
@@ -82,7 +82,7 @@
           <th pSortableColumn="vremePripremeMils">
             Vreme Pripreme <p-sortIcon field="vremePripremeMils"></p-sortIcon>
           </th>
-          <th *ngIf="user!==null"></th>
+          <th *ngIf="userRole==='ROLE_MANAGER'"></th>
         </tr>
         <tr>
           <th>
@@ -128,7 +128,7 @@
             </p-columnFilter>
           </th>
           <th></th>
-          <th *ngIf="user!==null"></th>
+          <th *ngIf="userRole==='ROLE_MANAGER'"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-jelo let-ri="rowIndex">
@@ -237,7 +237,7 @@
               </ng-template>
             </p-cellEditor>
           </td>
-          <td style="text-align: center" *ngIf="user!==null">
+          <td style="text-align: center" *ngIf="userRole==='ROLE_MANAGER'">
             <button
               *ngIf="!editing"
               pButton
