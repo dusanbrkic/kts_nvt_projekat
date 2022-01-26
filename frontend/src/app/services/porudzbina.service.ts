@@ -14,6 +14,10 @@ export class PorudzbinaService {
 
   readonly porudzbine$ = this._porudzbineSource.asObservable();
 
+  private readonly _jelaPorudzbineSource = new BehaviorSubject<JeloPorudzbine[]>([]);
+
+  readonly jelaPorudzbine$ = this._jelaPorudzbineSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
   getPorudzbine(): Porudzbina[] {
@@ -22,6 +26,14 @@ export class PorudzbinaService {
 
   private _setPorudzbine(porudzbine: Porudzbina[]): void {
     this._porudzbineSource.next(porudzbine);
+  }
+
+  getJelaPorudzbine(): JeloPorudzbine[] {
+    return this._jelaPorudzbineSource.getValue();
+  }
+
+  private _setJelaPorudzbine(jelaPorudzbine: JeloPorudzbine[]): void {
+    this._jelaPorudzbineSource.next(jelaPorudzbine);
   }
 
   getPorudzbinaById(porudzbinaId: number): Porudzbina {
@@ -68,33 +80,50 @@ export class PorudzbinaService {
     }
   }
 
-  porudzbineZaPripremuKuvar(): Porudzbina[] {
+  async porudzbineZaPripremuKuvar() {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
-    const porudzbine = this.getPorudzbine().filter(
-      (p) => p.statusPorudzbine === 'KREIRANO' && p.jelaPorudzbine.length > 0
-    );
-    return porudzbine;
+    
+    let porudzbine: Porudzbina[];
+    let answ;
+    await this.http
+      .get(environment.baseUrl + 'porudzbine/zaKuvara')
+      .subscribe((data: any) => {
+        porudzbine = data;
+        console.log(porudzbine);
+        this._setPorudzbine(porudzbine);
+      });
   }
 
-  porudzbineZaPripremuSanker(): Porudzbina[] {
+  async porudzbineZaPripremuSanker() {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
+    let porudzbine: Porudzbina[];
+    let answ;
+    await this.http
+      .get(environment.baseUrl + 'porudzbine/zaSankera')
+      .subscribe((data: any) => {
+        porudzbine = data;
+        console.log(porudzbine);
+        this._setPorudzbine(porudzbine);
+      });
+
+    /*
     const porudzbine = this.getPorudzbine().filter(
       (p) => p.statusPorudzbine === 'KREIRANO' && p.picaPorudzbine.length > 0
     );
     return porudzbine;
+    */
   }
 
-  jelaUPripremi(): JeloPorudzbine[] {
-    //TO DO umesto ovoga sa backa dobaviti
-    let jela: JeloPorudzbine[] = [];
-    this.getPorudzbine().forEach((p) => {
-      p.jelaPorudzbine.forEach((j) => {
-        if (j.statusJela === 'PREUZETO') {
-          jela.push(j);
-        }
+  async jelaUPripremi() {
+    
+    let jela:  JeloPorudzbine[]
+    let answ;
+    await this.http
+      .get(environment.baseUrl + 'jelo-porudzbine/preuzeta')
+      .subscribe((data: any) => {
+        jela = data;
+        this._setJelaPorudzbine(jela)
       });
-    });
-    return jela;
   }
 
   spremiJelo(jelo: JeloPorudzbine) {
@@ -112,17 +141,25 @@ export class PorudzbinaService {
     this._setPorudzbine(porudzbine);
   }
 
-  spremiPica(porudzbina: Porudzbina){
-    //TO DO poslati na back
-    const porudzbine = this.getPorudzbine().map((p) =>
-      p.id === porudzbina.id
-        ? {
-            ...p,
-            picaPorudzbine: p.picaPorudzbine.map(pice=> pice.statusPica==='KREIRANO' ? {...pice,statusPica: 'PRIPREMLJENO'} : pice)
-          }
-        : p
-    );
-    this._setPorudzbine(porudzbine);
+  spremiPica(porudzbina: Porudzbina) {
+    this.http
+      .get(environment.baseUrl + 'porudzbine/spremiPica/' + porudzbina.id)
+      .subscribe((data: any) => {
+        const porudzbine = this.getPorudzbine().map((p) =>
+          p.id === porudzbina.id
+            ? {
+                ...p,
+                picaPorudzbine: p.picaPorudzbine.map((pice) =>
+                  pice.statusPica === 'KREIRANO'
+                    ? { ...pice, statusPica: 'PRIPREMLJENO' }
+                    : pice
+                ),
+              }
+            : p
+        );
+        this._setPorudzbine(porudzbine);
+      });
+    this.porudzbineZaPripremuSanker();
   }
 
   /*loadPorudzbine(): any {
@@ -214,6 +251,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -226,6 +264,7 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
         ],
       },
@@ -250,6 +289,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 3,
           },
         ],
       },
@@ -274,6 +314,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 3,
           },
         ],
       },
@@ -331,6 +372,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -343,6 +385,7 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
         ],
       },
@@ -400,6 +443,7 @@ export class PorudzbinaService {
               naziv: 'Pice 1',
               trenutnaCena: 120.0,
             },
+            piceId: 1,
           },
           {
             id: 2,
@@ -412,6 +456,7 @@ export class PorudzbinaService {
               naziv: 'Pice 2',
               trenutnaCena: 120.0,
             },
+            piceId: 2,
           },
         ],
       },

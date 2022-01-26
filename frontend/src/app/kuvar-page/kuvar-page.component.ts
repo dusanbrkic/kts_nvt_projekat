@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-kuvar-page',
@@ -11,7 +12,7 @@ export class KuvarPageComponent implements OnInit {
   items!: MenuItem[];
   selectedTab: number = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthService) {}
 
   ngOnInit(): void {
     this.items = [
@@ -34,7 +35,6 @@ export class KuvarPageComponent implements OnInit {
         icon: 'pi pi-fw pi-bell',
         style: { 'margin-left': 'auto' },
         command: (event) => {
-          this.router.navigateByUrl('/');
         },
       },
       {
@@ -42,6 +42,7 @@ export class KuvarPageComponent implements OnInit {
         icon: 'pi pi-fw pi-power-off',
         style: { align: 'right' },
         command: (event) => {
+          this.authService.logout()
           this.router.navigateByUrl('/');
         },
       },

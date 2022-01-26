@@ -7,19 +7,34 @@ import { SankerPageComponent } from './sanker-page/sanker-page.component';
 import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
+import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'konobar',component:KonobarPageComponent},
-  {path: 'sanker',component:SankerPageComponent},
-  {path: 'kuvar',component:KuvarPageComponent},
-  {path: 'admin',component:AdminPageComponent},
-  {path: 'menadzer',component:MenadzerPageComponent},
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'konobar', component: KonobarPageComponent },
+  { path: 'sanker', component: SankerPageComponent },
+  { path: 'kuvar', component: KuvarPageComponent },
+  {
+    path: 'admin',
+    component: AdminPageComponent,
+    canActivate: [RoleGuard],
+    data: {
+      role: 'ROLE_ADMIN',
+    },
+  },
+  {
+    path: 'menadzer',
+    component: MenadzerPageComponent,
+    canActivate: [RoleGuard],
+    data: {
+      role: 'ROLE_MANAGER',
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -47,12 +47,23 @@ export class PorudzbineViewKuvarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.porudzbinaService.loadPorudzbineTest();
-    this.porudzbinaService.porudzbine$.subscribe((value) => {
-      this.novePorudzbine = this.porudzbinaService.porudzbineZaPripremuKuvar();
-      this.jelaUPripremi = this.porudzbinaService.jelaUPripremi();
+    this.porudzbinaService.porudzbineZaPripremuSanker();
+    this.porudzbinaService.porudzbine$.subscribe(value=>{
+      this.novePorudzbine=value;
+      //console.log(value);
+    });
+    this.porudzbinaService.jelaUPripremi()
+    this.porudzbinaService.jelaPorudzbine$.subscribe(value=>{
+      this.jelaUPripremi=value;
       console.log(value);
     });
+
+    // this.porudzbinaService.loadPorudzbineTest();
+    // this.porudzbinaService.porudzbine$.subscribe((value) => {
+    //   this.novePorudzbine = this.porudzbinaService.porudzbineZaPripremuKuvar();
+    //   this.jelaUPripremi = this.porudzbinaService.jelaUPripremi();
+    //   console.log(value);
+    // });
   }
 
   showModalDialog(tekst: string, naslov: string) {

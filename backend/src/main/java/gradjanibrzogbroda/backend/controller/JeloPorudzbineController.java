@@ -2,8 +2,10 @@ package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
 import gradjanibrzogbroda.backend.domain.PicePorudzbine;
+import gradjanibrzogbroda.backend.domain.Porudzbina;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.service.JeloPorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/jelo-porudzbine")
 public class JeloPorudzbineController {
 
     @Autowired
     JeloPorudzbineService jeloPorudzbineService;
+
+    @GetMapping("/preuzeta")
+    public ResponseEntity<List<JeloPorudzbineDTO>> getAllPreuzeta(){
+        ArrayList<JeloPorudzbine> jela = (ArrayList<JeloPorudzbine>) jeloPorudzbineService.getAllPreuzeto();
+        ArrayList<JeloPorudzbineDTO> dtos = new ArrayList<JeloPorudzbineDTO>();
+        for (JeloPorudzbine p: jela) {
+            dtos.add(new JeloPorudzbineDTO(p));
+        }
+        return new ResponseEntity<List<JeloPorudzbineDTO>>(dtos, HttpStatus.OK);
+    }
 
     @PostMapping()
     public ResponseEntity<JeloPorudzbineDTO> dodajJeloPorudzbine(@RequestBody JeloPorudzbineDTO dto) {

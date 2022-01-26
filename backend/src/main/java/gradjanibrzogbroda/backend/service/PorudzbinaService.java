@@ -8,6 +8,7 @@ import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
+import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,31 @@ public class PorudzbinaService {
     public List <Porudzbina> findAll(){
         return porudzbinaRepository.findAll();
     }
+    
+    public List <Porudzbina> findAllZaSankera(){
+    	ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
+    	for(Porudzbina p : porudzbinaRepository.findAllZaSankera()) {
+    		for(PicePorudzbine pp : p.getPicePorudzbine()) {
+    			if(pp.getStatusPica()==StatusPica.KREIRANO) {
+    				porudzbine.add(p);
+    			}
+    		}
+    	}
+    	
+        return porudzbine;
+    }
+
+    //vraca porudzbine koje kuvar treba da vidi
+    public List <Porudzbina> findAllZaKuvara(){
+        ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
+        for(Porudzbina p : porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.KREIRANO)) {
+            if (!p.getJelaPorudzbine().isEmpty()){
+                porudzbine.add(p);
+            }
+        }
+
+        return porudzbine;
+    }
 
     public Porudzbina findOne(Integer id){
         return porudzbinaRepository.findOneById(id);
@@ -43,6 +69,30 @@ public class PorudzbinaService {
 
     public List<Porudzbina> findAllByKonobarId(Integer konobarId){
         return porudzbinaRepository.findAllByKonobarId(konobarId);
+    }
+    
+    public void spremiPica(int porudzbinaId) throws PorudzbinaNotFoundException {
+    	Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
+    	if(p==null) {
+    		throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
+    	}
+    	for(PicePorudzbine pp : p.getPicePorudzbine()) {
+    		if(pp.getStatusPica()==StatusPica.KREIRANO) {
+    			pp.setStatusPica(StatusPica.PRIPREMLJENO);
+    		}
+    	}
+    	boolean all = true;
+    	for(JeloPorudzbine jp : p.getJelaPorudzbine()) {
+    		if(jp.getStatusJela()==StatusJela.KREIRANO) {
+    			all = false;
+    		}
+    	}
+    	if(all) {
+    		p.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
+    	}
+    	porudzbinaRepository.save(p);
+    	
+    	
     }
 
     public Porudzbina napraviPorudzbinu(PorudzbinaDTO dto){
@@ -75,7 +125,7 @@ public class PorudzbinaService {
 
         }
 
-        for (PicePorudzbineDTO p: dto.getPicePorudzbine()) {
+        for (PicePorudzbineDTO p: dto.getPicaPorudzbine()) {
             Pice pice =piceRepository.findOneById(p.getPiceId());
             PicePorudzbine pp = PicePorudzbine.builder()
                     .kolicina(p.getKolicina())

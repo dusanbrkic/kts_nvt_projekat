@@ -5,6 +5,7 @@ import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
+import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.service.PorudzbinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,6 +25,26 @@ public class PorudzbinaController {
     @GetMapping()
     public ResponseEntity<List<PorudzbinaDTO>> getAll(){
         ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAll();
+        ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
+        for (Porudzbina p: porudzbine) {
+            dtos.add(new PorudzbinaDTO(p));
+        }
+        return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
+    }
+    
+    @GetMapping("/zaSankera")
+    public ResponseEntity<List<PorudzbinaDTO>> getAllKreiraneSaPicem(){
+        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaSankera();
+        ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
+        for (Porudzbina p: porudzbine) {
+            dtos.add(new PorudzbinaDTO(p));
+        }
+        return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/zaKuvara")
+    public ResponseEntity<List<PorudzbinaDTO>> getAllKreiraneSaJelom(){
+        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaSankera();
         ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
         for (Porudzbina p: porudzbine) {
             dtos.add(new PorudzbinaDTO(p));
@@ -65,6 +86,18 @@ public class PorudzbinaController {
         Porudzbina porudzbina = porudzbinaService.napraviPorudzbinu(dto);
 
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
+    }
+    
+    @GetMapping("/spremiPica/{pId}")
+    public ResponseEntity<PorudzbinaDTO> spremiPica(@PathVariable("pId") int pId) {
+        try {
+			porudzbinaService.spremiPica(pId);
+		} catch (PorudzbinaNotFoundException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @PutMapping()
