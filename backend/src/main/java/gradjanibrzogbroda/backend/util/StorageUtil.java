@@ -12,11 +12,11 @@ import gradjanibrzogbroda.backend.config.StorageProperties;
 
 public class StorageUtil {
 	public static void store(String fileBase64, String path, String filename) {
-
+		File file = new File(path + filename);
 		try {
 			String parsedFileBase64 = fileBase64;
 
-			if (fileBase64.isEmpty()){ return; }
+			if (fileBase64==null && fileBase64.isEmpty()){ return; }
 
 			String[] splittedFile = fileBase64.split(",");
 			if(splittedFile.length!=1){
@@ -29,11 +29,11 @@ public class StorageUtil {
 				throw new StorageException("Failed to store empty file.");
 			}
 
-			File file = new File(path + filename);
 			file.createNewFile();
-			try (InputStream inputStream = new ByteArrayInputStream(slikaDecoded)) {
-				Files.copy(inputStream, Path.of(file.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-			}
+			InputStream inputStream = new ByteArrayInputStream(slikaDecoded);
+			Files.copy(inputStream, Path.of(file.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+
+			inputStream.close();
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file.", e);

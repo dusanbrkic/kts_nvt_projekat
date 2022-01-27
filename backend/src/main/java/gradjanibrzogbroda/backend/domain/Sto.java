@@ -1,11 +1,19 @@
 package gradjanibrzogbroda.backend.domain;
 
+import gradjanibrzogbroda.backend.dto.StoDTO;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="stolovi")
+@SQLDelete(sql
+        = "UPDATE stolovi "
+        + "SET obrisan = true "
+        + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 @Getter
 @Setter
 @Builder
@@ -35,6 +43,9 @@ public class Sto {
     @Column(name = "identification_number")
     private String identificationNumber;
 
+    @Column(name = "obrisan", nullable = false)
+    private boolean obrisan;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     private Porudzbina porudzbina;
@@ -42,6 +53,17 @@ public class Sto {
     @ManyToOne(fetch = FetchType.LAZY)
     private Konobar konobar;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Zone zone;
 
 
+    public Sto updateFields(StoDTO stoDTO) {
+        zauzet = stoDTO.getZauzet();
+        pozicijaX = stoDTO.getX();
+        pozicijaY = stoDTO.getY();
+        brojMesta = stoDTO.getBrojMesta();
+        nazivStola = stoDTO.getNaziv();
+        identificationNumber = stoDTO.getId();
+        return this;
+	}
 }

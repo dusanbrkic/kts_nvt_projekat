@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.assertj.core.util.Arrays;
 
-import gradjanibrzogbroda.backend.domain.Menadzer;
 import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
@@ -38,11 +37,11 @@ public class ZaposleniConstants {
         public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
                         null, null, 52000.0, TipZaposlenja.MENADZER, null, NEW_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
 
-        public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(UPDATED_ZAPOSLENI_DTO);
+//        public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(UPDATED_ZAPOSLENI_DTO);
+//
+//        public static final Menadzer NEW_ZAPOSLENI = new Menadzer(NEW_ZAPOSLENI_DTO);
 
-        public static final Menadzer NEW_ZAPOSLENI = new Menadzer(NEW_ZAPOSLENI_DTO);
-
-        public static final List<Zaposleni> ZAPOSLENI = List.of(new Zaposleni[] { NEW_ZAPOSLENI, UPDATED_ZAPOSLENI });
+//        public static final List<Zaposleni> ZAPOSLENI = List.of(new Zaposleni[] { NEW_ZAPOSLENI, UPDATED_ZAPOSLENI });
 
         public static final Integer DELETED_ZAPOSLENI_ID = 3;
         public static final String DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER = "13245";

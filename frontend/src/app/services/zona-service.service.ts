@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Sto from '../model/Sto';
 import Zona from '../model/Zona';
 
@@ -11,7 +13,9 @@ export class ZonaService {
 
   readonly zone$: Observable<Zona[]> = this._zoneSource.asObservable();
 
-  constructor() {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
   getZones(): Zona[] {
     return this._zoneSource.getValue();
@@ -21,27 +25,57 @@ export class ZonaService {
     this._zoneSource.next(zone);
   }
 
-  loadZones() {
-    //TO DO: ucitavanje sa backa
+  async loadZones(selektujZonu:any) {
+    const cekaj = await this.http.get(environment.baseUrl + "zone", {
+      "responseType": 'json',
+      "observe": 'response'
+    }).toPromise()
+    .then((response: any) => {
+      this._setZones(response.body);
+      selektujZonu();
+    });
   }
 
-  saveZone(): boolean {
-    //TO DO: sacuvati zonu na back;
+  async saveZone(selectedZone:Zona, alertCallback:any){
+    // TO DO: sacuvati zonu na back;
     // true-uspeh false-greska( uraditi reload ako dodje do greske)
-
-    return true;
+    const cekaj = await this.http.post(environment.baseUrl + "zone", selectedZone, {
+      "responseType": 'json',
+      "observe": 'response'
+    }).toPromise()
+    .then((response: any) => {
+      this.getZones().push(response.body);
+      alertCallback(response);
+    }).catch(()=>{});
   }
 
-  addZone(zone: Zona): void {
+  async addZone(zone: Zona, alertCallback:any) {
     //TO DO: dodati zonu na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    const cekaj = await this.http.put(environment.baseUrl + "zone", zone, {
+      "responseType": 'json',
+      "observe": 'response'
+    }).toPromise()
+    .then((response: any) => {
+      console.log(response)
+      alertCallback(response);
+    });
+
     const zones: Zona[] = [...this.getZones(), zone];
     this._setZones(zones);
   }
 
-  removeZone(zona: Zona): void {
+  async removeZone(zona: Zona, alertCallback:any) {
     //TO DO: izbrisati zonu sa backa
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
+    const cekaj = await this.http.delete(environment.baseUrl + "zone/" + zona.id, {
+      "responseType": 'json',
+      "observe": 'response'
+    }).toPromise()
+    .then((response: any) => {
+      console.log(response)
+      alertCallback(response);
+    });
     const zones = this.getZones().filter((z) => z.id !== zona.id);
     this._setZones(zones);
   }
@@ -77,62 +111,5 @@ export class ZonaService {
       z.id === zona.id ? { ...zona, stolovi: stolovi } : z
     );
     this._setZones(zones);
-  }
-
-  loadZoneTest() {
-    const zone: Zona[] = [
-      {
-        id: 1,
-        naziv: 'Prizemlje',
-        stolovi: [
-          {
-            id: 1,
-            zauzet: false,
-            brojMesta: 4,
-            x: 651.5,
-            y: 227.046875,
-            naziv: 'Sto 1',
-            porudzbinaId: -1,
-          },
-          {
-            id: 2,
-            zauzet: true,
-            brojMesta: 3,
-            x: 195.5,
-            y: 469.609375,
-            naziv: 'Sto 2',
-            porudzbinaId: 1
-          }
-        ],
-        template: '/assets/zones/zone1.png',
-      },
-      {
-        id: 2,
-        naziv: 'Sprat I',
-        stolovi: [
-          {
-            id: 3,
-            zauzet: true,
-            brojMesta: 4,
-            x: 30,
-            y: 30,
-            naziv: 'Sto 1',
-            porudzbinaId: 2,
-          },
-          {
-            id: 4,
-            zauzet: true,
-            brojMesta: 4,
-            x: 150,
-            y: 150,
-            naziv: 'Sto 2',
-            porudzbinaId: 3,
-
-          },
-        ],
-        template: '/assets/zones/zone2.png',
-      },
-    ];
-    this._setZones(zone);
   }
 }

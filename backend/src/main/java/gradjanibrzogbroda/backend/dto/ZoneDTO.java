@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 public class ZoneDTO {
 	private String naziv;
 	private String templateBase64;
-	private String identificationNumber;
+	private String id;
 
 	private Set<StoDTO> stolovi;
 
 	public ZoneDTO(Zone zone, String _templateBase64){
 		naziv = zone.getNaziv();
 		templateBase64 = _templateBase64;
-		identificationNumber = zone.getIdentificationNumber();
+		id = zone.getIdentificationNumber();
 
 		stolovi = zone.getStolovi().stream().map(new Function<Sto, StoDTO>() {
 			@Override

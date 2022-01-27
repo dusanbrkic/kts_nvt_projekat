@@ -7,8 +7,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import gradjanibrzogbroda.backend.config.StorageProperties;
-import gradjanibrzogbroda.backend.domain.GlavniKuvar;
-import gradjanibrzogbroda.backend.domain.Konobar;
 import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.dto.PlataDTO;

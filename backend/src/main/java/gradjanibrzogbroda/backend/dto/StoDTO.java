@@ -16,18 +16,23 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 public class StoDTO {
 	private Boolean zauzet;
-	private Double pozicijaX;
-	private Double pozicijaY;
+	private Double x;
+	private Double y;
 	private Integer brojMesta;
-	private String nazivStola;
-	private String identificationNumber;
+	private String naziv;
+	private String id;
+
+	private String porudzbinaId;
 
 	public StoDTO(Sto astal){
 		zauzet = astal.getZauzet();
-		pozicijaX = astal.getPozicijaX();
-		pozicijaY = astal.getPozicijaY();
+		x = astal.getPozicijaX();
+		y = astal.getPozicijaY();
 		brojMesta = astal.getBrojMesta();
-		nazivStola = astal.getNazivStola();
-		identificationNumber = astal.getIdentificationNumber();
+		naziv = astal.getNazivStola();
+		id = astal.getIdentificationNumber();
+		if (astal.getPorudzbina()!=null) {
+			porudzbinaId = astal.getPorudzbina().getIdentificationNumber();
+		}
 	}
 }

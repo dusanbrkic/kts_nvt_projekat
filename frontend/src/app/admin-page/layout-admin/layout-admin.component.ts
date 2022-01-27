@@ -1,8 +1,10 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import Sto from 'src/app/model/Sto';
 import Zona from 'src/app/model/Zona';
 import { ZonaService } from 'src/app/services/zona-service.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Base64Service } from 'src/app/utils/base64.service';
 
 @Component({
   selector: 'app-layout-admin',
@@ -25,21 +27,60 @@ export class LayoutAdminComponent implements OnInit {
   displayModalNazivZone: boolean = false;
   updateNaziv: string = '';
 
+  @ViewChild("zoneTemplateDiv")
+  zoneTemplateDiv!: ElementRef;
+
+  templateURL: any;
+
+  zoneGenericImgSrc: any = "http://localhost:4200/assets/zones/zone1.png";
+
+  novaZonaTemplatePic: any = {};
+  novaZonaTemplatePicPreview: any = this.zoneGenericImgSrc;
+  novaZonaTemplateCancelBtnDisabled: any = true;
+
+  @ViewChild('templatePicUpload')
+  fileUpload: any;
+
   constructor(
     private elem: ElementRef,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private zonaService: ZonaService
-  ) {}
+    private zonaService: ZonaService,
+    private sanitizer: DomSanitizer,
+    private base64Service: Base64Service,
+  ) { }
 
   ngOnInit(): void {
     this.zonaService.zone$.subscribe((value) => {
       this.zone = value;
       console.log(value);
     });
-    this.zonaService.loadZoneTest();
 
-    this.selectedZona = this.zone[0];
+    this.zonaService.loadZones(() => {
+      this.selectedZona = this.zone[0];
+      this.templateURL = this.getTemplatePic(this.selectedZona.templateBase64);
+    });
+
+  }
+
+  onTemplatePicUpload(event: any) {
+    this.novaZonaTemplatePic = event.currentFiles[0];
+    this.novaZonaTemplatePicPreview = this.novaZonaTemplatePic.objectURL;
+    this.novaZonaTemplateCancelBtnDisabled = false;
+  }
+
+  cancelProfilePicBtnClicked(event: any) {
+    this.novaZonaTemplatePic = {};
+    this.novaZonaTemplatePicPreview = this.zoneGenericImgSrc;
+    this.novaZonaTemplateCancelBtnDisabled = true;
+  }
+
+  doNothing(event: any) {
+    this.fileUpload.clear();
+  }
+
+  getTemplatePic(stringPic: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
   }
 
   onDragEnded(event: any) {
@@ -109,6 +150,14 @@ export class LayoutAdminComponent implements OnInit {
 
   save() {
     console.log(this.selectedZona);
+    this.zonaService.saveZone(this.selectedZona, (response: any) => {
+      this.messageService.add({
+        severity: response.ok ? "success" : "error",
+        summary: response.body,
+        detail: 'Zona obrisana',
+        life: 3000,
+      });
+    });
   }
 
   saveTable() {
@@ -132,12 +181,29 @@ export class LayoutAdminComponent implements OnInit {
     if (this.newZoneNaziv === '') {
       return;
     }
-    this.zonaService.addZone({
+
+    let novaZona = {
       id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
       naziv: this.newZoneNaziv,
       stolovi: [],
-      template: '/assets/zones/zone1.png',
-    });
+      templateBase64: '',
+    };
+
+    const that = this;
+    if (Object.keys(this.novaZonaTemplatePic).length !== 0) {
+      this.base64Service.encode(this.novaZonaTemplatePic, async (slikaString: any) => {
+        novaZona.templateBase64 = slikaString;
+        await that.zonaService.addZone(novaZona, (response: any) => {
+          this.messageService.add({
+            severity: response.ok ? 'success' : 'error',
+            summary: response.body,
+            detail: response.body,
+            life: 3000,
+          });
+        });
+      });
+    }
+
     this.displayModalNewZone = false;
   }
 
@@ -150,14 +216,16 @@ export class LayoutAdminComponent implements OnInit {
       header: 'Potvrda',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.zonaService.removeZone(this.selectedZona);
+        this.zonaService.removeZone(this.selectedZona,
+          (response: any) => {
+            this.messageService.add({
+              severity: response.ok ? "success" : "error",
+              summary: response.body,
+              detail: 'Zona obrisana',
+              life: 3000,
+            })
+          });
         this.selectedZona = this.zone[0];
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Uspeh',
-          detail: 'Zona obrisana',
-          life: 3000,
-        });
       },
     });
   }
