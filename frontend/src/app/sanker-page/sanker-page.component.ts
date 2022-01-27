@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from '../services/auth.service';
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sanker-page',
@@ -12,7 +15,9 @@ export class SankerPageComponent implements OnInit {
   items!: MenuItem[];
   selectedTab: number = 0;
 
-  constructor(private router: Router,private authService: AuthService) {}
+  stompClient: any;
+
+  constructor(private router: Router,private authService: AuthService,private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.items = [
@@ -24,21 +29,24 @@ export class SankerPageComponent implements OnInit {
         },
       },
       {
-        label: 'Button Notifications',
-        icon: 'pi pi-fw pi-bell',
-        style: { 'margin-left': 'auto' },
-        command: (event) => {
-        },
-      },
-      {
         label: 'Button Return',
         icon: 'pi pi-fw pi-power-off',
-        style: { align: 'right' },
+        style: { 'margin-left': 'auto' },
         command: (event) => {
           this.authService.logout()
           this.router.navigateByUrl('/');
         },
       },
     ];
+
+    const socket = new SockJS(environment.baseUrl + 'websocket');
+    this.stompClient = Stomp.over(socket);
+
+    this.stompClient.connect({}, (frame: any) => {
+      this.stompClient.subscribe('/topic/new-porudzbina-notification',(message: any) => {
+        console.log(JSON.parse(message.body).content)
+        this.messageService.add({severity:'info', sticky: true,summary:'Notification', detail:JSON.parse(message.body).content});
+      });
+    });
   }
 }

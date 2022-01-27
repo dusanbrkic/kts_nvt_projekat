@@ -12,7 +12,9 @@ import { AuthService } from '../services/auth.service';
 export class HomeComponent implements OnInit {
   constructor(private authService: AuthService,private router: Router,private messageService: MessageService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.logout()
+  }
 
   displayModal: boolean = false;
   username: string = '';
