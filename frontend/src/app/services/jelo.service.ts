@@ -23,70 +23,85 @@ export class JeloService {
     this._jelaSource.next(jela);
   }
 
-  loadJela(event: LazyLoadEvent){
+  async loadJela(event: LazyLoadEvent, brojJelaUpdate: any) {
     console.log(event);
-    //TO DO get jela sa paginacijom i filterima
     let naziv;
     let kategorijaJela;
     let tipJela;
-    if(event.filters?.naziv?.value === undefined){
-      naziv = "";
-    }else{
+    if (event.filters?.naziv?.value === undefined) {
+      naziv = '';
+    } else {
       naziv = event.filters?.naziv?.value;
     }
-    if(event.filters?.kategorijaJela?.value?.value === undefined){
+    if (event.filters?.kategorijaJela?.value?.value === undefined) {
       kategorijaJela = null;
-    }else{
+    } else {
       kategorijaJela = event.filters?.kategorijaJela?.value?.value;
     }
-    if(event.filters?.tipJela?.value?.value === undefined){
+    if (event.filters?.tipJela?.value?.value === undefined) {
       tipJela = null;
-    }else{
+    } else {
       tipJela = event.filters?.tipJela?.value?.value;
     }
-    
-
-
-    let params:any = {
-      first : event.first,
-      rows : event.rows,
+    let params: any = {
+      first: event.first,
+      rows: event.rows,
       naziv: naziv,
       kategorijaJela: kategorijaJela,
       tipJela: tipJela,
-      sortField:event.sortField,
-      sortOrder:event.sortOrder,
+      sortField: event.sortField,
+      sortOrder: event.sortOrder,
     };
-    if(params.kategorijaJela===null){
+    if (params.kategorijaJela === null) {
       delete params.kategorijaJela;
     }
-    if(params.tipJela===null){
+    if (params.tipJela === null) {
       delete params.tipJela;
     }
-    (this.http.get(environment.baseUrl + "jela/page/322/",{params})).subscribe((data:any)=>{
-      //console.log(data.jela);
-      this._setJela(data.jela);
+    await this.http
+      .get(environment.baseUrl + 'jela/page/322/', { params })
+      .subscribe((data: any) => {
+        this._setJela(data.jela);
+        brojJelaUpdate(data.totalItems);
+      });
+  }
+
+  async addJelo(jelo: Jelo) {
+    this.http
+      .post(environment.baseUrl + 'jela', jelo)
+      .subscribe((data: any) => {
+        jelo = data;
+        const jela: Jelo[] = [...this.getJela(), jelo];
+        this._setJela(jela);
+      });
+  }
+
+  async removeJelo(jeloId: number) {
+    const http = await this.http
+      .delete(environment.baseUrl + 'jela/' + jeloId)
+      .toPromise()
+      .then((data: any) => {
+        const jela: Jelo[] = this.getJela().filter((j) => j.id !== jeloId);
+        this._setJela(jela);
+      });
+  }
+
+  async updateJelo(jelo: Jelo) {
+    this.http
+      .post(environment.baseUrl + 'jela', jelo)
+      .subscribe((data: any) => {
+        jelo = data;
+        const jela: Jelo[] = this.getJela().map((j) =>
+          j.id === jelo.id ? jelo : j
+        );
+        this._setJela(jela);
+      });
+  }
+
+  getJeloById(jeloId: number,callback: any) {
+    (this.http.get(environment.baseUrl + "jela/id/"+jeloId)).subscribe((data:any)=>{
+      callback(data)
     })
-  }
-
-  addJelo(jelo: Jelo){
-    //TO DO: dodati jelo na back
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const jela: Jelo[]=[...this.getJela(),jelo]
-    this._setJela(jela)
-  }
-
-  removeJelo(jelo: Jelo){
-    //TO DO: izbrisati jelo sa backa
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const jela: Jelo[]=this.getJela().filter(j=>j.id!==jelo.id)
-    this._setJela(jela)
-  }
-
-  updateJelo(jelo: Jelo){
-    //TO DO: update jela na backu
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const jela: Jelo[]=this.getJela().map(j=>j.id===jelo.id ? jelo : j)
-    this._setJela(jela)
   }
 
   /*getJeloClient(id:number):Jelo | undefined{
@@ -147,6 +162,6 @@ export class JeloService {
         tipJela: 'LUX',
       },
     ];
-    this._setJela(jela)
+    this._setJela(jela);
   }
 }

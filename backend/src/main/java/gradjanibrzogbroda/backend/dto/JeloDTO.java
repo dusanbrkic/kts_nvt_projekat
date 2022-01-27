@@ -31,5 +31,12 @@ public class JeloDTO {
 		this.kategorijaJela=j.getKategorijaJela();
 		this.tipJela=j.getTipJela();
 	}
+
+	@Override
+	public String toString() {
+		return "JeloDTO [id=" + id + ", naziv=" + naziv + ", trenutnaCena=" + trenutnaCena + ", vremePripremeMils="
+				+ vremePripremeMils + ", opis=" + opis + ", kategorijaJela=" + kategorijaJela + ", tipJela=" + tipJela
+				+ "]";
+	}
 	
 }

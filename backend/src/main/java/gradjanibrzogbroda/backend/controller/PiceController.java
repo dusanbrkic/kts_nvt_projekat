@@ -1,10 +1,14 @@
 package gradjanibrzogbroda.backend.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +17,7 @@ import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.dto.PiceDTO;
 import gradjanibrzogbroda.backend.service.PiceService;
 
+@CrossOrigin(origins = {"http://localhost:4200/" })
 @RestController
 @RequestMapping("/pice")
 public class PiceController {
@@ -33,6 +38,33 @@ public class PiceController {
 		}
 		
 		return new ResponseEntity<List<PiceDTO>>(dtos,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/page")
+	public ResponseEntity<Map<String, Object>> getPicaPage(
+			@RequestParam("first") Integer first,
+			@RequestParam("rows") Integer rows,
+			@RequestParam(value="naziv", defaultValue="", required=false) String naziv,
+			@RequestParam("sortField") Optional<String> sortField,
+			@RequestParam("sortOrder") Integer sortOrder){
+		
+		Page<Pice> pagePica = piceService.findPage(first, rows, naziv, sortField, sortOrder);
+		List<Pice> pica = pagePica.getContent();
+        ArrayList<PiceDTO> dtos=new ArrayList<PiceDTO>();
+
+        for(Pice p:pica) {
+            dtos.add(new PiceDTO(p));
+        }
+		
+        Map<String, Object> response = new HashMap<>();
+        response.put("pica", dtos);
+        response.put("currentPage", pagePica.getNumber());
+        response.put("totalItems", pagePica.getTotalElements());
+        response.put("totalPages", pagePica.getTotalPages());
+		
+		
+		return new ResponseEntity<>(response,HttpStatus.OK);
 		
 	}
 	
@@ -65,6 +97,9 @@ public class PiceController {
 	
 	@PostMapping()
 	public ResponseEntity<PiceDTO> addPice(@RequestBody Pice pice) { 
+		if(pice.getNaziv()==null || pice.getTrenutnaCena()==null) {
+			return new ResponseEntity<PiceDTO>( HttpStatus.BAD_REQUEST);
+		}
 		Pice p = piceService.addPice(pice);
 
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
@@ -72,6 +107,9 @@ public class PiceController {
 	
 	@PutMapping()
 	public ResponseEntity<PiceDTO> updatePice(@RequestBody Pice pice){
+		if(pice.getNaziv()==null || pice.getTrenutnaCena()==null) {
+			return new ResponseEntity<PiceDTO>( HttpStatus.BAD_REQUEST);
+		}
 		Pice p = piceService.updatePice(pice);
 		
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);

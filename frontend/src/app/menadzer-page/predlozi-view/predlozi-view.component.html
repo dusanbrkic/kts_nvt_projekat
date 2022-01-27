@@ -1,1 +1,131 @@
-<p>predlozi-view works!</p>
+<p-contextMenu #cm [model]="items"></p-contextMenu>
+
+<p-table
+  #dtJela
+  [value]="predlozi"
+  [lazy]="true"
+  (onLazyLoad)="loadPredlozi($event)"
+  [paginator]="true"
+  [rows]="5"
+  [totalRecords]="totalPredlozi"
+  [loading]="loading"
+  dataKey="id"
+  styleClass="p-datatable-customers p-datatable-gridlines"
+  [(contextMenuSelection)]="selectedPredlog"
+    [contextMenu]="cm"
+>
+  <ng-template pTemplate="caption">
+    <div class="grid">
+      <div class="col">
+        <div class="p-d-flex p-ai-center p-jc-between">Predlozi</div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Tip</th>
+      <th>Jelo</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter
+          field="tip"
+          matchMode="equals"
+          [showMenu]="false"
+        >
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="tipovi"
+              (onChange)="filter($event.value)"
+              placeholder="Any"
+              optionLabel="name"
+            >
+              <ng-template let-option pTemplate="item">
+                <div>
+                  <span class="p-ml-1">{{ option.name }}</span>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th></th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-predlog let-ri="rowIndex">
+    <tr [pContextMenuRow]="predlog" *ngIf="predlog.status==='NOV'">
+      <td>
+        {{predlog.tipIzmene}}
+      </td>
+      <td>
+        {{predlog.novoJelo ? predlog.novoJelo.naziv : "Kliknite na opis za informacije"}}
+      </td>
+      <td style="text-align: center">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-check"
+          (click)="updatePredlog(predlog,'ODOBREN')"
+          class="p-button-rounded p-button-text p-button-success mr-2"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-times"
+          (click)="updatePredlog(predlog,'ODBIJEN')"
+          class="p-button-rounded p-button-text p-button-danger"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary"> </ng-template>
+</p-table>
+
+<p-dialog
+  [(visible)]="modalDialog"
+  [style]="{ width: '450px' }"
+  header="Informacije"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+      <div [ngSwitch]="selectedPredlog.tipIzmene">
+        <div *ngSwitchCase="'BRISANJE'">
+            <h3>Jelo za brisanje</h3>
+            <div>Naziv: {{jelo.naziv}}</div>
+            <div>Trenutna cena: {{jelo.trenutnaCena}}</div>
+            <div>Vreme pripreme: {{jelo.vremePripremeMils}}</div>
+            <div>Opis: {{jelo.opis}}</div>
+            <div>Tip: {{jelo.tipJela}}</div>
+            <div>Kategorija: {{jelo.kategorijaJela}}</div>
+        </div>
+        <div *ngSwitchCase="'DODAVANJE'">
+            <h3>Jelo za dodavanje</h3>
+            <div>Naziv: {{selectedPredlog.novoJelo!.naziv}}</div>
+            <div>Trenutna cena: {{selectedPredlog.novoJelo!.trenutnaCena}}</div>
+            <div>Vreme pripreme: {{selectedPredlog.novoJelo!.vremePripremeMils}}</div>
+            <div>Opis: {{selectedPredlog.novoJelo!.opis}}</div>
+            <div>Tip: {{selectedPredlog.novoJelo!.tipJela}}</div>
+            <div>Kategorija: {{selectedPredlog.novoJelo!.kategorijaJela}}</div>
+        </div>
+        <div *ngSwitchCase="'IZMENA'">
+            <h3>Izmena jela</h3>
+            <div>Naziv: {{jelo.naziv}} => {{selectedPredlog.novoJelo!.naziv}}</div>
+            <div>Trenutna cena: {{jelo.trenutnaCena}} => {{selectedPredlog.novoJelo!.trenutnaCena}}</div>
+            <div>Vreme pripreme: {{jelo.vremePripremeMils}} => {{selectedPredlog.novoJelo!.vremePripremeMils}}</div>
+            <div>Opis: {{jelo.opis}} => {{selectedPredlog.novoJelo!.opis}}</div>
+            <div>Tip: {{jelo.tipJela}} => {{selectedPredlog.novoJelo!.tipJela}}</div>
+            <div>Kategorija: {{jelo.kategorijaJela}} => {{selectedPredlog.novoJelo!.kategorijaJela}}</div>
+        </div>
+      </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    
+  </ng-template>
+</p-dialog>

@@ -10,6 +10,7 @@ import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.repository.*;
+import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,9 @@ public class PorudzbinaService {
     private PiceRepository piceRepository;
     @Autowired
     private KonobarRepository konobarRepository;
+
+    @Autowired
+    private JeloPorudzbineService jeloPorudzbineService;
 
     public List <Porudzbina> findAll(){
         return porudzbinaRepository.findAll();
@@ -67,9 +71,6 @@ public class PorudzbinaService {
         return porudzbinaRepository.findAllByStatusPorudzbine(statusPorudzbine);
     }
 
-    public List<Porudzbina> findAllByKonobarId(Integer konobarId){
-        return porudzbinaRepository.findAllByKonobarId(konobarId);
-    }
     
     public void spremiPica(int porudzbinaId) throws PorudzbinaNotFoundException {
     	Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
@@ -95,6 +96,17 @@ public class PorudzbinaService {
     	
     }
 
+    public void preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException {
+        Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
+        if(p==null) {
+            throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
+        }
+        for (JeloPorudzbine j: p.getJelaPorudzbine()) {
+            jeloPorudzbineService.preuzmiJelo(j.getId());
+        }
+    }
+
+
     public Porudzbina napraviPorudzbinu(PorudzbinaDTO dto){
         Porudzbina porudzbina = Porudzbina.builder()
                 .datumVreme(LocalDateTime.now())
@@ -104,7 +116,6 @@ public class PorudzbinaService {
                 .picePorudzbine(new ArrayList<PicePorudzbine>())
                 .ukupnaCena(0.0)
                 .sto(stoRepository.findOneById(dto.getStoId()))
-                .konobar(konobarRepository.findOneById(dto.getKonobarId()))
                 .obrisan(false)
                 .build();
 
@@ -146,7 +157,6 @@ public class PorudzbinaService {
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
             return null;
         }
-        porudzbina.setKonobar(konobarRepository.findOneById(dto.getKonobarId()));
         porudzbina.setNapomena(dto.getNapomena());
         porudzbina.setSto(stoRepository.findOneById(dto.getStoId()));
 

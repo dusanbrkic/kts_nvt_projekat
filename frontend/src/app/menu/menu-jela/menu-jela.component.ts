@@ -80,7 +80,7 @@ export class MenuJelaComponent implements OnInit {
         this.items.push({
           label: 'Predlog brisanja',
           icon: 'pi pi-fw pi-times',
-          command: () => this.openEditJelo(this.selectedJelo),
+          command: () => this.predlogBrisanja(this.selectedJelo),
         });
       }
       if (this.userRole === 'ROLE_MANAGER') {
@@ -100,7 +100,9 @@ export class MenuJelaComponent implements OnInit {
     //console.log(event);
 
     //load jela here from backend with pagination
-    this.jeloService.loadJela(event);
+    this.jeloService.loadJela(event, (brka: number) => {
+      this.totalJela = brka;
+    });
 
     this.loading = false;
   }
@@ -150,8 +152,8 @@ export class MenuJelaComponent implements OnInit {
     this.editing = false;
   }
 
-  deleteJelo(jelo: Jelo) {
-    this.jeloService.removeJelo(jelo);
+  async deleteJelo(jelo: Jelo) {
+    await this.jeloService.removeJelo(jelo.id);
     this.messageService.add({
       severity: 'info',
       summary: 'Jelo obrisano',
@@ -179,12 +181,13 @@ export class MenuJelaComponent implements OnInit {
     this.submitted = false;
   }
 
-  saveJelo() {
+  async saveJelo() {
     this.submitted = true;
 
     if (this.predlog) {
       this.predlogService.addPredlog('IZMENA', this.newJelo, this.newJelo.id);
       this.predlog = false;
+      this.addJeloDialog = false;
     } else {
       if (
         this.newJelo.naziv.trim() &&
@@ -192,7 +195,7 @@ export class MenuJelaComponent implements OnInit {
         this.newJelo.vremePripremeMils > 0
       ) {
         if (this.userRole === 'ROLE_MANAGER') {
-          this.jeloService.addJelo(this.newJelo);
+          await this.jeloService.addJelo(this.newJelo);
           this.messageService.add({
             severity: 'success',
             summary: 'Successful',
@@ -201,9 +204,9 @@ export class MenuJelaComponent implements OnInit {
           });
           this.addJeloDialog = false;
           this.loadJela(this.lastTableLazyLoadEvent);
-        }
-        else if(this.userRole === 'ROLE_GLAVNI_KUVAR'){
+        } else if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
           this.predlogService.addPredlog('DODAVANJE', this.newJelo, undefined);
+          this.addJeloDialog = false;
         }
       }
     }

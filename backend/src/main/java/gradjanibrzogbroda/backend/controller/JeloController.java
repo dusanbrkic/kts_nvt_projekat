@@ -19,6 +19,7 @@ import gradjanibrzogbroda.backend.domain.TipJela;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.service.JeloService;
 
+@CrossOrigin(origins = {"http://localhost:4200/" })
 @RestController
 @RequestMapping("/jela")
 public class JeloController {
@@ -85,8 +86,6 @@ public class JeloController {
 		}else {
 			return new ResponseEntity<JeloDTO>(HttpStatus.NOT_FOUND);
 		}
-		
-		
 	}
 	
 	@GetMapping("/naziv/{naziv}")

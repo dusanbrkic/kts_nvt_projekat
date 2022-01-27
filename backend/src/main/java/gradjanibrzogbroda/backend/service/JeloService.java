@@ -20,14 +20,19 @@ import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.KategorijaJela;
+import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.domain.TipJela;
 import gradjanibrzogbroda.backend.repository.JeloRepository;
+import gradjanibrzogbroda.backend.repository.StavkaCenovnikaRepository;
 
 @Service
 public class JeloService {
 	
 	@Autowired
 	private JeloRepository jeloRep;
+	
+	@Autowired
+	private StavkaCenovnikaRepository stCenRepo;
 	
 	public Page<Jelo> findPage(Integer first, Integer rows, String naziv, Optional<String> sortField, int sortOrder, Optional<KategorijaJela> kategorijaJela, Optional<TipJela> tipJela){
 		Sort.Direction sd = Sort.Direction.ASC;
@@ -61,14 +66,24 @@ public class JeloService {
 	}
 	
 	public Jelo addJelo(Jelo j) {
-		return jeloRep.save(j);
+		j.setObrisan(false);
+		Jelo je = jeloRep.save(j);
+		StavkaCenovnika st = new StavkaCenovnika(999, LocalDateTime.now(), null, je.getTrenutnaCena(), je);
+		stCenRepo.save(st);
+		return je;
 	}
 	
 	public void deleteJelo(Integer id) {
-		jeloRep.deleteById(id);
+		Jelo j = jeloRep.findOneById(id);
+		j.setObrisan(true);
+		jeloRep.save(j);
 	}
 	
 	public Jelo updateJelo(Jelo j) {
+		Jelo st = jeloRep.findOneById(j.getId());
+		if(j.getTrenutnaCena()!=st.getTrenutnaCena()) {
+			izmeniCenu(j.getId(), j.getTrenutnaCena());
+		}
 		return jeloRep.save(j);
 	}
 	

@@ -41,7 +41,7 @@ public class PorudzbinaController {
 
     @GetMapping("/zaKuvara")
     public ResponseEntity<List<PorudzbinaDTO>> getAllKreiraneSaJelom(){
-        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaSankera();
+        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaKuvara();
         ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
         for (Porudzbina p: porudzbine) {
             dtos.add(new PorudzbinaDTO(p));
@@ -68,15 +68,7 @@ public class PorudzbinaController {
         return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
     }
 
-    @GetMapping("/konobar/{konobarId}")
-    public ResponseEntity<List<PorudzbinaDTO>> getAllKonobar(@PathVariable("konobarId") Integer konobarId){
-        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllByKonobarId(konobarId);
-        ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
-        for (Porudzbina p: porudzbine) {
-            dtos.add(new PorudzbinaDTO(p));
-        }
-        return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
-    }
+
 
     @PostMapping()
     public ResponseEntity<PorudzbinaDTO> napraviPorudzbinu(@RequestBody PorudzbinaDTO dto) {
@@ -93,6 +85,18 @@ public class PorudzbinaController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PostMapping("/preuzmiPorudzbinu/{id}")
+    public ResponseEntity<PorudzbinaDTO> preuzmiPorudzbinu(@PathVariable("id") int id) {
+        try {
+            porudzbinaService.preuzmiPorudzbinu(id);
+        } catch (PorudzbinaNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>( HttpStatus.OK);
     }

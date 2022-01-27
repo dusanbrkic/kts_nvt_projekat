@@ -39,7 +39,7 @@ public class Porudzbina {
 
     @Column(name = "ukupna_cena")
     private Double ukupnaCena;
-
+    
     @Column(name = "identification_number")
     private String identificationNumber;
 

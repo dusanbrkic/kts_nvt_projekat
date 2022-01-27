@@ -20,7 +20,6 @@ public class PorudzbinaDTO {
     private LocalDateTime datumVreme;
     private String napomena;
     private Double ukupnaCena;
-    private Integer konobarId;
     private Integer stoId;
     private List<JeloPorudzbineDTO> jelaPorudzbine=new ArrayList<JeloPorudzbineDTO>();
     private List<PicePorudzbineDTO> picaPorudzbine=new ArrayList<PicePorudzbineDTO>();
@@ -31,7 +30,6 @@ public class PorudzbinaDTO {
         this.datumVreme = p.getDatumVreme();
         this.napomena = p.getNapomena();
         this.ukupnaCena = p.getUkupnaCena();
-        this.konobarId = p.getKonobar().getId();
         this.stoId = p.getSto().getId();
 
         this.jelaPorudzbine = new ArrayList<>();

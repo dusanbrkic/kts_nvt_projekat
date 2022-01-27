@@ -131,7 +131,7 @@
           <th *ngIf="userRole==='ROLE_MANAGER'"></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-jelo let-ri="rowIndex">
+      <ng-template pTemplate="body" let-editing="editing" let-jelo let-ri="rowIndex">
         <tr [pEditableRow]="jelo" [pContextMenuRow]="jelo">
           <td>
             <p-cellEditor>

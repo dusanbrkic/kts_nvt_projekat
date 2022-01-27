@@ -93,7 +93,7 @@
           <th></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-pice let-ri="rowIndex">
+      <ng-template pTemplate="body" let-pice let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="pice" [pContextMenuRow]="pice">
           <td>
             <p-cellEditor>
