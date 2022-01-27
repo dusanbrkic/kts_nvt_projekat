@@ -2,10 +2,14 @@ package gradjanibrzogbroda.backend.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Pice;
@@ -34,10 +38,16 @@ public class PiceService {
 	}
 	
 	public void deletePice(Integer id) {
-		piceRep.deleteById(id);
+		Pice p = piceRep.findOneById(id);
+		p.setObrisan(true);
+		piceRep.save(p);
 	}
 	
 	public Pice updatePice(Pice p) {
+		Pice st = piceRep.findOneById(p.getId());
+		if(p.getTrenutnaCena()!=st.getTrenutnaCena()) {
+			izmeniCenu(p.getId(), p.getTrenutnaCena());
+		}
 		return piceRep.save(p);
 	}
 
@@ -57,6 +67,23 @@ public class PiceService {
 				.build();
 		pice.getCeneArtikla().add(stavkaCenovnika);
 		return piceRep.save(pice);
+	}
+
+	public Page<Pice> findPage(Integer first, Integer rows, String naziv, Optional<String> sortField, Integer sortOrder) {
+		Sort.Direction sd = Sort.Direction.ASC;
+		if(sortOrder < 0) {
+			sd = Sort.Direction.DESC;
+			}
+		if(sortField.isPresent()) {
+			if(sortField.get().equals("cena")) {
+				sortField = Optional.of("trenutnaCena");
+			}
+			if(sortField.get().equals("undefined")) {
+				sortField = Optional.of("trenutnaCena");
+			}
+		}
+		int pageIndex = first/rows;
+		return piceRep.findAllFilter(naziv, (PageRequest.of(pageIndex, rows).withSort(sd, sortField.orElse("id"))));
 	};
 
 }

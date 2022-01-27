@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.KategorijaJela;
+import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.domain.TipJela;
 import gradjanibrzogbroda.backend.repository.JeloRepository;
 
@@ -65,10 +66,16 @@ public class JeloService {
 	}
 	
 	public void deleteJelo(Integer id) {
-		jeloRep.deleteById(id);
+		Jelo j = jeloRep.findOneById(id);
+		j.setObrisan(true);
+		jeloRep.save(j);
 	}
 	
 	public Jelo updateJelo(Jelo j) {
+		Jelo st = jeloRep.findOneById(j.getId());
+		if(j.getTrenutnaCena()!=st.getTrenutnaCena()) {
+			izmeniCenu(j.getId(), j.getTrenutnaCena());
+		}
 		return jeloRep.save(j);
 	}
 	

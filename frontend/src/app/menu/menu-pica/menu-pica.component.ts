@@ -34,7 +34,7 @@ export class MenuPicaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.piceService.loadPicaTest();
+    //this.piceService.loadPicaTest();
     this.piceService.pica$.subscribe((value) => {
       this.pica = value;
       console.log(value);
@@ -53,12 +53,10 @@ export class MenuPicaComponent implements OnInit {
   loadPica(event: LazyLoadEvent) {
     this.loadingPica = true;
     this.lastTableLazyLoadEvent = event;
-
     console.log(event);
-
-    //load pica here from backend with pagination
-    this.piceService.loadPica(event)
-
+    this.piceService.loadPica(event, (brka: number) => {
+      this.totalPica = brka;
+    });
 
     this.loadingPica = false;
   }
@@ -82,14 +80,11 @@ export class MenuPicaComponent implements OnInit {
     this.submitted = false;
   }
 
-  savePice() {
+  async savePice() {
     this.submitted = true;
 
-    if (
-      this.newPice.naziv.trim() &&
-      this.newPice.trenutnaCena > 0
-    ) {
-      this.piceService.addPice(this.newPice)
+    if (this.newPice.naziv.trim() && this.newPice.trenutnaCena > 0) {
+      await this.piceService.addPice(this.newPice);
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
@@ -97,7 +92,7 @@ export class MenuPicaComponent implements OnInit {
         life: 3000,
       });
       this.piceDialog = false;
-      this.loadPica(this.lastTableLazyLoadEvent)
+      this.loadPica(this.lastTableLazyLoadEvent);
     }
   }
 
@@ -110,7 +105,7 @@ export class MenuPicaComponent implements OnInit {
     if (pice.trenutnaCena > 0 && pice.naziv !== '') {
       delete this.clonedPica[pice.id];
       this.editing = false;
-      this.piceService.updatePice(this.pica[index])
+      this.piceService.updatePice(this.pica[index]);
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -134,13 +129,13 @@ export class MenuPicaComponent implements OnInit {
     this.editing = false;
   }
 
-  deletePice(pice: Pice) {
-    this.piceService.removePice(pice)
+  async deletePice(pice: Pice) {
+    await this.piceService.removePice(pice);
     this.messageService.add({
       severity: 'info',
       summary: 'Piće obrisano',
       detail: pice.naziv,
     });
-    this.loadPica(this.lastTableLazyLoadEvent)
+    this.loadPica(this.lastTableLazyLoadEvent);
   }
 }

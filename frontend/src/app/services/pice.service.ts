@@ -23,30 +23,61 @@ export class PiceService {
     this._picaSource.next(pica);
   }
 
-  loadPica(event: LazyLoadEvent){
+  async loadPica(event: LazyLoadEvent, brojPicaUpdate: any) {
     //TO DO get pica sa paginacijom i filterima
-
+    console.log(event);
+    let naziv;
+    if (event.filters?.naziv?.value === undefined) {
+      naziv = '';
+    } else {
+      naziv = event.filters?.naziv?.value;
+    }
+    let params: any = {
+      first: event.first,
+      rows: event.rows,
+      naziv: naziv,
+      sortField: event.sortField,
+      sortOrder: event.sortOrder,
+    };
+    await this.http
+      .get(environment.baseUrl + 'pice/page/', { params })
+      .subscribe((data: any) => {
+        this._setPica(data.pica);
+        brojPicaUpdate(data.totalItems);
+      });
   }
 
-  addPice(pice: Pice){
-    //TO DO: dodati pice na back
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const pica: Pice[]=[...this.getPica(),pice]
-    this._setPica(pica)
+  async addPice(pice: Pice) {
+    //console.log(pice);
+    this.http
+      .post(environment.baseUrl + 'pice', pice)
+      .subscribe((data: any) => {
+        pice = data;
+        const pica: Pice[] = [...this.getPica(), pice];
+        this._setPica(pica);
+      });
   }
 
-  removePice(pice: Pice){
-    //TO DO: izbrisati pice sa backa
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const pica: Pice[]=this.getPica().filter(p=>p.id!==pice.id)
-    this._setPica(pica)
+  async removePice(pice: Pice) {
+    const http = await this.http
+      .delete(environment.baseUrl + 'pice/' + pice.id)
+      .toPromise()
+      .then((data: any) => {
+        const pica: Pice[] = this.getPica().filter((p) => p.id !== pice.id);
+        this._setPica(pica);
+      });
   }
 
-  updatePice(pice: Pice){
-    //TO DO: update pica na backu
-    // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const pica: Pice[]=this.getPica().map(p=>p.id===pice.id ? pice : p)
-    this._setPica(pica)
+  async updatePice(pice: Pice) {
+    this.http
+      .post(environment.baseUrl + 'pice', pice)
+      .subscribe((data: any) => {
+        pice = data;
+        const pica: Pice[] = this.getPica().map((p) =>
+          p.id === pice.id ? pice : p
+        );
+        this._setPica(pica);
+      });
   }
 
   /*getPiceClient(id:number):Pice| undefined{
@@ -57,8 +88,8 @@ export class PiceService {
     return this.http.get<any>(environment.baseUrl + 'pice/id/' + piceId);
   }*/
 
-  loadPicaTest():void{
-    const pica: Pice[]=[
+  loadPicaTest(): void {
+    const pica: Pice[] = [
       {
         id: 1,
         naziv: 'Pice 1',
@@ -80,6 +111,6 @@ export class PiceService {
         trenutnaCena: 120.0,
       },
     ];
-    this._setPica(pica)
+    this._setPica(pica);
   }
 }
