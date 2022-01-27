@@ -52,18 +52,18 @@ export class PredloziViewComponent implements OnInit {
     ];
   }
 
-  loadPredlozi(event: LazyLoadEvent) {
+  async loadPredlozi(event: LazyLoadEvent) {
     this.loading = true;
 
-    this.predlogService.loadPredlozi(event);
+    await this.predlogService.loadPredlozi(event,(totalItems: number)=>{this.totalPredlozi=totalItems});
     this.lastLazyLoadEvent = event;
 
     this.loading = false;
   }
 
-  updatePredlog(predlog: Predlog, status: string) {
-    this.predlogService.updatePredlog(predlog, status);
-    this.loadPredlozi(this.lastLazyLoadEvent);
+  async updatePredlog(predlog: Predlog, status: string) {
+    await this.predlogService.updatePredlog(predlog, status);
+    await this.loadPredlozi(this.lastLazyLoadEvent);
 
     if (status === 'ODOBREN') {
       switch (predlog.tipIzmene) {
