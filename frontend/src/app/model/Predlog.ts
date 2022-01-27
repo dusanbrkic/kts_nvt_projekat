@@ -5,4 +5,5 @@ export default interface Predlog{
     tipIzmene: string,
     novoJelo?: Jelo,
     staroJeloId?: number,
+    status: string,
 }

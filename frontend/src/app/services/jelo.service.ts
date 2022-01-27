@@ -98,6 +98,10 @@ export class JeloService {
       });
   }
 
+  getJeloById(jeloId: number): Jelo {
+    return this.getJela().find(j=> j.id===jeloId)!
+  }
+
   /*getJeloClient(id:number):Jelo | undefined{
     return this.getJela().find(j=>j.id===id)
   }
