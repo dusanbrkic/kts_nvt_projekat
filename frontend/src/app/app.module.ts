@@ -63,6 +63,7 @@ import { TagModule } from 'primeng/tag';
 import {CarouselModule} from 'primeng/carousel';
 import { InterInterceptor } from './interceptor/inter.interceptor';
 import { PredloziViewComponent } from './menadzer-page/predlozi-view/predlozi-view.component';
+import {BadgeModule} from 'primeng/badge';
 
 @NgModule({
   declarations: [
@@ -131,7 +132,8 @@ import { PredloziViewComponent } from './menadzer-page/predlozi-view/predlozi-vi
     SplitterModule,
     TagModule,
     AutoCompleteModule,
-    CarouselModule
+    CarouselModule,
+    BadgeModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: InterInterceptor, multi: true}

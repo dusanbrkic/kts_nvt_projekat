@@ -18,6 +18,7 @@ import gradjanibrzogbroda.backend.domain.KategorijaJela;
 import gradjanibrzogbroda.backend.domain.TipJela;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.service.JeloService;
+import gradjanibrzogbroda.backend.service.NotificationService;
 
 @CrossOrigin(origins = {"http://localhost:4200/" })
 @RestController
@@ -105,7 +106,7 @@ public class JeloController {
 	@PostMapping()
 	public ResponseEntity<JeloDTO> addJelo(@RequestBody Jelo jelo) { 
 		Jelo j = jeloService.addJelo(jelo);
-
+		
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
 	
