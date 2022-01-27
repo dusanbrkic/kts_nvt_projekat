@@ -44,7 +44,7 @@ public class PorudzbinaController {
 
     @GetMapping("/zaKuvara")
     public ResponseEntity<List<PorudzbinaDTO>> getAllKreiraneSaJelom(){
-        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaSankera();
+        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllZaKuvara();
         ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
         for (Porudzbina p: porudzbine) {
             dtos.add(new PorudzbinaDTO(p));
@@ -96,6 +96,18 @@ public class PorudzbinaController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PostMapping("/preuzmiPorudzbinu/{id}")
+    public ResponseEntity<PorudzbinaDTO> preuzmiPorudzbinu(@PathVariable("id") int id) {
+        try {
+            porudzbinaService.preuzmiPorudzbinu(id);
+        } catch (PorudzbinaNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>( HttpStatus.OK);
     }

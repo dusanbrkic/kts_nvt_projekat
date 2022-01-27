@@ -70,10 +70,17 @@ export class PorudzbinaService {
     //TO DO dodati na back
 
     if (!isNewPorudzbina) {
-      const porudzbine = this.getPorudzbine().map((p) =>
-        p.id === porudzbina.id ? porudzbina : p
-      );
-      this._setPorudzbine(porudzbine);
+      this.http
+      .post(environment.baseUrl + 'porudzbine/preuzmiPorudzbinu/' + porudzbina.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        this.jelaUPripremi();
+        this.porudzbineZaPripremuKuvar();
+      })
+
+      // const porudzbine = this.getPorudzbine().map((p) =>
+      //   p.id === porudzbina.id ? porudzbina : p
+      // );
+      // this._setPorudzbine(porudzbine);
     } else {
       const porudzbine = [...this.getPorudzbine(), porudzbina];
       this._setPorudzbine(porudzbine);
@@ -89,6 +96,7 @@ export class PorudzbinaService {
       .get(environment.baseUrl + 'porudzbine/zaKuvara')
       .subscribe((data: any) => {
         porudzbine = data;
+        console.log("seter porudzbina");
         console.log(porudzbine);
         this._setPorudzbine(porudzbine);
       });
@@ -128,38 +136,37 @@ export class PorudzbinaService {
 
   spremiJelo(jelo: JeloPorudzbine) {
     // TO DO poslati na back
-    const porudzbine = this.getPorudzbine().map((p) =>
-      p.id === jelo.porudzbinaId
-        ? {
-            ...p,
-            jelaPorudzbine: p.jelaPorudzbine.map((j) =>
-              j.id === jelo.id ? { ...j, statusJela: 'PRIPREMLJENO' } : j
-            ),
-          }
-        : p
-    );
-    this._setPorudzbine(porudzbine);
+    this.http
+      .post(environment.baseUrl + 'jelo-porudzbine/pripremi/' + jelo.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        this.jelaUPripremi();
+        this.porudzbineZaPripremuKuvar();
+      })
+    
   }
 
   spremiPica(porudzbina: Porudzbina) {
     this.http
-      .get(environment.baseUrl + 'porudzbine/spremiPica/' + porudzbina.id)
-      .subscribe((data: any) => {
-        const porudzbine = this.getPorudzbine().map((p) =>
-          p.id === porudzbina.id
-            ? {
-                ...p,
-                picaPorudzbine: p.picaPorudzbine.map((pice) =>
-                  pice.statusPica === 'KREIRANO'
-                    ? { ...pice, statusPica: 'PRIPREMLJENO' }
-                    : pice
-                ),
-              }
-            : p
-        );
-        this._setPorudzbine(porudzbine);
-      });
-    this.porudzbineZaPripremuSanker();
+      .get(environment.baseUrl + 'porudzbine/spremiPica/' + porudzbina.id).toPromise()
+      .then((response:any)=>{
+        this.porudzbineZaPripremuSanker();
+      })
+    //   .subscribe((data: any) => {
+    //     const porudzbine = this.getPorudzbine().map((p) =>
+    //       p.id === porudzbina.id
+    //         ? {
+    //             ...p,
+    //             picaPorudzbine: p.picaPorudzbine.map((pice) =>
+    //               pice.statusPica === 'KREIRANO'
+    //                 ? { ...pice, statusPica: 'PRIPREMLJENO' }
+    //                 : pice
+    //             ),
+    //           }
+    //         : p
+    //     );
+    //     this._setPorudzbine(porudzbine);
+    //   });
+    // this.porudzbineZaPripremuSanker();
   }
 
   /*loadPorudzbine(): any {

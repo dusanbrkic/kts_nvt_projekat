@@ -10,6 +10,7 @@ import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
 import gradjanibrzogbroda.backend.repository.*;
+import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,9 @@ public class PorudzbinaService {
     private PiceRepository piceRepository;
     @Autowired
     private KonobarRepository konobarRepository;
+
+    @Autowired
+    private JeloPorudzbineService jeloPorudzbineService;
 
     public List <Porudzbina> findAll(){
         return porudzbinaRepository.findAll();
@@ -51,7 +55,9 @@ public class PorudzbinaService {
     public List <Porudzbina> findAllZaKuvara(){
         ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
         for(Porudzbina p : porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.KREIRANO)) {
+            System.out.println("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn\n");
             if (!p.getJelaPorudzbine().isEmpty()){
+                System.out.println("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n");
                 porudzbine.add(p);
             }
         }
@@ -94,6 +100,17 @@ public class PorudzbinaService {
     	
     	
     }
+
+    public void preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException {
+        Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
+        if(p==null) {
+            throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
+        }
+        for (JeloPorudzbine j: p.getJelaPorudzbine()) {
+            jeloPorudzbineService.preuzmiJelo(j.getId());
+        }
+    }
+
 
     public Porudzbina napraviPorudzbinu(PorudzbinaDTO dto){
         Porudzbina porudzbina = Porudzbina.builder()

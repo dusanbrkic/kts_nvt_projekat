@@ -47,7 +47,7 @@ export class PorudzbineViewKuvarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.porudzbinaService.porudzbineZaPripremuSanker();
+    this.porudzbinaService.porudzbineZaPripremuKuvar();
     this.porudzbinaService.porudzbine$.subscribe(value=>{
       this.novePorudzbine=value;
       //console.log(value);
@@ -86,5 +86,6 @@ export class PorudzbineViewKuvarComponent implements OnInit {
 
   spremiJelo(jelo: JeloPorudzbine) {
     this.porudzbinaService.spremiJelo(jelo)
+    this.ngOnInit();
   }
 }
