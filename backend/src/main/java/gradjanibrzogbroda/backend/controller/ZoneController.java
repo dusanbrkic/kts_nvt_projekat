@@ -1,6 +1,7 @@
 package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.dto.ZoneDTO;
+import gradjanibrzogbroda.backend.exceptions.StoImaPorudzbinuException;
 import gradjanibrzogbroda.backend.service.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,11 @@ public class ZoneController {
 	@PostMapping()
 	public ResponseEntity<String> updateZone(@RequestBody ZoneDTO zoneDTO){
 
-		zoneService.update(zoneDTO);
+		try {
+			zoneService.update(zoneDTO);
+		} catch (StoImaPorudzbinuException e){
+			return new ResponseEntity<String>("Sto ima aktivnih porudzbina.", HttpStatus.BAD_REQUEST);
+		}
 
 		return new ResponseEntity<String>("Uspesno.", HttpStatus.OK);
 	}
@@ -44,7 +49,11 @@ public class ZoneController {
 	@DeleteMapping("{zoneId}")
 	public ResponseEntity<String> deleteZone(@PathVariable String zoneId){
 
-		zoneService.delete(zoneId);
+		try {
+			zoneService.delete(zoneId);
+		} catch (StoImaPorudzbinuException e){
+			return new ResponseEntity<String>("Sto ima aktivnih porudzbina.", HttpStatus.BAD_REQUEST);
+		}
 
 		return new ResponseEntity<String>("Uspesno.", HttpStatus.OK);
 	}

@@ -29,11 +29,11 @@ public class StorageUtil {
 				throw new StorageException("Failed to store empty file.");
 			}
 
-			file.createNewFile();
-			InputStream inputStream = new ByteArrayInputStream(slikaDecoded);
-			Files.copy(inputStream, Path.of(file.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
 
-			inputStream.close();
+			Files.write(Path.of(file.getAbsolutePath()), slikaDecoded);
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file.", e);

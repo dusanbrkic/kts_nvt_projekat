@@ -16,6 +16,8 @@ public interface StoRepository extends JpaRepository<Sto, Integer> {
 
 	Sto findOneByIdentificationNumber(String id);
 
+	Sto findByIdentificationNumberAndZauzetFalse(String id);
+
 	@Query(value = "select s.identificationNumber from Sto s where s.zone.identificationNumber = :zoneId and s.identificationNumber not in :stoloviId")
 	List<String> selectDeletedTables(@Param("zoneId") String id, @Param("stoloviId") List<String> stoloviId);
 

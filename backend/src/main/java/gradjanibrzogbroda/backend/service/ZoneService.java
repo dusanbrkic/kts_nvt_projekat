@@ -5,6 +5,7 @@ import gradjanibrzogbroda.backend.domain.Sto;
 import gradjanibrzogbroda.backend.domain.Zone;
 import gradjanibrzogbroda.backend.dto.StoDTO;
 import gradjanibrzogbroda.backend.dto.ZoneDTO;
+import gradjanibrzogbroda.backend.exceptions.StoImaPorudzbinuException;
 import gradjanibrzogbroda.backend.repository.StoRepository;
 import gradjanibrzogbroda.backend.repository.ZoneRepository;
 import gradjanibrzogbroda.backend.util.StorageUtil;
@@ -34,7 +35,11 @@ public class ZoneService {
 		}).collect(Collectors.toList());
 	}
 
-	public void update(ZoneDTO zoneDTO) {
+	public void update(ZoneDTO zoneDTO) throws StoImaPorudzbinuException {
+		if (stoRepository.findByIdentificationNumberAndZauzetFalse(zoneDTO.getId())==null){
+			throw new StoImaPorudzbinuException();
+		}
+
 		Zone zone = zoneRepository.findOneByIdentificationNumber(zoneDTO.getId());
 		zone.updateFields(zoneDTO);
 
@@ -69,6 +74,8 @@ public class ZoneService {
 			}).collect(Collectors.toList());
 		}
 
+		StorageUtil.store(zoneDTO.getTemplateBase64(), StorageProperties.ZONE_LOCATION, zone.getTemplatePath());
+
 		zoneRepository.save(zone);
 	}
 
@@ -83,7 +90,10 @@ public class ZoneService {
 		zoneRepository.save(zone);
 	}
 
-	public void delete(String zoneId) {
+	public void delete(String zoneId) throws StoImaPorudzbinuException  {
+		if (stoRepository.findByIdentificationNumberAndZauzetFalse(zoneId)==null){
+			throw new StoImaPorudzbinuException();
+		}
 		zoneRepository.deleteByIdentificationNumber(zoneId);
 	}
 
