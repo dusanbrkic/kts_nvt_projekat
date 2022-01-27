@@ -7,7 +7,6 @@ export default interface Porudzbina{
     datumVreme: Date;
     napomena: string;
     ukupnaCena: number;
-    konobarId: number;
     stoId: number;
     jelaPorudzbine: JeloPorudzbine[];
     picaPorudzbine: PicePorudzbine[]; 

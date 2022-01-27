@@ -71,15 +71,7 @@ public class PorudzbinaController {
         return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
     }
 
-    @GetMapping("/konobar/{konobarId}")
-    public ResponseEntity<List<PorudzbinaDTO>> getAllKonobar(@PathVariable("konobarId") Integer konobarId){
-        ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) porudzbinaService.findAllByKonobarId(konobarId);
-        ArrayList<PorudzbinaDTO> dtos = new ArrayList<PorudzbinaDTO>();
-        for (Porudzbina p: porudzbine) {
-            dtos.add(new PorudzbinaDTO(p));
-        }
-        return new ResponseEntity<List<PorudzbinaDTO>>(dtos, HttpStatus.OK);
-    }
+
 
     @PostMapping()
     public ResponseEntity<PorudzbinaDTO> napraviPorudzbinu(@RequestBody PorudzbinaDTO dto) {
