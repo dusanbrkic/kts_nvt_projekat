@@ -33,7 +33,7 @@
     [rows]="5"
     [totalRecords]="totalZaposleni"
     [loading]="loading"
-    dataKey="id"
+    dataKey="identificationNumber"
     styleClass="p-datatable-customers p-datatable-gridlines"
     editMode="row"
     [(contextMenuSelection)]="selectedZ"
@@ -112,7 +112,7 @@
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-z let-ri="rowIndex">
+    <ng-template pTemplate="body" let-z let-editing="editing" let-ri="rowIndex">
       <tr [pEditableRow]="z" [pContextMenuRow]="z">
         <td>
           <p-cellEditor>

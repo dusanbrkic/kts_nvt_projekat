@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 @Repository
 public interface PredlogRepository extends JpaRepository<Predlog, Integer> {
 	
-	@Query("SELECT p FROM Predlog p WHERE (p.tipIzmene = :tip OR null = :tip) AND p.status = 'NOV'")
+	@Query("SELECT p FROM Predlog p WHERE (p.tipIzmene = :tip OR null = :tip) AND p.status = 0")
 	Page<Predlog> getAllPaged(Pageable page,@Param("tip") Optional<PredlogTip> tip);
 
 }

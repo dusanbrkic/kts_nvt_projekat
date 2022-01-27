@@ -24,7 +24,7 @@ export class PredlogService {
     this._predloziSource.next(predlozi);
   }
 
-  loadPredlozi(event: LazyLoadEvent) {
+  async loadPredlozi(event: LazyLoadEvent,callback: any) {
     let size: number = event.rows || 10;
     let page: number = event.first || 0;
     page = page / size;
@@ -47,22 +47,21 @@ export class PredlogService {
       delete params.tip;
     }
 
-    this.http
-      .get(environment.baseUrl + 'predlog', { params })
-      .subscribe((data: any) => {
+    const wait= await this.http
+      .get(environment.baseUrl + 'predlog', { params }).toPromise()
+      .then((data: any) => {
         console.log(data)
         this._setPredlozi(data.predlozi);
+        callback(data.totalItems)
       });
   }
 
-  updatePredlog(predlog: Predlog, status: string) {
+  async updatePredlog(predlog: Predlog, status: string) {
     //TO DO poslati na back
-    this.http
-      .put(environment.baseUrl + 'predlog', { ...predlog,status: status })
-      .subscribe((data: any) => {
-        const predlozi = this.getPredlozi().map((p) =>
-          p.id === predlog.id ? { ...p, status: status } : p
-        );
+    const wait = await this.http
+      .put(environment.baseUrl + 'predlog', { ...predlog,status: status }).toPromise()
+      .then((data: any) => {
+        const predlozi = this.getPredlozi().filter(p=> p.id!==predlog.id)
         this._setPredlozi(predlozi);
       });
   }
