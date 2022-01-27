@@ -76,12 +76,12 @@ export class JeloService {
       });
   }
 
-  async removeJelo(jelo: Jelo) {
+  async removeJelo(jeloId: number) {
     const http = await this.http
-      .delete(environment.baseUrl + 'jela/' + jelo.id)
+      .delete(environment.baseUrl + 'jela/' + jeloId)
       .toPromise()
       .then((data: any) => {
-        const jela: Jelo[] = this.getJela().filter((j) => j.id !== jelo.id);
+        const jela: Jelo[] = this.getJela().filter((j) => j.id !== jeloId);
         this._setJela(jela);
       });
   }
@@ -98,8 +98,10 @@ export class JeloService {
       });
   }
 
-  getJeloById(jeloId: number): Jelo {
-    return this.getJela().find(j=> j.id===jeloId)!
+  getJeloById(jeloId: number,callback: any) {
+    (this.http.get(environment.baseUrl + "jela/id/"+jeloId)).subscribe((data:any)=>{
+      callback(data)
+    })
   }
 
   /*getJeloClient(id:number):Jelo | undefined{

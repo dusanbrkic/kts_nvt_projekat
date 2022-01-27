@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Jelo from '../model/Jelo';
 import Predlog from '../model/Predlog';
 
@@ -23,14 +24,47 @@ export class PredlogService {
     this._predloziSource.next(predlozi);
   }
 
-  loadPredlozi(event: LazyLoadEvent){
+  loadPredlozi(event: LazyLoadEvent) {
+    let size: number = event.rows || 10;
+    let page: number = event.first || 0;
+    page = page / size;
 
+    let tip;
+
+    if (event.filters?.tip?.value?.value === undefined) {
+      tip = null;
+    } else {
+      tip = event.filters?.tip?.value?.value;
+    }
+
+    let params: any = {
+      size: size,
+      page: page,
+      tip: tip,
+    };
+
+    if (params.tip === null) {
+      delete params.tip;
+    }
+
+    this.http
+      .get(environment.baseUrl + 'predlog', { params })
+      .subscribe((data: any) => {
+        console.log(data)
+        this._setPredlozi(data.predlozi);
+      });
   }
 
-  updatePredlog(predlog: Predlog,status: string){
+  updatePredlog(predlog: Predlog, status: string) {
     //TO DO poslati na back
-    const predlozi=this.getPredlozi().map(p=> p.id===predlog.id ? {...p,status: status} : p)
-    this._setPredlozi(predlozi)
+    this.http
+      .put(environment.baseUrl + 'predlog', { ...predlog,status: status })
+      .subscribe((data: any) => {
+        const predlozi = this.getPredlozi().map((p) =>
+          p.id === predlog.id ? { ...p, status: status } : p
+        );
+        this._setPredlozi(predlozi);
+      });
   }
 
   addPredlog(tipIzmene: string, jelo?: Jelo, staroJeloId?: number) {
@@ -43,11 +77,15 @@ export class PredlogService {
 
     //dodati na back i vratiti novi id
 
-    const predlozi = [
-      ...this.getPredlozi(),
-      { ...newPredlog, id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0) },
-    ];
-    this._setPredlozi(predlozi);
+    this.http
+      .post(environment.baseUrl + 'predlog', newPredlog)
+      .subscribe((data: any) => {
+        const predlozi = [
+          ...this.getPredlozi(),
+          { ...newPredlog, id: data.id },
+        ];
+        this._setPredlozi(predlozi);
+      });
   }
 
   loadTest() {
@@ -77,17 +115,17 @@ export class PredlogService {
         id: 3,
         status: 'NOV',
         tipIzmene: 'DODAVANJE',
-        novoJelo:{
-            id: 4234,
-            naziv: 'Jelo 1',
-            trenutnaCena: 250.0,
-            vremePripremeMils: 30000,
-            opis: 'Test dodavanje',
-            kategorijaJela: 'PREDJELO',
-            tipJela: 'LUX',
-        }
+        novoJelo: {
+          id: 4234,
+          naziv: 'Jelo 1',
+          trenutnaCena: 250.0,
+          vremePripremeMils: 30000,
+          opis: 'Test dodavanje',
+          kategorijaJela: 'PREDJELO',
+          tipJela: 'LUX',
+        },
       },
     ];
-    this._setPredlozi(predlozi)
+    this._setPredlozi(predlozi);
   }
 }

@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import gradjanibrzogbroda.backend.dto.JeloDTO;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,5 +39,14 @@ public class Jelo extends Artikal{
     
     public Jelo(int id) {
     	this.setId(id);
+    }
+    
+    public Jelo(JeloDTO dto) {
+    	this.setNaziv(dto.getNaziv());
+    	this.opis=dto.getOpis();
+    	this.setTrenutnaCena(dto.getTrenutnaCena());
+    	this.kategorijaJela=dto.getKategorijaJela();
+    	this.vremePripremeMils=dto.getVremePripremeMils();
+    	this.tipJela=dto.getTipJela();
     }
 }
