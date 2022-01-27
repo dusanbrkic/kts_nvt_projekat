@@ -30,7 +30,7 @@
     <tr>
       <th>
         <p-columnFilter
-          field="kategorijaJela"
+          field="tip"
           matchMode="equals"
           [showMenu]="false"
         >
@@ -69,7 +69,7 @@
           pRipple
           type="button"
           icon="pi pi-check"
-          (click)="updatePredlog(predlog,'PRIHVACEN')"
+          (click)="updatePredlog(predlog,'ODOBREN')"
           class="p-button-rounded p-button-text p-button-success mr-2"
         ></button>
         <button

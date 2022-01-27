@@ -80,7 +80,7 @@ export class MenuJelaComponent implements OnInit {
         this.items.push({
           label: 'Predlog brisanja',
           icon: 'pi pi-fw pi-times',
-          command: () => this.openEditJelo(this.selectedJelo),
+          command: () => this.predlogBrisanja(this.selectedJelo),
         });
       }
       if (this.userRole === 'ROLE_MANAGER') {
@@ -153,7 +153,7 @@ export class MenuJelaComponent implements OnInit {
   }
 
   async deleteJelo(jelo: Jelo) {
-    await this.jeloService.removeJelo(jelo);
+    await this.jeloService.removeJelo(jelo.id);
     this.messageService.add({
       severity: 'info',
       summary: 'Jelo obrisano',
@@ -187,6 +187,7 @@ export class MenuJelaComponent implements OnInit {
     if (this.predlog) {
       this.predlogService.addPredlog('IZMENA', this.newJelo, this.newJelo.id);
       this.predlog = false;
+      this.addJeloDialog = false;
     } else {
       if (
         this.newJelo.naziv.trim() &&
@@ -205,6 +206,7 @@ export class MenuJelaComponent implements OnInit {
           this.loadJela(this.lastTableLazyLoadEvent);
         } else if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
           this.predlogService.addPredlog('DODAVANJE', this.newJelo, undefined);
+          this.addJeloDialog = false;
         }
       }
     }

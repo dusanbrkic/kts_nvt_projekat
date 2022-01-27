@@ -20,17 +20,19 @@ export class PredloziViewComponent implements OnInit {
 
   tipovi!: any[];
 
-  modalDialog: boolean=false;
+  modalDialog: boolean = false;
 
   jelo!: Jelo;
 
   lastLazyLoadEvent!: LazyLoadEvent;
 
-  constructor(private predlogService: PredlogService,private jeloService: JeloService) {}
+  constructor(
+    private predlogService: PredlogService,
+    private jeloService: JeloService
+  ) {}
 
   ngOnInit(): void {
-    this.jeloService.loadJelaTest()
-    this.predlogService.loadTest();
+    this.jeloService.loadJelaTest();
     this.predlogService.predlozi$.subscribe((value) => {
       this.predlozi = value;
     });
@@ -51,23 +53,48 @@ export class PredloziViewComponent implements OnInit {
   }
 
   loadPredlozi(event: LazyLoadEvent) {
-    this.loading=true;
+    this.loading = true;
 
-    this.predlogService.loadPredlozi(event)
-    this.lastLazyLoadEvent=event;
+    this.predlogService.loadPredlozi(event);
+    this.lastLazyLoadEvent = event;
 
-    this.loading=false;
+    this.loading = false;
   }
 
-  updatePredlog(predlog: Predlog, status: string){
-    this.predlogService.updatePredlog(predlog,status)
-    this.loadPredlozi(this.lastLazyLoadEvent)
+  updatePredlog(predlog: Predlog, status: string) {
+    this.predlogService.updatePredlog(predlog, status);
+    this.loadPredlozi(this.lastLazyLoadEvent);
+
+    if (status === 'ODOBREN') {
+      switch (predlog.tipIzmene) {
+        case 'DODAVANJE': {
+          this.jeloService.addJelo(predlog.novoJelo!);
+          break;
+        }
+        case 'BRISANJE': {
+          this.jeloService.removeJelo(predlog.staroJeloId!);
+          break;
+        }
+        case 'IZMENA': {
+          this.jeloService.updateJelo({
+            ...predlog.novoJelo!,
+            id: predlog.staroJeloId!,
+          });
+          break;
+        }
+      }
+    }
   }
 
-  showModalDialog(){
-    this.modalDialog=true;
-    if(this.selectedPredlog.staroJeloId){
-      this.jelo=this.jeloService.getJeloById(this.selectedPredlog.staroJeloId!)
+  showModalDialog() {
+    this.modalDialog = true;
+    if (this.selectedPredlog.staroJeloId) {
+      this.jeloService.getJeloById(
+        this.selectedPredlog.staroJeloId!,
+        (jelo: Jelo) => {
+          this.jelo = jelo;
+        }
+      );
     }
   }
 }
