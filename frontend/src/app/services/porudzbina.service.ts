@@ -66,11 +66,11 @@ export class PorudzbinaService {
     this._setPorudzbine(porudzbine);
   }
 
-  savePorudzbina(porudzbina: Porudzbina, isNewPorudzbina: boolean) {
+  async savePorudzbina(porudzbina: Porudzbina, isNewPorudzbina: boolean) {
     //TO DO dodati na back
 
     if (!isNewPorudzbina) {
-      this.http
+      const httpZahtev = await this.http
       .post(environment.baseUrl + 'porudzbine/preuzmiPorudzbinu/' + porudzbina.id, {responseType : 'json', "observe": 'response'}).toPromise()
       .then((response:any)=>{
         this.jelaUPripremi();
@@ -88,15 +88,13 @@ export class PorudzbinaService {
   }
 
   async porudzbineZaPripremuKuvar() {
-    // TO DO umesto ovog, treba na backu nace sve porudzbine
     
     let porudzbine: Porudzbina[];
     let answ;
-    await this.http
-      .get(environment.baseUrl + 'porudzbine/zaKuvara')
-      .subscribe((data: any) => {
+    const httpZahtev = await this.http
+      .get(environment.baseUrl + 'porudzbine/zaKuvara').toPromise()
+      .then((data: any) => {
         porudzbine = data;
-        console.log("seter porudzbina");
         console.log(porudzbine);
         this._setPorudzbine(porudzbine);
       });
@@ -106,9 +104,10 @@ export class PorudzbinaService {
     // TO DO umesto ovog, treba na backu nace sve porudzbine
     let porudzbine: Porudzbina[];
     let answ;
-    await this.http
+    const httpZahtev = await this.http
       .get(environment.baseUrl + 'porudzbine/zaSankera')
-      .subscribe((data: any) => {
+      .toPromise()
+      .then((data: any) => {
         porudzbine = data;
         console.log(porudzbine);
         this._setPorudzbine(porudzbine);
@@ -126,17 +125,16 @@ export class PorudzbinaService {
     
     let jela:  JeloPorudzbine[]
     let answ;
-    await this.http
-      .get(environment.baseUrl + 'jelo-porudzbine/preuzeta')
-      .subscribe((data: any) => {
+    const httpZahtev = await this.http
+      .get(environment.baseUrl + 'jelo-porudzbine/preuzeta').toPromise()
+      .then ((data: any) => {
         jela = data;
         this._setJelaPorudzbine(jela)
       });
   }
 
-  spremiJelo(jelo: JeloPorudzbine) {
-    // TO DO poslati na back
-    this.http
+  async spremiJelo(jelo: JeloPorudzbine) {
+    const httpZahtev = await this.http
       .post(environment.baseUrl + 'jelo-porudzbine/pripremi/' + jelo.id, {responseType : 'json', "observe": 'response'}).toPromise()
       .then((response:any)=>{
         this.jelaUPripremi();
@@ -145,28 +143,13 @@ export class PorudzbinaService {
     
   }
 
-  spremiPica(porudzbina: Porudzbina) {
-    this.http
+  async spremiPica(porudzbina: Porudzbina) {
+    const httpZahtev = await this.http
       .get(environment.baseUrl + 'porudzbine/spremiPica/' + porudzbina.id).toPromise()
       .then((response:any)=>{
+
         this.porudzbineZaPripremuSanker();
       })
-    //   .subscribe((data: any) => {
-    //     const porudzbine = this.getPorudzbine().map((p) =>
-    //       p.id === porudzbina.id
-    //         ? {
-    //             ...p,
-    //             picaPorudzbine: p.picaPorudzbine.map((pice) =>
-    //               pice.statusPica === 'KREIRANO'
-    //                 ? { ...pice, statusPica: 'PRIPREMLJENO' }
-    //                 : pice
-    //             ),
-    //           }
-    //         : p
-    //     );
-    //     this._setPorudzbine(porudzbine);
-    //   });
-    // this.porudzbineZaPripremuSanker();
   }
 
   /*loadPorudzbine(): any {
@@ -210,7 +193,6 @@ export class PorudzbinaService {
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 1040.0,
-        konobarId: 1,
         stoId: 1,
         jelaPorudzbine: [
           {
@@ -281,7 +263,6 @@ export class PorudzbinaService {
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 1040.0,
-        konobarId: 1,
         stoId: 1,
         jelaPorudzbine: [],
         picaPorudzbine: [
@@ -306,7 +287,6 @@ export class PorudzbinaService {
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 1040.0,
-        konobarId: 1,
         stoId: 1,
         jelaPorudzbine: [],
         picaPorudzbine: [
@@ -331,7 +311,6 @@ export class PorudzbinaService {
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 10400.0,
-        konobarId: 1,
         stoId: 5,
         jelaPorudzbine: [
           {
@@ -402,7 +381,6 @@ export class PorudzbinaService {
         datumVreme: new Date(),
         napomena: 'Napomena dDS sD dasd ',
         ukupnaCena: 10400.0,
-        konobarId: 1,
         stoId: 5,
         jelaPorudzbine: [
           {

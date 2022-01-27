@@ -88,7 +88,6 @@ export class LayoutKonobarComponent implements OnInit {
       datumVreme: new Date(),
       napomena: '',
       ukupnaCena: 0,
-      konobarId: -1,
       stoId: this.selectedSto.id!,
       jelaPorudzbine: [],
       picaPorudzbine: [],

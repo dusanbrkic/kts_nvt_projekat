@@ -40,8 +40,6 @@ public class Porudzbina {
     @Column(name = "ukupna_cena")
     private Double ukupnaCena;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Konobar konobar;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Sto sto;

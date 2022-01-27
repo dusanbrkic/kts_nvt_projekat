@@ -20,5 +20,4 @@ public interface PorudzbinaRepository extends JpaRepository<Porudzbina, Integer>
     
     List<Porudzbina> findAllByStatusPorudzbine(StatusPorudzbine statusPorudzbine);
 
-    List<Porudzbina> findAllByKonobarId(Integer konobarId);
 }

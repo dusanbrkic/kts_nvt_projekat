@@ -55,9 +55,7 @@ public class PorudzbinaService {
     public List <Porudzbina> findAllZaKuvara(){
         ArrayList<Porudzbina> porudzbine = new ArrayList<Porudzbina>();
         for(Porudzbina p : porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.KREIRANO)) {
-            System.out.println("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn\n");
             if (!p.getJelaPorudzbine().isEmpty()){
-                System.out.println("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n");
                 porudzbine.add(p);
             }
         }
@@ -73,9 +71,6 @@ public class PorudzbinaService {
         return porudzbinaRepository.findAllByStatusPorudzbine(statusPorudzbine);
     }
 
-    public List<Porudzbina> findAllByKonobarId(Integer konobarId){
-        return porudzbinaRepository.findAllByKonobarId(konobarId);
-    }
     
     public void spremiPica(int porudzbinaId) throws PorudzbinaNotFoundException {
     	Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
@@ -121,7 +116,6 @@ public class PorudzbinaService {
                 .picePorudzbine(new ArrayList<PicePorudzbine>())
                 .ukupnaCena(0.0)
                 .sto(stoRepository.findOneById(dto.getStoId()))
-                .konobar(konobarRepository.findOneById(dto.getKonobarId()))
                 .obrisan(false)
                 .build();
 
@@ -163,7 +157,6 @@ public class PorudzbinaService {
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
             return null;
         }
-        porudzbina.setKonobar(konobarRepository.findOneById(dto.getKonobarId()));
         porudzbina.setNapomena(dto.getNapomena());
         porudzbina.setSto(stoRepository.findOneById(dto.getStoId()));
 
