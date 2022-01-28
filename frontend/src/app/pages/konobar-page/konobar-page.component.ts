@@ -34,6 +34,7 @@ export class KonobarPageComponent implements OnInit {
         style: { 'margin-left': 'auto' },
         command: (event) => {
           this.authService.logout();
+          this.stompClient.disconnect()
           this.router.navigateByUrl('/');
         },
       },

@@ -13,7 +13,6 @@ export class AdminPageComponent implements OnInit {
   selectedTab: number = 0;
 
   showPasswordChanger: boolean=false;
-  passwordCallback: any;
   passwordOnClose: any;
 
   constructor(private router: Router,private authService: AuthService) {}

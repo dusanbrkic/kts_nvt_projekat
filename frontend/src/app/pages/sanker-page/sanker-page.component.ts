@@ -34,6 +34,7 @@ export class SankerPageComponent implements OnInit {
         style: { 'margin-left': 'auto' },
         command: (event) => {
           this.authService.logout()
+          this.stompClient.disconnect()
           this.router.navigateByUrl('/');
         },
       },
