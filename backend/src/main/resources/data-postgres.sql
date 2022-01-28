@@ -53,7 +53,8 @@ insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Sprite 0.33l', 125, false);
 insert into pice (id) values (7);
-insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 125, 7);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', '2022-01-20 13:30:00', 125, 7);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-20 13:30:00', null, 150, 7);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Fanta 0.33l', 125, false);
 insert into pice (id) values (8);
@@ -87,6 +88,24 @@ insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbin
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-25', 'Posluziti hranu dok je topla.', false, 0, 1, 730.0);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 1, 4, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 4, false);
+
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-23', 'Posluziti hranu dok je topla.', false, 4, 1, 855);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 3, 1, 5, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (3.0, 'Sa ledom.', 2, 6, 5, false);
+
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-22', 'Posluziti hranu dok je topla.', false, 4, 1, 1040);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 3, 2, 6, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (4.0, 'Sa ledom.', 2, 7, 6, false);
+
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-21', 'Posluziti hranu dok je topla.', false, 4, 1, 890);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 3, 2, 7, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (3.0, 'Sa ledom.', 2, 7, 7, false);
+
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-20', 'Posluziti hranu dok je topla.', false, 4, 1, 2655);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 3, 5, 8, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 2, 7, 8, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (1.0, 'Sa ledom.', 2, 8, 8, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (1.0, 'Sa ledom.', 2, 9, 8, false);
 
 --roles
 
