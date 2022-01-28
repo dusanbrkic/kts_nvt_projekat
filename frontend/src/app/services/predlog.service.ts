@@ -82,6 +82,7 @@ export class PredlogService {
         "observe": 'response'
       })
       .subscribe((response: any) => {
+        console.log(response)
         callback(response)
         const predlozi = [
           ...this.getPredlozi(),

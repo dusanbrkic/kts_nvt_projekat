@@ -40,20 +40,21 @@ export class ZonaService {
     // TO DO: sacuvati zonu na back;
     // true-uspeh false-greska( uraditi reload ako dodje do greske)
     const cekaj = await this.http.post(environment.baseUrl + "zone", selectedZone, {
-      "responseType": 'json',
+      "responseType": 'text',
       "observe": 'response'
     }).toPromise()
     .then((response: any) => {
-      this.getZones().push(response.body);
       alertCallback(response);
-    }).catch(()=>{});
+    }).catch((error)=>{
+      console.log(error)
+    });
   }
 
   async addZone(zone: Zona, alertCallback:any) {
     //TO DO: dodati zonu na back
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
     const cekaj = await this.http.put(environment.baseUrl + "zone", zone, {
-      "responseType": 'json',
+      "responseType": 'text',
       "observe": 'response'
     }).toPromise()
     .then((response: any) => {
@@ -69,7 +70,7 @@ export class ZonaService {
     //TO DO: izbrisati zonu sa backa
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
     const cekaj = await this.http.delete(environment.baseUrl + "zone/" + zona.id, {
-      "responseType": 'json',
+      "responseType": 'text',
       "observe": 'response'
     }).toPromise()
     .then((response: any) => {

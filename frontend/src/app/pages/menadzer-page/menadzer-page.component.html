@@ -3,4 +3,5 @@
 <app-password-changer [displayModal]="showPasswordChanger" [onCloseCallback]="passwordOnClose"></app-password-changer>
 <app-zaposleni-view *ngIf="selectedTab === 0"></app-zaposleni-view>
 <app-menu *ngIf="selectedTab === 1"></app-menu>
+<app-reports-view *ngIf="selectedTab === 2"></app-reports-view>
 <app-predlozi-view *ngIf="selectedTab === 3"></app-predlozi-view>

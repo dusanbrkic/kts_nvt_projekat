@@ -65,6 +65,8 @@ import { PredloziViewComponent } from './pages/menadzer-page/predlozi-view/predl
 import {BadgeModule} from 'primeng/badge';
 import { IdInputComponent } from './shared/id-input/id-input.component';
 import { PasswordChangerComponent } from './shared/password-changer/password-changer.component';
+import { ReportsViewComponent } from './pages/menadzer-page/reports-view/reports-view.component';
+import {ChartModule} from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,7 @@ import { PasswordChangerComponent } from './shared/password-changer/password-cha
     PredloziViewComponent,
     IdInputComponent,
     PasswordChangerComponent,
+    ReportsViewComponent,
   ],
   imports: [
     ImageModule,
@@ -135,7 +138,8 @@ import { PasswordChangerComponent } from './shared/password-changer/password-cha
     TagModule,
     AutoCompleteModule,
     CarouselModule,
-    BadgeModule
+    BadgeModule,
+    ChartModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: InterInterceptor, multi: true}

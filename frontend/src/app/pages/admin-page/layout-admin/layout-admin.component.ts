@@ -157,7 +157,7 @@ export class LayoutAdminComponent implements OnInit {
       this.messageService.add({
         severity: response.ok ? "success" : "error",
         summary: response.body,
-        detail: 'Zona obrisana',
+        detail: 'Izmene sačuvane',
         life: 3000,
       });
     });
