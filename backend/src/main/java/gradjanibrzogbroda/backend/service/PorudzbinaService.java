@@ -108,6 +108,7 @@ public class PorudzbinaService {
 
 
     public Porudzbina napraviPorudzbinu(PorudzbinaDTO dto){
+        Sto sto = stoRepository.findOneByIdentificationNumber(dto.getStoId());
         Porudzbina porudzbina = Porudzbina.builder()
                 .datumVreme(LocalDateTime.now())
                 .napomena(dto.getNapomena())
@@ -115,9 +116,11 @@ public class PorudzbinaService {
                 .jelaPorudzbine(new ArrayList<JeloPorudzbine>())
                 .picePorudzbine(new ArrayList<PicePorudzbine>())
                 .ukupnaCena(0.0)
-                .sto(stoRepository.findOneById(dto.getStoId()))
+                .sto(sto)
                 .obrisan(false)
                 .build();
+        sto.setZauzet(true);
+        sto.setPorudzbina(porudzbina);
 
         Porudzbina kreirana = porudzbinaRepository.save(porudzbina);
         Double ukupnaCena = 0.0;
@@ -158,7 +161,7 @@ public class PorudzbinaService {
             return null;
         }
         porudzbina.setNapomena(dto.getNapomena());
-        porudzbina.setSto(stoRepository.findOneById(dto.getStoId()));
+        porudzbina.setSto(stoRepository.findOneByIdentificationNumber(dto.getStoId()));
 
         return porudzbinaRepository.save(porudzbina);
     }
@@ -174,6 +177,8 @@ public class PorudzbinaService {
             porudzbinaRepository.save(porudzbina);
             return true;
         }
+        porudzbina.getSto().setZauzet(false);
+        porudzbina.getSto().setPorudzbina(null);
         return false;
     }
 

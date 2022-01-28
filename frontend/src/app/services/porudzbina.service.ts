@@ -36,11 +36,13 @@ export class PorudzbinaService {
     this._jelaPorudzbineSource.next(jelaPorudzbine);
   }
 
-  async getPorudzbinaById(porudzbinaId: number, callback:any): Promise<Porudzbina> {
-    //TO DO poziv na back umesto ovaj for each
-    let por: Porudzbina
-    if (porudzbinaId == -1)
-      return por!;
+  async getPorudzbinaById(porudzbinaId: number, callback:any) {
+    
+    if (porudzbinaId == null){
+      callback(null);
+      return;
+    }
+      
     const httpZahtev = await this.http.get<Porudzbina>(environment.baseUrl + "porudzbine/" + porudzbinaId, {
       "responseType": 'json',
       "observe": 'response'
@@ -49,7 +51,6 @@ export class PorudzbinaService {
       console.log(response.body)
       callback(response.body)
       });
-    return por!;
   }
 
   async addJeloToPorudzbina(jelo: JeloPorudzbine, porudzbinaId: number, callback:any) {

@@ -76,19 +76,21 @@ export class LayoutKonobarComponent implements OnInit {
     this.selectedJelo = null;
     this.selectedPice = null;
     console.log(this.selectedSto);
-    this.showSidebar = true;
+    
     this.isNewPorudzbina = false;
     let por: any;
     await this.porudzbinaService.getPorudzbinaById(
       this.selectedSto.porudzbinaId!, (response: any) => {por = response
       console.log(response)
       if (por) {
+        alert("alertic")
         this.selectedPorudzbina = JSON.parse(JSON.stringify(por));
       } else {
         this.selectedPorudzbina = por;
       }
     }
     );
+    this.showSidebar = true;
 
   }
 
@@ -193,6 +195,7 @@ export class LayoutKonobarComponent implements OnInit {
       (response: any) => {
         this.selectedPorudzbina = response
         console.log(response)
+        this.selectedSto.porudzbinaId = this.selectedPorudzbina.id
           this.zonaService.updateTable(
             { ...this.selectedSto, porudzbinaId: this.selectedPorudzbina.id,zauzet: true },
             this.selectedZona
@@ -210,10 +213,10 @@ export class LayoutKonobarComponent implements OnInit {
         this.selectedZona
       );
       this.showSidebar=false
-      this.porudzbinaService.getPorudzbinaById(
-      this.selectedPorudzbina.id, (response: any) => {
-        this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
-      });
+      // this.porudzbinaService.getPorudzbinaById(
+      // this.selectedPorudzbina.id, (response: any) => {
+      //   this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
+      // });
 
     })
 
