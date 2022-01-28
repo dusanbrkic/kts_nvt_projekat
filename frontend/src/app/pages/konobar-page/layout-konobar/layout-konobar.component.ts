@@ -74,9 +74,9 @@ export class LayoutKonobarComponent implements OnInit {
     this.piceService.loadAllPica();
     this.piceService.pica$.subscribe((value) => (this.pica = value));
 
-    this.idCloseCallback=()=>{
-      this.openIdInput=false;
-    }
+    this.idCloseCallback = () => {
+      this.openIdInput = false;
+    };
   }
 
   async openSidebar(sto: Sto) {
@@ -158,22 +158,10 @@ export class LayoutKonobarComponent implements OnInit {
           piceId: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
         };
 
-        if (!this.isNewPorudzbina) {
-          let addedItem: PicePorudzbine;
-          this.porudzbinaService.addPiceToPorudzbina(
-            newItem,
-            this.selectedPorudzbina.id,
-            (response: any) => {
-              addedItem = response;
-              console.log(response);
-              if (addedItem) {
-                this.selectedPorudzbina.picaPorudzbine.push(addedItem);
-              }
-            }
-          );
-        } else {
-          this.selectedPorudzbina.picaPorudzbine.push(newItem);
-        }
+        this.selectedPorudzbina.picaPorudzbine = [
+          ...this.selectedPorudzbina.picaPorudzbine,
+          newItem,
+        ];
       } else {
         let newItem: JeloPorudzbine = {
           id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
@@ -184,22 +172,10 @@ export class LayoutKonobarComponent implements OnInit {
           porudzbinaId: this.selectedPorudzbina.id,
         };
 
-        if (!this.isNewPorudzbina) {
-          let addedItem: JeloPorudzbine;
-          this.porudzbinaService.addJeloToPorudzbina(
-            newItem,
-            this.selectedPorudzbina.id,
-            (response: any) => {
-              addedItem = response;
-              console.log(response);
-              if (addedItem) {
-                this.selectedPorudzbina.jelaPorudzbine.push(addedItem);
-              }
-            }
-          );
-        } else {
-          this.selectedPorudzbina.jelaPorudzbine.push(newItem);
-        }
+        this.selectedPorudzbina.jelaPorudzbine = [
+          ...this.selectedPorudzbina.jelaPorudzbine,
+          newItem,
+        ];
       }
       this.selectedPorudzbina.statusPorudzbine = 'KREIRANO';
       this.hideDialog();
@@ -207,7 +183,7 @@ export class LayoutKonobarComponent implements OnInit {
   }
 
   savePorudzbina() {
-    console.log(this.openIdInput)
+    console.log(this.openIdInput);
     this.openIdInput = true;
     this.idCallback = () => {
       this.porudzbinaService.savePorudzbina(
@@ -228,13 +204,12 @@ export class LayoutKonobarComponent implements OnInit {
         }
       );
       this.openIdInput = false;
-      alert(this.openIdInput)
     };
   }
 
   naplatiPorudzbinu() {
-    this.openIdInput=true
-    this.idCallback=()=>{
+    this.openIdInput = true;
+    this.idCallback = () => {
       this.porudzbinaService.naplatiPorudzbinu(
         this.selectedPorudzbina,
         (response: any) => {
@@ -245,31 +220,39 @@ export class LayoutKonobarComponent implements OnInit {
           this.showSidebar = false;
         }
       );
-      this.openIdInput=false
-    }
+      this.openIdInput = false;
+    };
   }
 
   dostavi(pice: PicePorudzbine) {
-    this.porudzbinaService.dostaviPice(pice, (response: any) => {
-      pice.statusPica = 'DOSTAVLJENO';
-      this.porudzbinaService.getPorudzbinaById(
-        this.selectedPorudzbina.id,
-        (response: any) => {
-          this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
-        }
-      );
-    });
+    this.openIdInput = true;
+    this.idCallback = () => {
+      this.porudzbinaService.dostaviPice(pice, (response: any) => {
+        pice.statusPica = 'DOSTAVLJENO';
+        this.porudzbinaService.getPorudzbinaById(
+          this.selectedPorudzbina.id,
+          (response: any) => {
+            this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
+          }
+        );
+        this.openIdInput = false;
+      });
+    };
   }
 
   dostaviJelo(jelo: JeloPorudzbine) {
-    this.porudzbinaService.dostaviJelo(jelo, (response: any) => {
-      jelo.statusJela = 'DOSTAVLJENO';
-      this.porudzbinaService.getPorudzbinaById(
-        this.selectedPorudzbina.id,
-        (response: any) => {
-          this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
-        }
-      );
-    });
+    this.openIdInput = true;
+    this.idCallback = () => {
+      this.porudzbinaService.dostaviJelo(jelo, (response: any) => {
+        jelo.statusJela = 'DOSTAVLJENO';
+        this.porudzbinaService.getPorudzbinaById(
+          this.selectedPorudzbina.id,
+          (response: any) => {
+            this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
+          }
+        );
+        this.openIdInput = false;
+      });
+    };
   }
 }
