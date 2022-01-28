@@ -334,7 +334,7 @@ export class MenuJelaComponent implements OnInit {
       this.messageService.add({
         severity: response.ok ? 'success' : 'error',
         summary: response.ok ? 'Success' : 'Error',
-        detail: response.body,
+        detail: 'Predlog poslat',
         life: 3000,
       });
     }, undefined, jelo.id);
