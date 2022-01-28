@@ -1,17 +1,25 @@
-insert into stolovi (zauzet) values(false);
-
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number) values ('Perica', 'Peric', 0, '1990-01-01', 45000.0, 4, 'pera.jpg', false, '12345');
-insert into menadzeri (id, korisnicko_ime, lozinka) values(1, 'pera', 'pera');
-
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Perica', 'Peric', 0, '1990-01-01', 45000.0, 1, 'pera.jpg', false, '12345','user1','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
 insert into plate (pocetak_vazenja, zaposleni_id) values ('2021-11-11', 1);
 
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number) values ('Marko', 'Maric', 0, '1990-01-01', 60000.0, 3, 'marko.jpg', false, '54321');
-insert into kuvari (id) values(2);
-insert into glavni_kuvari (korisnicko_ime, lozinka, id) values ('marko', 'marko', 2);
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Marko', 'Maric', 0, '1990-01-01', 60000.0, 3, 'marko.jpg', false, '54321','user2','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 1, 'jovana.jpg', false, '13245');
-insert into konobari (id) values(3);
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 3, 'jovana.jpg', false, '13245','user3','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
+
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 1, 'jovana.jpg', false, '13247','user4','dsasd');
+insert into konobari (id) values(4);
+
+--zones
+insert into zone (identification_number, naziv, template_path, obrisan) values ('12345', 'Terasica', 'terasica.jpg', false);
+insert into zone (identification_number, naziv, template_path, obrisan) values ('56789', 'Potkrovlje', 'potkrovljice.jpg', false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345112', 'astal1', 4, 195.5, 469.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12334512', 'astal2', 4, 195.5, 221.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345212', 'astal3', 4, 651.5, 469.603, false);
+
+insert into zone_stolovi (zone_id, stolovi_id) values (1,1);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,2);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,3);
 
 --jela
 
@@ -48,17 +56,33 @@ insert into artikli (naziv, trenutna_cena, obrisan) values ('Limanada 0.5l', 125
 insert into pice (id) values (10);
 
 --porudzbine
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-11-11', 'Posluziti hranu dok je topla.', false, 0, 3, 1, 730.0);
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-11-11', 'Posluziti hranu dok je topla.', false, 0, 1, 730.0);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 1, false);
 
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-12-12', 'Dajte mi majoneza.', false, 1, 3, 1, 860.0);
+
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-12-12', 'Dajte mi majoneza.', false, 1, 1, 860.0);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi majoneza.', 0, 3, 2, false);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (1.0, 'Bez kiselih krastavaca.', 1, 4, 2, false);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (3.0, 'Stavite mi pavlake.', 2, 2, 2, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 2, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda.', 1, 7, 2, false);
 
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, konobar_id, sto_id, ukupna_cena) values ('2021-01-02', 'Dajte mi Kepac.', false, 3, 3, 1, 920.0);
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-01-02', 'Dajte mi Kepac.', false, 3, 1, 920.0);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi kepaca.', 3, 2, 3, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 2, 6, 3, false);
+
+--roles
+
+insert into roles (role,deleted) values ('ROLE_ADMIN',false);
+insert into roles (role,deleted) values ('ROLE_MANAGER',false);
+insert into roles (role,deleted) values ('ROLE_KONOBAR',false);
+insert into roles (role,deleted) values ('ROLE_SANKER',false);
+insert into roles (role,deleted) values ('ROLE_KUVAR',false);
+insert into roles (role,deleted) values ('ROLE_GLAVNI_KUVAR',false);
+
+--user-roles
+
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (1, 1); 
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (2, 2); 
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (3, 6);
