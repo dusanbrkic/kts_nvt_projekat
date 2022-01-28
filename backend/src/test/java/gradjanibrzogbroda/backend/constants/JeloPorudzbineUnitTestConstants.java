@@ -17,6 +17,7 @@ public class JeloPorudzbineUnitTestConstants {
 
 
     public static final Integer UT_JELO_PORUDZBINE_ID_1 = 1;
+    public static final Integer UT_JELO_PORUDZBINE_ID_2 = 2;
 
     public static final Double UT_JELO_PORUDZBINE_KOLICINA = 2.0;
     public static final String UT_JELO_PORUDZBINE_NAPOMENA = "Da bude lepo.";
@@ -24,7 +25,7 @@ public class JeloPorudzbineUnitTestConstants {
     public static final Double UT_IZMENJENO_JELO_PORUDZBINE_KOLICINA = 3.0;
     public static final String UT_IZMENJENO_JELO_PORUDZBINE_NAPOMENA = "Da bude lepo i fino.";
 
-    public static final Integer UT_NOVO_JELO_PORUDZBINE_ID = 2;
+    public static final Integer UT_NOVO_JELO_PORUDZBINE_ID = 5;
     public static final Integer UT_NOVO_JELO_PORUDZBINE_PORUDZBINA = 1;
     public static final Double UT_NOVO_JELO_PORUDZBINE_KOLICINA = 3.0;
     public static final String UT_NOVO_JELO_PORUDZBINE_NAPOMENA = "Bez sira.";
@@ -37,13 +38,21 @@ public class JeloPorudzbineUnitTestConstants {
             .porudzbinaId(UT_NOVO_JELO_PORUDZBINE_PORUDZBINA)
             .build();
 
-    public static final Integer UT_PREUZETO_JELO_PORUDZBINE_ID = 2;
+    public static final Integer UT_PREUZETO_JELO_PORUDZBINE_ID = 3;
     public static final Double UT_PREUZETO_JELO_PORUDZBINE_KOLICINA = 3.0;
     public static final String UT_PREUZETO_JELO_PORUDZBINE_NAPOMENA = "Sa puno sira.";
     public static final StatusJela UT_PREUZETO_JELO_PORUDZBINE_STATUS = StatusJela.PREUZETO;
 
+    public static final Integer UT_PRIPREMLJENO_JELO_PORUDZBINE_ID = 4;
+    public static final Double UT_PRIPREMLJENO_JELO_PORUDZBINE_KOLICINA = 3.0;
+    public static final String UT_PRIPREMLJENO_JELO_PORUDZBINE_NAPOMENA = "Sa puno kecapa.";
+    public static final StatusJela UT_PRIPREMLJENO_JELO_PORUDZBINE_STATUS = StatusJela.PRIPREMLJENO;
+
     public static final Integer UT_KREIRANA_PORUDZBINA_ID = 1;
     public static final Double UT_KREIRANA_PORUDZBINA_CENA = 480.0;
+
+    public static final Integer UT_PRIPREMLJENA_PORUDZBINA_ID = 3;
+    public static final Double UT_PRIPREMLJENA_PORUDZBINA_CENA = 480.0;
 
     public static final Integer UT_NAPLACENA_PORUDZBINA_ID = 2;
 
