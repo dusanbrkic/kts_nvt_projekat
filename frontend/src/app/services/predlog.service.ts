@@ -66,7 +66,7 @@ export class PredlogService {
       });
   }
 
-  addPredlog(tipIzmene: string, jelo?: Jelo, staroJeloId?: number) {
+  addPredlog(tipIzmene: string, callback:any, jelo?: Jelo, staroJeloId?: number) {
     const newPredlog: Predlog = {
       status: 'NOV',
       tipIzmene: tipIzmene,
@@ -77,54 +77,58 @@ export class PredlogService {
     //dodati na back i vratiti novi id
 
     this.http
-      .post(environment.baseUrl + 'predlog', newPredlog)
-      .subscribe((data: any) => {
+      .post(environment.baseUrl + 'predlog', newPredlog, {
+        "responseType": 'json',
+        "observe": 'response'
+      })
+      .subscribe((response: any) => {
+        callback(response)
         const predlozi = [
           ...this.getPredlozi(),
-          { ...newPredlog, id: data.id },
+          { ...newPredlog, id: response.body.id },
         ];
         this._setPredlozi(predlozi);
       });
   }
 
   loadTest() {
-    const predlozi = [
-      {
-        id: 1,
-        status: 'NOV',
-        tipIzmene: 'BRISANJE',
-        staroJeloId: 1,
-      },
-      {
-        id: 2,
-        status: 'NOV',
-        tipIzmene: 'IZMENA',
-        staroJeloId: 1,
-        novoJelo: {
-          id: 1,
-          naziv: 'Jelo 1',
-          trenutnaCena: 250.0,
-          vremePripremeMils: 30000,
-          opis: 'Test izmena',
-          kategorijaJela: 'PREDJELO',
-          tipJela: 'LUX',
-        },
-      },
-      {
-        id: 3,
-        status: 'NOV',
-        tipIzmene: 'DODAVANJE',
-        novoJelo: {
-          id: 4234,
-          naziv: 'Jelo 1',
-          trenutnaCena: 250.0,
-          vremePripremeMils: 30000,
-          opis: 'Test dodavanje',
-          kategorijaJela: 'PREDJELO',
-          tipJela: 'LUX',
-        },
-      },
-    ];
-    this._setPredlozi(predlozi);
+  //   const predlozi = [
+  //     {
+  //       id: 1,
+  //       status: 'NOV',
+  //       tipIzmene: 'BRISANJE',
+  //       staroJeloId: 1,
+  //     },
+  //     {
+  //       id: 2,
+  //       status: 'NOV',
+  //       tipIzmene: 'IZMENA',
+  //       staroJeloId: 1,
+  //       novoJelo: {
+  //         id: 1,
+  //         naziv: 'Jelo 1',
+  //         trenutnaCena: 250.0,
+  //         vremePripremeMils: 30000,
+  //         opis: 'Test izmena',
+  //         kategorijaJela: 'PREDJELO',
+  //         tipJela: 'LUX',
+  //       },
+  //     },
+  //     {
+  //       id: 3,
+  //       status: 'NOV',
+  //       tipIzmene: 'DODAVANJE',
+  //       novoJelo: {
+  //         id: 4234,
+  //         naziv: 'Jelo 1',
+  //         trenutnaCena: 250.0,
+  //         vremePripremeMils: 30000,
+  //         opis: 'Test dodavanje',
+  //         kategorijaJela: 'PREDJELO',
+  //         tipJela: 'LUX',
+  //       },
+  //     },
+  //   ];
+  //   this._setPredlozi(predlozi);
   }
 }

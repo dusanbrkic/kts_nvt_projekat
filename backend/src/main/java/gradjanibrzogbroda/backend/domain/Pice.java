@@ -1,5 +1,6 @@
 package gradjanibrzogbroda.backend.domain;
 
+import gradjanibrzogbroda.backend.dto.PiceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,4 +21,13 @@ public class Pice extends Artikal{
 	public Pice(int id) {
     	this.setId(id);
     }
+	public Pice(PiceDTO piceDTO){
+		this.setNaziv(piceDTO.getNaziv());
+		this.setTrenutnaCena(piceDTO.getTrenutnaCena());
+		this.setPicName(generatePicName());
+	}
+
+	public String generatePicName(){
+		return this.getNaziv() + ".jpg";
+	}
 }

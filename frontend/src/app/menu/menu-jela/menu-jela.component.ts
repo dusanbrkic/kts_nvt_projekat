@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import { Inplace } from 'primeng/inplace';
 import Jelo from 'src/app/model/Jelo';
 import { AuthService } from 'src/app/services/auth.service';
 import { JeloService } from 'src/app/services/jelo.service';
 import { PredlogService } from 'src/app/services/predlog.service';
+import { Base64Service } from 'src/app/utils/base64.service';
 
 @Component({
   selector: 'app-menu-jela',
@@ -35,12 +37,24 @@ export class MenuJelaComponent implements OnInit {
 
   private lastTableLazyLoadEvent!: LazyLoadEvent;
 
+  jeloGenericImgSrc: any = "http://localhost:4200/assets/generic/foodGeneric.png";
+
+  novoJeloPic: any = {};
+  novoJeloPicPreview: any = this.jeloGenericImgSrc;
+
+  @ViewChild('fileUpload')
+  fileUpload: any;
+
+  cancelJeloPicBtnDisabled: any = true;
+
   constructor(
     private jeloService: JeloService,
     private messageService: MessageService,
     private authService: AuthService,
-    private predlogService: PredlogService
-  ) {}
+    private predlogService: PredlogService,
+    private sanitizer: DomSanitizer,
+    private base64Service: Base64Service,
+  ) { }
 
   ngOnInit(): void {
     this.userRole = this.authService.getCurrentRole();
@@ -92,6 +106,30 @@ export class MenuJelaComponent implements OnInit {
       }
     }
   }
+
+  getJeloPic(stringPic: string) {
+    // this is how to use the sanitizer and decode stringpics
+    if (stringPic.length > 0) {
+      return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+    } else return this.jeloGenericImgSrc;
+  }
+
+  onPicUpload(event: any) {
+    this.novoJeloPic = event.currentFiles[0];
+    this.novoJeloPicPreview = this.novoJeloPic.objectURL;
+    this.cancelJeloPicBtnDisabled = false;
+  }
+
+  cancelPicBtnClicked(event: any) {
+    this.novoJeloPic = {};
+    this.novoJeloPicPreview = this.jeloGenericImgSrc;
+    this.cancelJeloPicBtnDisabled = true;
+  }
+
+  doNothing(event: any) {
+    this.fileUpload.clear();
+  }
+
 
   loadJela(event: LazyLoadEvent) {
     this.loading = true;
@@ -171,6 +209,7 @@ export class MenuJelaComponent implements OnInit {
       id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
       trenutnaCena: 0,
       vremePripremeMils: 0,
+      picBase64: '',
     };
     this.submitted = false;
     this.addJeloDialog = true;
@@ -185,7 +224,14 @@ export class MenuJelaComponent implements OnInit {
     this.submitted = true;
 
     if (this.predlog) {
-      this.predlogService.addPredlog('IZMENA', this.newJelo, this.newJelo.id);
+      this.predlogService.addPredlog('IZMENA', (response: any) => {
+        this.messageService.add({
+          severity: response.ok ? 'success' : 'error',
+          summary: response.ok ? 'Success' : 'Error',
+          detail: response.body,
+          life: 3000,
+        });
+      }, this.newJelo, this.newJelo.id);
       this.predlog = false;
       this.addJeloDialog = false;
     } else {
@@ -194,20 +240,66 @@ export class MenuJelaComponent implements OnInit {
         this.newJelo.trenutnaCena > 0 &&
         this.newJelo.vremePripremeMils > 0
       ) {
-        if (this.userRole === 'ROLE_MANAGER') {
-          await this.jeloService.addJelo(this.newJelo);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Kreirano novo jelo',
-            life: 3000,
+
+        let that = this;
+        if (Object.keys(this.novoJeloPic).length !== 0) {
+          this.base64Service.encode(this.novoJeloPic, async (slikaString: any) => {
+            that.newJelo.picBase64 = slikaString;
+
+            if (this.userRole === 'ROLE_MANAGER') {
+              await that.jeloService.addJelo(that.newJelo, (response: any) => {
+                this.messageService.add({
+                  severity: response.ok ? 'success' : 'error',
+                  summary: response.ok ? 'Success' : 'Error',
+                  detail: response.body,
+                  life: 3000,
+                });
+              });
+
+              this.addJeloDialog = false;
+              this.loadJela(this.lastTableLazyLoadEvent);
+            } else if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
+              await that.predlogService.addPredlog('DODAVANJE', (response: any) => {
+                this.messageService.add({
+                  severity: response.ok ? 'success' : 'error',
+                  summary: response.ok ? 'Success' : 'Error',
+                  detail: response.body,
+                  life: 3000,
+                });
+              }, that.newJelo, undefined);
+            }
           });
-          this.addJeloDialog = false;
-          this.loadJela(this.lastTableLazyLoadEvent);
-        } else if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
-          this.predlogService.addPredlog('DODAVANJE', this.newJelo, undefined);
-          this.addJeloDialog = false;
+        } else {
+          that.newJelo.picBase64 = "";
+
+          if (this.userRole === 'ROLE_MANAGER') {
+            await that.jeloService.addJelo(that.newJelo, (response: any) => {
+              this.messageService.add({
+                severity: response.ok ? 'success' : 'error',
+                summary: response.ok ? 'Success' : 'Error',
+                detail: response.body,
+                life: 3000,
+              });
+            });
+
+            this.addJeloDialog = false;
+            this.loadJela(this.lastTableLazyLoadEvent);
+          } else if (this.userRole === 'ROLE_GLAVNI_KUVAR') {
+            await that.predlogService.addPredlog('DODAVANJE', (response: any) => {
+              this.messageService.add({
+                severity: response.ok ? 'success' : 'error',
+                summary: response.ok ? 'Success' : 'Error',
+                detail: response.body,
+                life: 3000,
+              });
+            }, that.newJelo, undefined);
+          }
         }
+
+        this.novoJeloPic = {};
+        this.novoJeloPicPreview = this.jeloGenericImgSrc;
+
+        this.addJeloDialog = false;
       }
     }
   }
@@ -220,6 +312,13 @@ export class MenuJelaComponent implements OnInit {
   }
 
   predlogBrisanja(jelo: Jelo) {
-    this.predlogService.addPredlog('BRISANJE', undefined, jelo.id);
+    this.predlogService.addPredlog('BRISANJE', (response: any) => {
+      this.messageService.add({
+        severity: response.ok ? 'success' : 'error',
+        summary: response.ok ? 'Success' : 'Error',
+        detail: response.body,
+        life: 3000,
+      });
+    }, undefined, jelo.id);
   }
 }

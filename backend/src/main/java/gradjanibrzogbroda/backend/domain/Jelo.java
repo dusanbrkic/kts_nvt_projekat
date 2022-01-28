@@ -48,5 +48,10 @@ public class Jelo extends Artikal{
     	this.kategorijaJela=dto.getKategorijaJela();
     	this.vremePripremeMils=dto.getVremePripremeMils();
     	this.tipJela=dto.getTipJela();
+		this.setPicName(generatePicName());
     }
+
+	private String generatePicName(){
+		return this.getNaziv() + ".jpg";
+	}
 }

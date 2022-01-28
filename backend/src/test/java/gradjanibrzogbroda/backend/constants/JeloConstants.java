@@ -15,7 +15,7 @@ public class JeloConstants {
 	
 	public static final Integer FAIL_JELO_ID = 342;
 	
-	public static final JeloDTO NEW_JELO_DTO = new JeloDTO(12, "Jelo test", 200.0, (long) 300000, "Opis test", KategorijaJela.DEZERT, TipJela.BASIC);
+	public static final JeloDTO NEW_JELO_DTO = new JeloDTO(12, "Jelo test", 200.0, (long) 300000, "Opis test", "", KategorijaJela.DEZERT, TipJela.BASIC);
 	public static final Jelo NEW_JELO = new Jelo();
 	public static final Integer NEW_JELO_ID = 12;
 	public static final String NEW_JELO_NAZIV = "Jelo test";
@@ -25,7 +25,7 @@ public class JeloConstants {
 	public static final KategorijaJela NEW_JELO_KATEGORIJA=KategorijaJela.DEZERT;
 	public static final TipJela NEW_JELO_TIP=TipJela.BASIC;
 	
-	public static final JeloDTO UPDATED_JELO_DTO = new JeloDTO(1, "Jelo update", 67.0, (long) 300000, "Opis test", KategorijaJela.DEZERT, TipJela.BASIC);
+	public static final JeloDTO UPDATED_JELO_DTO = new JeloDTO(1, "Jelo update", 67.0, (long) 300000, "Opis test", "", KategorijaJela.DEZERT, TipJela.BASIC );
 	public static final Jelo UPDATED_JELO = new Jelo();
 	public static final Integer UPDATED_JELO_ID = 1;
 	public static final String UPDATED_JELO_NAZIV = "Jelo update";

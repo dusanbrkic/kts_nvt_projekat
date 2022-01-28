@@ -5,5 +5,6 @@ export default interface Jelo{
     vremePripremeMils: number;
     opis: string,
     kategorijaJela: string,
-    tipJela: string, 
+    tipJela: string,
+    picBase64: string,
 }

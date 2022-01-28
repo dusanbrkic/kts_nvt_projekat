@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import { Inplace } from 'primeng/inplace';
 import Pice from 'src/app/model/Pice';
 import { PiceService } from 'src/app/services/pice.service';
+import { Base64Service } from 'src/app/utils/base64.service';
 
 @Component({
   selector: 'app-menu-pica',
@@ -28,9 +30,21 @@ export class MenuPicaComponent implements OnInit {
 
   private lastTableLazyLoadEvent!: LazyLoadEvent;
 
+  piceGenericImgSrc: any = "http://localhost:4200/assets/generic/drinkGeneric.png";
+
+  novoPicePic: any = {};
+  novoPicePicPreview: any = this.piceGenericImgSrc;
+
+  @ViewChild('fileUpload')
+  fileUpload: any;
+
+  cancelPicePicBtnDisabled: any = true;
+
   constructor(
     private piceService: PiceService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private sanitizer: DomSanitizer,
+    private base64Service: Base64Service,
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +63,30 @@ export class MenuPicaComponent implements OnInit {
       },
     ];
   }
+
+  getPic(stringPic: string) {
+    // this is how to use the sanitizer and decode stringpics
+    if (stringPic.length > 0) {
+      return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+    } else return this.piceGenericImgSrc;
+  }
+
+  onPicUpload(event: any) {
+    this.novoPicePic = event.currentFiles[0];
+    this.novoPicePicPreview = this.novoPicePic.objectURL;
+    this.cancelPicePicBtnDisabled = false;
+  }
+
+  cancelPicBtnClicked(event: any) {
+    this.novoPicePic = {};
+    this.novoPicePicPreview = this.piceGenericImgSrc;
+    this.cancelPicePicBtnDisabled = true;
+  }
+
+  doNothing(event: any) {
+    this.fileUpload.clear();
+  }
+
 
   loadPica(event: LazyLoadEvent) {
     this.loadingPica = true;
@@ -70,6 +108,7 @@ export class MenuPicaComponent implements OnInit {
       naziv: '',
       id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
       trenutnaCena: 0,
+      picBase64: '',
     };
     this.submitted = false;
     this.piceDialog = true;
@@ -84,13 +123,35 @@ export class MenuPicaComponent implements OnInit {
     this.submitted = true;
 
     if (this.newPice.naziv.trim() && this.newPice.trenutnaCena > 0) {
-      await this.piceService.addPice(this.newPice);
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Kreirano novo piće',
-        life: 3000,
-      });
+
+      let that = this;
+      if (Object.keys(this.novoPicePic).length !== 0) {
+        this.base64Service.encode(this.novoPicePic, async (slikaString: any) => {
+          that.newPice.picBase64 = slikaString;
+          await that.piceService.addPice(that.newPice, (response: any) => {
+            this.messageService.add({
+              severity: response.ok ? 'success' : 'error',
+              summary: response.ok ? 'Success' : 'Error',
+              detail: response.body,
+              life: 3000,
+            });
+          });
+        });
+      } else {
+        that.newPice.picBase64 = "";
+        await that.piceService.addPice(that.newPice, (response: any) => {
+          this.messageService.add({
+            severity: response.ok ? 'success' : 'error',
+            summary: response.ok ? 'Success' : 'Error',
+            detail: response.body,
+            life: 3000,
+          });
+        });
+      }
+
+      this.novoPicePic = {};
+      this.novoPicePicPreview = this.piceGenericImgSrc;
+
       this.piceDialog = false;
       this.loadPica(this.lastTableLazyLoadEvent);
     }

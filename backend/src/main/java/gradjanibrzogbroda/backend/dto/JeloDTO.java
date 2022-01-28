@@ -2,10 +2,12 @@ package gradjanibrzogbroda.backend.dto;
 
 import java.util.Set;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.Alergen;
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.KategorijaJela;
 import gradjanibrzogbroda.backend.domain.TipJela;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import lombok.*;
 
 @Getter
@@ -19,6 +21,7 @@ public class JeloDTO {
 	private Double trenutnaCena;
 	private Long vremePripremeMils;
 	private String opis;
+	private String picBase64;
 	private KategorijaJela kategorijaJela;
 	private TipJela tipJela;
 	
@@ -30,6 +33,7 @@ public class JeloDTO {
 		this.opis=j.getOpis();
 		this.kategorijaJela=j.getKategorijaJela();
 		this.tipJela=j.getTipJela();
+		this.picBase64= StorageUtil.loadAsString(StorageProperties.JELA_LOCATION, j.getPicName());
 	}
 
 	@Override

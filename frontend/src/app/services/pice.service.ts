@@ -55,12 +55,16 @@ export class PiceService {
       });
   }
 
-  async addPice(pice: Pice) {
+  async addPice(pice: Pice, callback:any) {
     //console.log(pice);
     this.http
-      .post(environment.baseUrl + 'pice', pice)
-      .subscribe((data: any) => {
-        pice = data;
+      .post(environment.baseUrl + 'pice', pice, {
+        "responseType": 'json',
+        "observe": 'response'
+      })
+      .subscribe((response: any) => {
+        pice = response.body;
+        callback(response);
         const pica: Pice[] = [...this.getPica(), pice];
         this._setPica(pica);
       });
@@ -97,28 +101,28 @@ export class PiceService {
   }*/
 
   loadPicaTest(): void {
-    const pica: Pice[] = [
-      {
-        id: 1,
-        naziv: 'Pice 1',
-        trenutnaCena: 120.0,
-      },
-      {
-        id: 2,
-        naziv: 'Pice 2',
-        trenutnaCena: 120.0,
-      },
-      {
-        id: 3,
-        naziv: 'Pice 3',
-        trenutnaCena: 120.0,
-      },
-      {
-        id: 4,
-        naziv: 'Pice 4',
-        trenutnaCena: 120.0,
-      },
-    ];
-    this._setPica(pica);
+  //   const pica: Pice[] = [
+  //     {
+  //       id: 1,
+  //       naziv: 'Pice 1',
+  //       trenutnaCena: 120.0,
+  //     },
+  //     {
+  //       id: 2,
+  //       naziv: 'Pice 2',
+  //       trenutnaCena: 120.0,
+  //     },
+  //     {
+  //       id: 3,
+  //       naziv: 'Pice 3',
+  //       trenutnaCena: 120.0,
+  //     },
+  //     {
+  //       id: 4,
+  //       naziv: 'Pice 4',
+  //       trenutnaCena: 120.0,
+  //     },
+  //   ];
+  //   this._setPica(pica);
   }
 }

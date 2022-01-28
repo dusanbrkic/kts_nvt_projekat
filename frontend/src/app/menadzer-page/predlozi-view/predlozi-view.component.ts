@@ -68,7 +68,7 @@ export class PredloziViewComponent implements OnInit {
     if (status === 'ODOBREN') {
       switch (predlog.tipIzmene) {
         case 'DODAVANJE': {
-          this.jeloService.addJelo(predlog.novoJelo!);
+          this.jeloService.addJelo(predlog.novoJelo!, (response:any)=>{});
           break;
         }
         case 'BRISANJE': {

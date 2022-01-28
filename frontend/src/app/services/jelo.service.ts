@@ -13,7 +13,7 @@ export class JeloService {
 
   readonly jela$ = this._jelaSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getJela(): Jelo[] {
     return this._jelaSource.getValue();
@@ -76,12 +76,16 @@ export class JeloService {
       });
   }
 
-  async addJelo(jelo: Jelo) {
+  async addJelo(jelo: Jelo, callback: any) {
     this.http
-      .post(environment.baseUrl + 'jela', jelo)
-      .subscribe((data: any) => {
-        jelo = data;
+      .post(environment.baseUrl + 'jela', jelo, {
+        "responseType": 'json',
+        "observe": 'response'
+      })
+      .subscribe((response: any) => {
+        jelo = response.body;
         const jela: Jelo[] = [...this.getJela(), jelo];
+        callback(response);
         this._setJela(jela);
       });
   }
@@ -108,8 +112,8 @@ export class JeloService {
       });
   }
 
-  getJeloById(jeloId: number,callback: any) {
-    (this.http.get(environment.baseUrl + "jela/id/"+jeloId)).subscribe((data:any)=>{
+  getJeloById(jeloId: number, callback: any) {
+    (this.http.get(environment.baseUrl + "jela/id/" + jeloId)).subscribe((data: any) => {
       callback(data)
     })
   }
@@ -143,35 +147,35 @@ export class JeloService {
   }*/
 
   loadJelaTest(): void {
-    const jela: Jelo[] = [
-      {
-        id: 1,
-        naziv: 'Jelo 1',
-        trenutnaCena: 250.0,
-        vremePripremeMils: 30000,
-        opis: 'Opis 1',
-        kategorijaJela: 'PREDJELO',
-        tipJela: 'LUX',
-      },
-      {
-        id: 2,
-        naziv: 'Jelo 2',
-        trenutnaCena: 250.0,
-        vremePripremeMils: 30000,
-        opis: 'Opis 2',
-        kategorijaJela: 'PREDJELO',
-        tipJela: 'LUX',
-      },
-      {
-        id: 3,
-        naziv: 'Jelo 3',
-        trenutnaCena: 250.0,
-        vremePripremeMils: 30000,
-        opis: 'Opis 3',
-        kategorijaJela: 'PREDJELO',
-        tipJela: 'LUX',
-      },
-    ];
-    this._setJela(jela);
+  //   const jela: Jelo[] = [
+  //     {
+  //       id: 1,
+  //       naziv: 'Jelo 1',
+  //       trenutnaCena: 250.0,
+  //       vremePripremeMils: 30000,
+  //       opis: 'Opis 1',
+  //       kategorijaJela: 'PREDJELO',
+  //       tipJela: 'LUX',
+  //     },
+  //     {
+  //       id: 2,
+  //       naziv: 'Jelo 2',
+  //       trenutnaCena: 250.0,
+  //       vremePripremeMils: 30000,
+  //       opis: 'Opis 2',
+  //       kategorijaJela: 'PREDJELO',
+  //       tipJela: 'LUX',
+  //     },
+  //     {
+  //       id: 3,
+  //       naziv: 'Jelo 3',
+  //       trenutnaCena: 250.0,
+  //       vremePripremeMils: 30000,
+  //       opis: 'Opis 3',
+  //       kategorijaJela: 'PREDJELO',
+  //       tipJela: 'LUX',
+  //     },
+  //   ];
+  //   this._setJela(jela);
   }
 }
