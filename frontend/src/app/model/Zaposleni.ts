@@ -4,7 +4,7 @@ export default interface Zaposleni{
     pol: string;
     datumRodjenja: Date;
     trenutnaPlata: number;
-    tipZaposlenja: string;
+    roleName: string;
     slikaString: string;
-    identificationNumber: string;
+    username: string;
 }

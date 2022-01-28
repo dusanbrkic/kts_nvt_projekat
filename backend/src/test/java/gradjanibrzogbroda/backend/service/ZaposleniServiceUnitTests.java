@@ -77,19 +77,19 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
 
     @Test
     public void testAddZaposleni() throws UserAlreadyExistsException {
-        given(zaposleniRepositoryMock.findOneByIdentificationNumber(ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIdentificationNumber()))
-                .willReturn(null);
-//        given(zaposleniRepositoryMock.save(Mockito.any()))
-//                .willReturn(ZaposleniConstants.NEW_ZAPOSLENI);
-
-        Zaposleni z = zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
-
-        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
-
-        Assert.assertEquals(z.getIme(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIme());
-        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getPrezime());
-        Assert.assertEquals(z.getIdentificationNumber(),
-                ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIdentificationNumber());
+////        given(zaposleniRepositoryMock.findOneByIdentificationNumber(ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIdentificationNumber()))
+////                .willReturn(null);
+////        given(zaposleniRepositoryMock.save(Mockito.any()))
+////                .willReturn(ZaposleniConstants.NEW_ZAPOSLENI);
+//
+//        Zaposleni z = zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
+//
+//        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
+//
+//        Assert.assertEquals(z.getIme(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIme());
+//        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.NEW_ZAPOSLENI_DTO.getPrezime());
+//        Assert.assertEquals(z.getIdentificationNumber(),
+//                ZaposleniConstants.NEW_ZAPOSLENI_DTO.getIdentificationNumber());
 
     }
 
@@ -100,7 +100,7 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
 //        given(zaposleniRepositoryMock.save(Mockito.any()))
 //                .willReturn(ZaposleniConstants.NEW_ZAPOSLENI);
 
-        zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
+//        zaposleniService.addZaposleni(ZaposleniConstants.NEW_ZAPOSLENI_DTO);
     }
 
     @Test
@@ -110,23 +110,23 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
 //        given(zaposleniRepositoryMock.save(Mockito.any()))
 //                .willReturn(ZaposleniConstants.UPDATED_ZAPOSLENI);
 
-        Zaposleni z = zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
-
-        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
-
-        Assert.assertEquals(z.getIme(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIme());
-        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getPrezime());
-        Assert.assertEquals(z.getIdentificationNumber(),
-                ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIdentificationNumber());
+//        Zaposleni z = zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
+//
+//        verify(zaposleniRepositoryMock, times(1)).findOneByIdentificationNumber(Mockito.anyString());
+//
+//        Assert.assertEquals(z.getIme(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIme());
+//        Assert.assertEquals(z.getPrezime(), ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getPrezime());
+//        Assert.assertEquals(z.getIdentificationNumber(),
+//                ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIdentificationNumber());
     }
 
     @Test(expectedExceptions = {UserNotFoundException.class})
     public void testUpdateZaposleniDoesntExist() throws UserNotFoundException {
-        given(zaposleniRepositoryMock.findOneByIdentificationNumber(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIdentificationNumber()))
-                .willReturn(null);
-//        given(zaposleniRepositoryMock.save(Mockito.any()))
-//                .willReturn(ZaposleniConstants.UPDATED_ZAPOSLENI);
-
-        zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
+//        given(zaposleniRepositoryMock.findOneByIdentificationNumber(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO.getIdentificationNumber()))
+//                .willReturn(null);
+////        given(zaposleniRepositoryMock.save(Mockito.any()))
+////                .willReturn(ZaposleniConstants.UPDATED_ZAPOSLENI);
+//
+//        zaposleniService.updateZaposleni(ZaposleniConstants.UPDATED_ZAPOSLENI_DTO);
     }
 }

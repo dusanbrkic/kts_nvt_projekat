@@ -1,6 +1,5 @@
 package gradjanibrzogbroda.backend.repository;
 
-import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 
 import java.util.List;
@@ -25,13 +24,9 @@ public interface ZaposleniRepository extends JpaRepository<Zaposleni, Integer> {
 
     @SuppressWarnings("unchecked")
     Zaposleni save (Zaposleni zaposleni);
-
-    Zaposleni findOneByIdentificationNumber(String identificationNumber);
-
-    void deleteByIdentificationNumber(String idNum);
     
     Zaposleni findOneByUsername(String username);
 
-    @Query(value = "SELECT z FROM Zaposleni z where UPPER(z.ime) LIKE UPPER(:pretragaIme) and UPPER(z.prezime) LIKE UPPER(:pretragaPrezime) and z.tipZaposlenja in :filterTipZaposlenja")
-    Page<Zaposleni> getAllPaged(Pageable pageable, @Param("pretragaIme") String pretragaIme, @Param("pretragaPrezime") String pretragaPrezime, @Param("filterTipZaposlenja") Set<TipZaposlenja> filterTipZaposlenja);
+    @Query(value = "SELECT z FROM Zaposleni z join z.roles r where UPPER(z.ime) LIKE UPPER(:pretragaIme) and UPPER(z.prezime) LIKE UPPER(:pretragaPrezime) and r.role in :filterTipZaposlenja")
+    Page<Zaposleni> getAllPaged(Pageable pageable, @Param("pretragaIme") String pretragaIme, @Param("pretragaPrezime") String pretragaPrezime, @Param("filterTipZaposlenja") Set<String> filterTipZaposlenja);
 }

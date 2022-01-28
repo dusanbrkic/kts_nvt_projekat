@@ -33,7 +33,7 @@
     [rows]="5"
     [totalRecords]="totalZaposleni"
     [loading]="loading"
-    dataKey="identificationNumber"
+    dataKey="username"
     styleClass="p-datatable-customers p-datatable-gridlines"
     editMode="row"
     [(contextMenuSelection)]="selectedZ"
@@ -57,7 +57,7 @@
           Plata <p-sortIcon field="trenutnaPlata"></p-sortIcon>
         </th>
         <th>Tip zaposlenja</th>
-        <th>Identification number</th>
+        <th>Korisnicko ime</th>
         <th></th>
       </tr>
       <tr>
@@ -83,7 +83,7 @@
         <th></th>
         <th>
           <p-columnFilter
-            field="tipZaposlenja"
+            field="roleName"
             matchMode="in"
             [showMenu]="false"
           >
@@ -184,7 +184,7 @@
                   <p-calendar [(ngModel)]="z.datumRodjenja"></p-calendar>
                 </div>
                 <div class="flex align-items-center">
-                  <small class="p-error" *ngIf="z.datumRodjenja < today"
+                  <small class="p-error" *ngIf="z.datumRodjenja > today"
                     >Datum loš.</small
                   >
                 </div>
@@ -228,16 +228,16 @@
                 [options]="tipovi"
                 optionLabel="name"
                 optionValue="value"
-                [(ngModel)]="z.tipZaposlenja"
+                [(ngModel)]="z.roleName"
                 [style]="{ width: '100%' }"
               ></p-dropdown>
             </ng-template>
             <ng-template pTemplate="output">
-              {{ z.tipZaposlenja }}
+              {{ z.roleName }}
             </ng-template>
           </p-cellEditor>
         </td>
-        <td>{{ z.identificationNumber }}</td>
+        <td>{{ z.username }}</td>
         <td style="text-align: center">
           <button
             *ngIf="!editing"
@@ -332,6 +332,21 @@
         </div>
 
         <div class="field">
+          <label for="username">Korisnicko ime</label>
+          <input
+            type="text"
+            pInputText
+            id="username"
+            [(ngModel)]="newZaposleni.username"
+            required
+            autofocus
+          />
+          <small class="p-error" *ngIf="submitted && !newZaposleni.username.trim()"
+            >Korisnicko Ime je obavezno.</small
+          >
+        </div>
+
+        <div class="field">
           <label for="ime">Ime</label>
           <input
             type="text"
@@ -366,7 +381,7 @@
         <div class="field">
           <label for="tip">Tip zaposlenja</label>
           <p-dropdown
-            [(ngModel)]="newZaposleni.tipZaposlenja"
+            [(ngModel)]="newZaposleni.roleName"
             optionLabel="name"
             optionValue="value"
             inputId="tip"

@@ -63,11 +63,11 @@ export class ZaposleniViewComponent implements OnInit {
     });
 
     this.tipovi = [
-      { value: 'SANKER', name: 'Sanker' },
-      { value: 'KONOBAR', name: 'Konobar' },
-      { value: 'KUVAR', name: 'Kuvar' },
-      { value: 'GLAVNI_KUVAR', name: 'Glavni kuvar' },
-      { value: 'MENADZER', name: 'Menadzer' },
+      { value: 'ROLE_SANKER', name: 'Sanker' },
+      { value: 'ROLE_KONOBAR', name: 'Konobar' },
+      { value: 'ROLE_KUVAR', name: 'Kuvar' },
+      { value: 'ROLE_GLAVNI_KUVAR', name: 'Glavni kuvar' },
+      { value: 'ROLE_MANAGER', name: 'Menadzer' },
     ];
 
     this.polovi = [
@@ -117,7 +117,7 @@ export class ZaposleniViewComponent implements OnInit {
 
   onRowEditInit(z: Zaposleni) {
     this.editing = true;
-    this.clonedZaposleni[z.identificationNumber] = { ...z };
+    this.clonedZaposleni[z.username] = { ...z };
   }
 
   onRowEditSave(z: Zaposleni, index: number) {
@@ -127,7 +127,7 @@ export class ZaposleniViewComponent implements OnInit {
       z.prezime !== '' &&
       z.datumRodjenja < new Date()
     ) {
-      delete this.clonedZaposleni[z.identificationNumber];
+      delete this.clonedZaposleni[z.username];
       this.editing = false;
       this.zaposleniService.updateZaposleni(this.zaposleni[index], (response: any) => {
         this.messageService.add({
@@ -137,8 +137,8 @@ export class ZaposleniViewComponent implements OnInit {
         })
       });
     } else {
-      this.zaposleni[index] = this.clonedZaposleni[z.identificationNumber];
-      delete this.clonedZaposleni[z.identificationNumber];
+      this.zaposleni[index] = this.clonedZaposleni[z.username];
+      delete this.clonedZaposleni[z.username];
       this.editing = false;
       this.messageService.add({
         severity: 'error',
@@ -149,8 +149,8 @@ export class ZaposleniViewComponent implements OnInit {
   }
 
   onRowEditCancel(z: Zaposleni, index: number) {
-    this.zaposleni[index] = this.clonedZaposleni[z.identificationNumber];
-    delete this.clonedZaposleni[z.identificationNumber];
+    this.zaposleni[index] = this.clonedZaposleni[z.username];
+    delete this.clonedZaposleni[z.username];
     this.editing = false;
   }
 
@@ -171,10 +171,9 @@ export class ZaposleniViewComponent implements OnInit {
       prezime: '',
       pol: 'MUSKI',
       datumRodjenja: new Date(),
-      tipZaposlenja: 'KONOBAR',
+      roleName: 'ROLE_KONOBAR',
       slikaString: '',
-      identificationNumber:
-        '' + Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
+      username:'',
       trenutnaPlata: 0,
     };
     this.submitted = false;
@@ -192,7 +191,8 @@ export class ZaposleniViewComponent implements OnInit {
     if (
       this.newZaposleni.ime.trim() &&
       this.newZaposleni.prezime.trim() &&
-      this.newZaposleni.trenutnaPlata > 0
+      this.newZaposleni.trenutnaPlata > 0 &&
+      this.newZaposleni.username.trim()
     ) {
 
       let that = this;
