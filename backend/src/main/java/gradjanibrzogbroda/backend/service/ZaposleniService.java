@@ -45,7 +45,7 @@ public class ZaposleniService {
 			throw new UserNotFoundException();
 		}
 
-		ZaposleniDTO zaposleniDTO = new ZaposleniDTO(zaposleni, StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike()));
+		ZaposleniDTO zaposleniDTO = new ZaposleniDTO(zaposleni);
 
 		return zaposleniDTO;
 	}
@@ -105,8 +105,7 @@ public class ZaposleniService {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
-				String slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
-				return new ZaposleniDTO(zaposleni, slikaString);
+				return new ZaposleniDTO(zaposleni);
 			}
 		}).collect(Collectors.toList());
 
@@ -158,8 +157,7 @@ public class ZaposleniService {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
-				String slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
-				return new ZaposleniDTO(zaposleni, slikaString);
+				return new ZaposleniDTO(zaposleni);
 			}
 		}).collect(Collectors.toList());
 
