@@ -4,6 +4,7 @@ import gradjanibrzogbroda.backend.constants.PicePorudzbineConstants;
 import gradjanibrzogbroda.backend.domain.PicePorudzbine;
 import gradjanibrzogbroda.backend.domain.StatusPica;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.exceptions.PicePorudzbineNotFoundException;
 import gradjanibrzogbroda.backend.service.PicePorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,7 +61,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
     }
 
     @Test(priority = 1)
-    public void testObrisiPicePorudzbine(){
+    public void testObrisiPicePorudzbine() throws PicePorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/" + PicePorudzbineConstants.DELETED_PICE_PORUDZBINE_ID,
                 HttpMethod.DELETE,
                 new HttpEntity<Object>(null), Object.class);
@@ -72,7 +73,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
 
 
     @Test
-    public void testPripremiPicePorudzbine(){
+    public void testPripremiPicePorudzbine() throws PicePorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/pripremi/" + PicePorudzbineConstants.KREIRANO_PICE_PORUDZBINE_ID,
                 HttpMethod.PUT,
                 new HttpEntity<Object>(null), Object.class);
@@ -83,7 +84,7 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
     }
 
     @Test
-    public void testDostaviPicePorudzbine(){
+    public void testDostaviPicePorudzbine() throws PicePorudzbineNotFoundException {
         ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/dostavi/" + PicePorudzbineConstants.PRIPREMLJENO_PICE_PORUDZBINE_ID,
                 HttpMethod.PUT,
                 new HttpEntity<Object>(null), Object.class);

@@ -169,7 +169,7 @@ public class PorudzbinaService {
         return porudzbinaRepository.save(porudzbina);
     }
 
-    public Porudzbina izmeniPorudzbinu(PorudzbinaDTO dto) throws PorudzbinaNotFoundException, NepozitivnaKolicinaException, PorudzbinaNaplacenaException, JeloNotFoundException, PiceNotFoundException {
+    public Porudzbina izmeniPorudzbinu(PorudzbinaDTO dto) throws PorudzbinaNotFoundException, PorudzbinaNaplacenaException, NepozitivnaKolicinaException, JeloNotFoundException, PiceNotFoundException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getId());
         if (porudzbina == null){
             throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
@@ -179,6 +179,7 @@ public class PorudzbinaService {
         }
 
         boolean novo;
+        ArrayList<JeloPorudzbine> novaJela = new ArrayList<JeloPorudzbine>();
         for (JeloPorudzbineDTO jpdto: dto.getJelaPorudzbine()){
             novo = true;
             for (JeloPorudzbine jp: porudzbina.getJelaPorudzbine()) {
@@ -187,10 +188,10 @@ public class PorudzbinaService {
                 }
             }
             if (novo){
-                jeloPorudzbineService.dodajJeloPorudzbine(jpdto);
+                novaJela.add(jeloPorudzbineService.dodajJeloPorudzbine(jpdto));
             }
         }
-
+        ArrayList<PicePorudzbine> novaPica = new ArrayList<PicePorudzbine>();
         for (PicePorudzbineDTO ppdto: dto.getPicaPorudzbine()){
             novo = true;
             for (PicePorudzbine pp: porudzbina.getPicePorudzbine()) {
@@ -199,9 +200,13 @@ public class PorudzbinaService {
                 }
             }
             if (novo){
-                picePorudzbineService.dodajPicePorudzbine(ppdto);
+                novaPica.add(picePorudzbineService.dodajPicePorudzbine(ppdto));
             }
         }
+
+        porudzbina.getPicePorudzbine().addAll(novaPica);
+        porudzbina.getJelaPorudzbine().addAll(novaJela);
+
 
         porudzbina.setNapomena(dto.getNapomena());
         porudzbina.setSto(stoRepository.findOneByIdentificationNumber(dto.getStoId()));

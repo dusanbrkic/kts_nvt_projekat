@@ -13,13 +13,53 @@ insert into konobari (id) values(4);
 insert into zone (identification_number, naziv, template_path, obrisan) values ('12345', 'Terasica', 'terasica.jpg', false);
 insert into zone (identification_number, naziv, template_path, obrisan) values ('56789', 'Potkrovlje', 'potkrovljice.jpg', false);
 
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345112', 'astal1', 4, 195.5, 469.603, false);
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12334512', 'astal2', 4, 195.5, 221.603, false);
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345212', 'astal3', 4, 651.5, 469.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values (true, '12345112', 'astal1', 4, 170.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values (true, '12334512', 'astal2', 4, 170.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values (true, '12345212', 'astal3', 4, 170.0, 170.0, false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '22345112', 'astal4', 4, 320.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '22334512', 'astal5', 4, 320.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '22345212', 'astal6', 4, 320.0, 170.0, false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '32345112', 'astal7', 4, 470.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '32334512', 'astal8', 4, 470.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '32345212', 'astal9', 4, 470.0, 170.0, false);
+
+
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '42345112', 'astal10', 4, 170.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '42334512', 'astal11', 4, 170.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '42345212', 'astal12', 4, 170.0, 170.0, false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '52345112', 'astal13', 4, 320.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '52334512', 'astal14', 4, 320.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '52345212', 'astal15', 4, 320.0, 170.0, false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '62345112', 'astal16', 4, 470.0, 470.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '62334512', 'astal17', 4, 470.0, 320.0, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '62345212', 'astal18', 4, 470.0, 170.0, false);
+
+
 
 insert into zone_stolovi (zone_id, stolovi_id) values (1,1);
 insert into zone_stolovi (zone_id, stolovi_id) values (1,2);
-insert into zone_stolovi (zone_id, stolovi_id) values (2,3);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,3);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,4);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,5);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,6);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,7);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,8);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,9);
+
+insert into zone_stolovi (zone_id, stolovi_id) values (2,10);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,11);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,12);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,13);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,14);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,15);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,16);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,17);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,18);
 
 --jela
 
@@ -56,21 +96,41 @@ insert into artikli (naziv, trenutna_cena, obrisan) values ('Limanada 0.5l', 125
 insert into pice (id) values (10);
 
 --porudzbine
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-11-11', 'Posluziti hranu dok je topla.', false, 0, 1, 730.0);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 1, 1, false);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 1, false);
+
+--stare - naplacene
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-23', 'Posluziti hranu dok je topla.', false, 4, 1, 730.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 3, 1, 1, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 2, 6, 1, false);
 
 
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-12-12', 'Dajte mi majoneza.', false, 1, 1, 860.0);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi majoneza.', 0, 3, 2, false);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (1.0, 'Bez kiselih krastavaca.', 1, 4, 2, false);
-insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (3.0, 'Stavite mi pavlake.', 2, 2, 2, false);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 2, false);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda.', 1, 7, 2, false);
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-12-12', 'Dajte mi majoneza.', false, 4, 1, 860.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi majoneza.', 3, 3, 2, false);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (1.0, 'Bez kiselih krastavaca.', 3, 4, 2, false);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (3.0, 'Stavite mi pavlake.', 3, 2, 2, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 2, 6, 2, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda.', 2, 7, 2, false);
 
-insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-01-02', 'Dajte mi Kepac.', false, 3, 1, 920.0);
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2021-01-02', 'Dajte mi Kepac.', false, 4, 1, 920.0);
 insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Stavite mi kepaca.', 3, 2, 3, false);
 insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 2, 6, 3, false);
+
+
+--trenutne
+
+--KREIRANA za preuzimanje kuvar, ne menja se status porudzbine   id = 4
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-28', 'Gosti zure, posluziti brzo.', false, 0, 1, 2650.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 0, 3, 1, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 0, 6, 1, false);
+
+--KREIRANA za pripremanje sanker, jelo vec spremno, menja se status porudzbine u PRIPREMLJENO   id = 5
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-28', 'Gosti jako gladni.', false, 0, 2, 2725.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Sa svezim sastojcima.', 2, 3, 1, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (3.0, 'Sa ledom.', 0, 6, 1, false);
+
+--PREUZETA za pripremanje kuvar, pice vec spremno, menja se status porudzbine u PRIPREMLJENO   id = 6
+insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-28', 'Gosti jako gladni.', false, 1, 3, 690.0);
+insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbina_id, obrisan) values (2.0, 'Puno soli.', 1, 2, 1, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Sa ledom.', 1, 8, 1, false);
 
 --roles
 
