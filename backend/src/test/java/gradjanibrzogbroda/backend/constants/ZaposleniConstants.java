@@ -8,7 +8,6 @@ import java.util.List;
 import org.assertj.core.util.Arrays;
 
 import gradjanibrzogbroda.backend.domain.Pol;
-import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
@@ -31,11 +30,11 @@ public class ZaposleniConstants {
                         LocalDate.parse("2021-11-27", DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         null, UPDATED_ZAPOSLENI_ID);
 
-        public static final ZaposleniDTO UPDATED_ZAPOSLENI_DTO = new ZaposleniDTO(UPDATED_ZAPOSLENI_IME, UPDATED_ZAPOSLENI_PREZIME,
-                        null, null, 52000.0, TipZaposlenja.MENADZER, null, UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
+//        public static final ZaposleniDTO UPDATED_ZAPOSLENI_DTO = new ZaposleniDTO(UPDATED_ZAPOSLENI_IME, UPDATED_ZAPOSLENI_PREZIME,
+//                        null, null, 52000.0, TipZaposlenja.MENADZER, null, UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
 
-        public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
-                        null, null, 52000.0, TipZaposlenja.MENADZER, null, NEW_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
+//        public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
+//                        null, null, 52000.0, TipZaposlenja.MENADZER, null, NEW_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
 
 //        public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(UPDATED_ZAPOSLENI_DTO);
 //

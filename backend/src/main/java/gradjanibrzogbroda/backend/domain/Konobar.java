@@ -22,9 +22,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Konobar extends Zaposleni{
-	public Konobar(ZaposleniDTO zaposleniDTO){
-		super(zaposleniDTO);
-	}
+//	public Konobar(ZaposleniDTO zaposleniDTO){
+//		super(zaposleniDTO);
+//	}
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Porudzbina> porudzbine;

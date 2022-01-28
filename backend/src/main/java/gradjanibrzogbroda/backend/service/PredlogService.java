@@ -2,6 +2,8 @@ package gradjanibrzogbroda.backend.service;
 
 import java.util.Optional;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ public class PredlogService {
 		Jelo novoJelo;
 		if(dto.getNovoJelo()!=null) {
 			novoJelo=new Jelo(dto.getNovoJelo());
+			StorageUtil.store(dto.getNovoJelo().getPicBase64(), StorageProperties.JELA_LOCATION, novoJelo.getPicName());
 		}else {
 			novoJelo=null;
 		}
@@ -38,6 +41,8 @@ public class PredlogService {
 		}else {
 			staroJelo=null;
 		}
+
+
 		
 		return predlogRepository.save(new Predlog(dto,novoJelo,staroJelo));
 	}

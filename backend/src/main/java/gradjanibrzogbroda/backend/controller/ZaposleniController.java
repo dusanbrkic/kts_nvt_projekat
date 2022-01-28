@@ -56,10 +56,10 @@ public class ZaposleniController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/id/{id}")
-	public ResponseEntity<ZaposleniDTO> getOneByIdentificationNumber(@PathVariable("id") String id) {
+	@GetMapping(value = "/username/{username}")
+	public ResponseEntity<ZaposleniDTO> getOneByUsername(@PathVariable("username") String username) {
 		try {
-			ZaposleniDTO zaposleniDTO = zaposleniService.findOneByIdentificationNumber(id);
+			ZaposleniDTO zaposleniDTO = zaposleniService.findOneByUsername(username);
 
 			return new ResponseEntity<ZaposleniDTO>(zaposleniDTO, HttpStatus.OK);
 
@@ -92,15 +92,15 @@ public class ZaposleniController {
 			return new ResponseEntity<String>("Zaposleni " + z.getIme() + " " + z.getPrezime() + " uspesno dodat!", HttpStatus.OK);
 
 		} catch (UserAlreadyExistsException e) {
-			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Korisnicko ime zauzeto...", HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
-	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<String> deleteZaposleni(@PathVariable("id") String id) {
+	@DeleteMapping(value = "/delete/{username}")
+	public ResponseEntity<String> deleteZaposleni(@PathVariable("username") String username) {
 		try {
-			zaposleniService.deleteZaposleni(id);
+			zaposleniService.deleteZaposleni(username);
 			return new ResponseEntity<String>("Zaposleni uspesno obrisan!", HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return new ResponseEntity<String>("Greska u sistemu, pokusajte ponovo...", HttpStatus.NOT_FOUND);

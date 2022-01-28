@@ -30,6 +30,8 @@ public class JeloConverter implements AttributeConverter<Jelo, String> {
         sb.append(jelo.getVremePripremeMils().toString());
         sb.append(SEPARATOR);
         sb.append(jelo.getTrenutnaCena().toString());
+		sb.append(SEPARATOR);
+		sb.append(jelo.getPicName());
 
         return sb.toString();
 	}
@@ -56,6 +58,7 @@ public class JeloConverter implements AttributeConverter<Jelo, String> {
         jelo.setTipJela(TipJela.valueOf(pieces[3]));
         jelo.setVremePripremeMils(Long.parseLong(pieces[4]));
         jelo.setTrenutnaCena(Double.parseDouble(pieces[5]));
+		jelo.setPicName(pieces[6]);
 
         return jelo;
 	}

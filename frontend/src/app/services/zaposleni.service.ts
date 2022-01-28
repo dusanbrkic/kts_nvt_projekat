@@ -34,7 +34,7 @@ export class ZaposleniService {
     let sortDesc:boolean = event.sortOrder && event.sortOrder > 0 ? false : true;
     let pretragaIme:string = event.filters?.ime?.value || "";
     let pretragaPrezime:string = event.filters?.prezime?.value || "";
-    let filterTipZaposlenja:string = event.filters?.tipZaposlenja?.value?.map(function(elem:any) { return elem.value; }).join(",") || "";
+    let filterTipZaposlenja:string = event.filters?.roleName?.value?.map(function(elem:any) { return elem.value; }).join(",") || "";
 
     let params = { page, size, sortBy, sortDesc, pretragaIme, pretragaPrezime, filterTipZaposlenja }
 
@@ -86,7 +86,7 @@ export class ZaposleniService {
   async removeZaposleni(zap: Zaposleni, alertCallback:any) {
     //TO DO: izbrisati zaposlenog sa backa
     // kod ispod treba da se izvrsi samo ako uspe poziv na back
-    const httpZaposleni = await this.http.delete(environment.baseUrl + "zaposleni/delete/" + zap.identificationNumber, {responseType : 'text'}).toPromise()
+    const httpZaposleni = await this.http.delete(environment.baseUrl + "zaposleni/delete/" + zap.username, {responseType : 'text'}).toPromise()
     .then((response:any)=>{
       alertCallback(response);
     })
@@ -94,7 +94,7 @@ export class ZaposleniService {
       alertCallback(response);
     });
 
-    const zaposleni: Zaposleni[] = this.getZaposleni().filter(z => z.identificationNumber !== zap.identificationNumber)
+    const zaposleni: Zaposleni[] = this.getZaposleni().filter(z => z.username !== zap.username)
     this._setZaposleni(zaposleni)
   }
 
@@ -107,16 +107,16 @@ export class ZaposleniService {
   }*/
 
   loadZaposleniTest() {
-    const zaposleni: Zaposleni[] = [{
-      ime: 'Marko',
-      prezime: 'Markovic',
-      pol: 'MUSKI',
-      datumRodjenja: new Date(),
-      trenutnaPlata: 200000,
-      tipZaposlenja: 'GLAVNI_KUVAR',
-      slikaString: '',
-      identificationNumber: '124123',
-    },]
-    this._setZaposleni(zaposleni)
+  //   const zaposleni: Zaposleni[] = [{
+  //     ime: 'Marko',
+  //     prezime: 'Markovic',
+  //     pol: 'MUSKI',
+  //     datumRodjenja: new Date(),
+  //     trenutnaPlata: 200000,
+  //     tipZaposlenja: 'GLAVNI_KUVAR',
+  //     slikaString: '',
+  //     identificationNumber: '124123',
+  //   },]
+  //   this._setZaposleni(zaposleni)
   }
 }

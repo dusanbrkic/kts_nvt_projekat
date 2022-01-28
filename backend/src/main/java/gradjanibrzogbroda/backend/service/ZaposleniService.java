@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 
 import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.Plata;
-import gradjanibrzogbroda.backend.domain.TipZaposlenja;
+import gradjanibrzogbroda.backend.domain.Role;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 import gradjanibrzogbroda.backend.exceptions.UserAlreadyExistsException;
 import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 
 import gradjanibrzogbroda.backend.pages.sortFields.ZaposleniSortFields;
+import gradjanibrzogbroda.backend.repository.RoleRepository;
 import gradjanibrzogbroda.backend.util.StorageUtil;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Zaposleni;
@@ -34,12 +36,18 @@ public class ZaposleniService {
 	@Autowired
 	private ZaposleniRepository zaposleniRepository;
 
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public List<Zaposleni> findAll() {
 		return zaposleniRepository.findAll();
 	}
 
-	public ZaposleniDTO findOneByIdentificationNumber(String id) throws UserNotFoundException{
-		Zaposleni zaposleni = zaposleniRepository.findOneByIdentificationNumber(id);
+	public ZaposleniDTO findOneByUsername(String username) throws UserNotFoundException {
+		Zaposleni zaposleni = zaposleniRepository.findOneByUsername(username);
 
 		if (zaposleni == null) {
 			throw new UserNotFoundException();
@@ -52,7 +60,7 @@ public class ZaposleniService {
 
 	public Map<String, Object> getAllPaged(Integer page, Integer size, String sortByString, Boolean sortDesc, String pretragaIme, String pretragaPrezime, String filterTipZaposlenjaString) {
 		ZaposleniSortFields sortBy = null;
-		if(sortByString.isEmpty()){
+		if (sortByString.isEmpty()) {
 			sortBy = ZaposleniSortFields.PREZIME;
 		} else {
 			sortBy = ZaposleniSortFields.valueOf(sortByString);
@@ -60,33 +68,29 @@ public class ZaposleniService {
 
 		//get the corresponding Zaposleni Property
 		String sortByAttr = Zaposleni.Fields.prezime;
-		if (sortBy == ZaposleniSortFields.IME){
+		if (sortBy == ZaposleniSortFields.IME) {
 			sortByAttr = Zaposleni.Fields.ime;
-		} else if(sortBy == ZaposleniSortFields.PREZIME){
+		} else if (sortBy == ZaposleniSortFields.PREZIME) {
 			sortByAttr = Zaposleni.Fields.prezime;
-		} else if (sortBy == ZaposleniSortFields.DATUMRODJENJA){
+		} else if (sortBy == ZaposleniSortFields.DATUMRODJENJA) {
 			sortByAttr = Zaposleni.Fields.datumRodjenja;
-		} else if(sortBy == ZaposleniSortFields.TRENUTNAPLATA){
+		} else if (sortBy == ZaposleniSortFields.TRENUTNAPLATA) {
 			sortByAttr = Zaposleni.Fields.trenutnaPlata;
 		}
 
 
-		Set<TipZaposlenja> filterTipZaposlenja = null;
+		Set<String> filterTipZaposlenja = null;
+		Set<Role> allRoles = new HashSet<>(roleRepository.findAll());
+
 		if (filterTipZaposlenjaString.isEmpty()) {
-			filterTipZaposlenja = new HashSet<>();
-			filterTipZaposlenja.add(TipZaposlenja.KONOBAR);
-			filterTipZaposlenja.add(TipZaposlenja.GLAVNI_KUVAR);
-			filterTipZaposlenja.add(TipZaposlenja.KUVAR);
-			filterTipZaposlenja.add(TipZaposlenja.MENADZER);
-			filterTipZaposlenja.add(TipZaposlenja.SANKER);
-		}
-		else {
-			filterTipZaposlenja = Arrays.asList(filterTipZaposlenjaString.split(",")).stream().map(new Function<String, TipZaposlenja>() {
+			filterTipZaposlenja = allRoles.stream().map(new Function<Role, String>() {
 				@Override
-				public TipZaposlenja apply(String tipZaposlenjaString) {
-					return TipZaposlenja.valueOf(tipZaposlenjaString);
+				public String apply(Role role) {
+					return role.getRole();
 				}
 			}).collect(Collectors.toSet());
+		} else {
+			filterTipZaposlenja = new HashSet<>(Arrays.asList(filterTipZaposlenjaString.split(",")));
 		}
 
 		pretragaIme = "%" + pretragaIme + "%";
@@ -101,7 +105,7 @@ public class ZaposleniService {
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Zaposleni> queryResult = zaposleniRepository.getAllPaged(pageable, pretragaIme, pretragaPrezime, filterTipZaposlenja);
 
-		List<ZaposleniDTO> zaposleniDTOS =  queryResult.getContent().stream().map(new Function<Zaposleni, ZaposleniDTO>() {
+		List<ZaposleniDTO> zaposleniDTOS = queryResult.getContent().stream().map(new Function<Zaposleni, ZaposleniDTO>() {
 			@SneakyThrows
 			@Override
 			public ZaposleniDTO apply(Zaposleni zaposleni) {
@@ -123,10 +127,10 @@ public class ZaposleniService {
 		return zaposleniRepository.save(z);
 	}
 
-	public void deleteZaposleni(String idNum) throws UserNotFoundException {
-		try{
-			zaposleniRepository.deleteById(zaposleniRepository.findOneByIdentificationNumber(idNum).getId());
-		} catch(EmptyResultDataAccessException e) {
+	public void deleteZaposleni(String username) throws UserNotFoundException {
+		try {
+			zaposleniRepository.deleteById(zaposleniRepository.findOneByUsername(username).getId());
+		} catch (EmptyResultDataAccessException e) {
 			throw new UserNotFoundException();
 		}
 	}
@@ -166,14 +170,14 @@ public class ZaposleniService {
 
 	public Zaposleni updateZaposleni(ZaposleniDTO zaposleniDTO)
 			throws UserNotFoundException {
-				
-		Zaposleni zaposleni = zaposleniRepository.findOneByIdentificationNumber(zaposleniDTO.getIdentificationNumber());
+
+		Zaposleni zaposleni = zaposleniRepository.findOneByUsername(zaposleniDTO.getUsername());
 
 		if (zaposleni == null) {
 			throw new UserNotFoundException();
 		}
 
-		zaposleni.updateFields(zaposleniDTO);
+		zaposleni.updateFields(zaposleniDTO, roleRepository.findByRole(zaposleniDTO.getRoleName()));
 		zaposleni = zaposleniRepository.save(zaposleni);
 
 		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
@@ -183,33 +187,40 @@ public class ZaposleniService {
 
 	public Zaposleni addZaposleni(ZaposleniDTO zaposleniDTO) throws UserAlreadyExistsException {
 
-		Zaposleni zaposleni = zaposleniRepository.findOneByIdentificationNumber(zaposleniDTO.getIdentificationNumber());
+		Zaposleni zaposleni = zaposleniRepository.findOneByUsername(zaposleniDTO.getUsername());
 
-		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
 
 		if (zaposleni != null) {
 			throw new UserAlreadyExistsException();
 		} else {
-			/*if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.GLAVNI_KUVAR)
-				zaposleni = zaposleniRepository.save(new GlavniKuvar(zaposleniDTO));
-			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.KONOBAR)
-				zaposleni = zaposleniRepository.save(new Konobar(zaposleniDTO));
-			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.KUVAR)
-				zaposleni = zaposleniRepository.save(new Kuvar(zaposleniDTO));
-			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.MENADZER)
-				zaposleni = zaposleniRepository.save(new Menadzer(zaposleniDTO));
-			if (zaposleniDTO.getTipZaposlenja() == TipZaposlenja.SANKER)
-				zaposleni = zaposleniRepository.save(new Sanker(zaposleniDTO));*/
-			return zaposleni;
+			String psw;
+			if (zaposleniDTO.getRoleName().equals("ROLE_GLAVNI_KUVAR") ||
+					zaposleniDTO.getRoleName().equals("ROLE_MANAGER") ||
+					zaposleniDTO.getRoleName().equals("ROLE_ADMIN")
+			) {
+				psw = "passje";
+			} else {
+				psw = "identification";
+			}
+
+			zaposleni = new Zaposleni();
+			zaposleni.updateFields(zaposleniDTO, roleRepository.findByRole(zaposleniDTO.getRoleName()));
+			zaposleni.setPassword(passwordEncoder.encode(psw));
+			zaposleni = zaposleniRepository.save(zaposleni);
 		}
+
+		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
+		return zaposleni;
 	}
 
-    public Zaposleni findOneById(Integer zaposleniId) throws UserNotFoundException {
-        Zaposleni zaposleni = zaposleniRepository.findOneById(zaposleniId);
+	public Zaposleni findOneById(Integer zaposleniId) throws UserNotFoundException {
+		Zaposleni zaposleni = zaposleniRepository.findOneById(zaposleniId);
 
 		if (zaposleni == null) {
 			throw new UserNotFoundException();
 		}
 		return zaposleni;
-    };
+	}
+
+	;
 }
