@@ -65,7 +65,7 @@ public class PicePorudzbineController {
         }
     }
 
-    @PutMapping("/dostavi/{id}")
+    @PostMapping("/dostavi/{id}")
     public ResponseEntity<Object> dostaviPicePorudzbine(@PathVariable("id") Integer id) {
         try {
             boolean uspeh = picePorudzbineService.dostaviPice(id);

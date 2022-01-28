@@ -80,7 +80,7 @@ export class PorudzbineViewKuvarComponent implements OnInit {
           j.statusJela === 'KREIRANO' ? { ...j, statusJela: 'PREUZETO' } : j
         ),
       },
-      false
+      false, null
     );
   }
 

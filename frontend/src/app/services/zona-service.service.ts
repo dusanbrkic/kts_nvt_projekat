@@ -101,7 +101,7 @@ export class ZonaService {
             x: 195.5,
             y: 469.609375,
             naziv: 'Sto 2',
-            porudzbinaId: 1
+            porudzbinaId: 2
           }
         ],
         template: '/assets/zones/zone1.png',

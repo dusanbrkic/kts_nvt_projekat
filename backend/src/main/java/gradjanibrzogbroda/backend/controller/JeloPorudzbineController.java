@@ -115,7 +115,7 @@ public class JeloPorudzbineController {
         }
     }
 
-    @PutMapping("/dostavi/{id}")
+    @PostMapping("/dostavi/{id}")
     public ResponseEntity<Object> dostaviJeloPorudzbine(@PathVariable("id") Integer id) {
         try {
             boolean uspeh = jeloPorudzbineService.dostaviJelo(id);

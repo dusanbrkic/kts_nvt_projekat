@@ -123,7 +123,7 @@ public class PorudzbinaController {
         }
     }
 
-    @PutMapping("/naplati/{id}")
+    @PostMapping("/naplati/{id}")
     public ResponseEntity<Object> naplatiPorudzbinu(@PathVariable("id") Integer id) {
         try {
             boolean uspeh = porudzbinaService.naplatiPorudzbinu(id);

@@ -23,6 +23,16 @@ export class JeloService {
     this._jelaSource.next(jela);
   }
 
+  async loadAllJela(){
+    const httpZahtev = await this.http
+      .get(environment.baseUrl + 'jela/all').toPromise()
+      .then((data: any) => {
+        console.log("jela load")
+        this._setJela(data);
+        console.log(data)
+      });
+  }
+
   async loadJela(event: LazyLoadEvent, brojJelaUpdate: any) {
     console.log(event);
     let naziv;

@@ -36,37 +36,41 @@ export class PorudzbinaService {
     this._jelaPorudzbineSource.next(jelaPorudzbine);
   }
 
-  getPorudzbinaById(porudzbinaId: number): Porudzbina {
+  async getPorudzbinaById(porudzbinaId: number, callback:any): Promise<Porudzbina> {
     //TO DO poziv na back umesto ovaj for each
-    let por: Porudzbina;
-    this.getPorudzbine().forEach((p) => {
-      if (p.id === porudzbinaId) {
-        por = p;
-        return;
-      }
-    });
+    let por: Porudzbina
+    if (porudzbinaId == -1)
+      return por!;
+    const httpZahtev = await this.http.get<Porudzbina>(environment.baseUrl + "porudzbine/" + porudzbinaId, {
+      "responseType": 'json',
+      "observe": 'response'
+    }).toPromise()
+    .then((response: any) => {
+      console.log(response.body)
+      callback(response.body)
+      });
     return por!;
   }
 
-  addJeloToPorudzbina(jelo: JeloPorudzbine, porudzbinaId: number) {
-    const porudzbine = this.getPorudzbine().map((p) =>
-      p.id === porudzbinaId
-        ? { ...p, jelaPorudzbine: [...p.jelaPorudzbine, jelo] }
-        : p
-    );
-    this._setPorudzbine(porudzbine);
+  async addJeloToPorudzbina(jelo: JeloPorudzbine, porudzbinaId: number, callback:any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'jelo-porudzbine/', jelo,  {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response.body)
+      })
+    
   }
 
-  addPiceToPorudzbina(pice: PicePorudzbine, porudzbinaId: number) {
-    const porudzbine = this.getPorudzbine().map((p) =>
-      p.id === porudzbinaId
-        ? { ...p, picaPorudzbine: [...p.picaPorudzbine, pice] }
-        : p
-    );
-    this._setPorudzbine(porudzbine);
+  async addPiceToPorudzbina(pice: PicePorudzbine, porudzbinaId: number, callback:any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'pice-porudzbine/', pice,  {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response.body)
+      })
+    
   }
 
-  async savePorudzbina(porudzbina: Porudzbina, isNewPorudzbina: boolean) {
+  async savePorudzbina(porudzbina: Porudzbina, isNewPorudzbina: boolean, callback:any) {
     //TO DO dodati na back
 
     if (!isNewPorudzbina) {
@@ -82,15 +86,19 @@ export class PorudzbinaService {
       // );
       // this._setPorudzbine(porudzbine);
     } else {
-      const porudzbine = [...this.getPorudzbine(), porudzbina];
-      this._setPorudzbine(porudzbine);
+      const httpZahtev = await this.http
+      .post(environment.baseUrl + 'porudzbine/', porudzbina,  {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response.body);
+      })
+      // const porudzbine = [...this.getPorudzbine(), porudzbina];
+      // this._setPorudzbine(porudzbine);
     }
   }
 
   async porudzbineZaPripremuKuvar() {
     
     let porudzbine: Porudzbina[];
-    let answ;
     const httpZahtev = await this.http
       .get(environment.baseUrl + 'porudzbine/zaKuvara').toPromise()
       .then((data: any) => {
@@ -150,6 +158,33 @@ export class PorudzbinaService {
 
         this.porudzbineZaPripremuSanker();
       })
+  }
+
+  async dostaviJelo(jelo: JeloPorudzbine, callback: any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'jelo-porudzbine/dostavi/' + jelo.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response)
+      })
+    
+  }
+
+  async dostaviPice(pice: PicePorudzbine, callback: any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'pice-porudzbine/dostavi/' + pice.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response)
+      })
+    
+  }
+
+  async naplatiPorudzbinu(porudzbina: Porudzbina, callback: any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'porudzbine/naplati/' + porudzbina.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        callback(response)
+      })
+    
   }
 
   /*loadPorudzbine(): any {

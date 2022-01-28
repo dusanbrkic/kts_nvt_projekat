@@ -23,6 +23,14 @@ export class PiceService {
     this._picaSource.next(pica);
   }
 
+  async loadAllPica(){
+    const httpZahtev = await this.http
+      .get(environment.baseUrl + 'pice/all').toPromise()
+      .then((data: any) => {
+        this._setPica(data);
+      });
+  }
+
   async loadPica(event: LazyLoadEvent, brojPicaUpdate: any) {
     //TO DO get pica sa paginacijom i filterima
     console.log(event);
