@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+<app-password-changer [displayModal]="showPasswordChanger" [onCloseCallback]="passwordOnClose"></app-password-changer>
 <app-navbar [items]="items"></app-navbar>
 <app-layout-admin *ngIf="selectedTab === 0"></app-layout-admin>
 <app-zaposleni-view *ngIf="selectedTab === 1"></app-zaposleni-view>

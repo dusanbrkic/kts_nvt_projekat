@@ -64,6 +64,7 @@ import { InterInterceptor } from './utils/interceptor/inter.interceptor';
 import { PredloziViewComponent } from './pages/menadzer-page/predlozi-view/predlozi-view.component';
 import {BadgeModule} from 'primeng/badge';
 import { IdInputComponent } from './shared/id-input/id-input.component';
+import { PasswordChangerComponent } from './shared/password-changer/password-changer.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { IdInputComponent } from './shared/id-input/id-input.component';
     LayoutKonobarComponent,
     PredloziViewComponent,
     IdInputComponent,
+    PasswordChangerComponent,
   ],
   imports: [
     ImageModule,

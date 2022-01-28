@@ -221,6 +221,19 @@ public class ZaposleniService {
 		}
 		return zaposleni;
 	}
+	
+	public boolean changeZaposleniPassword(String username, String newPass) {
+		try {
+			Zaposleni z=zaposleniRepository.findOneByUsername(username);
+			z.setPassword(passwordEncoder.encode(newPass));
+			zaposleniRepository.save(z);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+
+		
+	}
 
 	;
 }

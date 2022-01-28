@@ -5,17 +5,10 @@ import java.util.*;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.util.StorageUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.dto.PlataDTO;
@@ -112,5 +105,15 @@ public class ZaposleniController {
 		Zaposleni z = zaposleniService.izmeniPlatu(dto);
 
 		return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/new-password/{username}")
+	public ResponseEntity<String> newPassword(@PathVariable("username") String username,@RequestBody String newPass){
+		
+		if(!zaposleniService.changeZaposleniPassword(username, newPass)) {
+			return new ResponseEntity<String>("Error",HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 }

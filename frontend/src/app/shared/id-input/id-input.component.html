@@ -1,5 +1,5 @@
 <p-dialog
-  header="Prijava"
+  header="Identifikaija"
   [(visible)]="displayModal"
   [modal]="true"
   [style]="{ width: '15vw' }"
@@ -37,15 +37,15 @@
 
   <ng-template pTemplate="footer">
     <p-button
-      icon="pi pi-angle-right"
-      (click)="login()"
-      label="Login"
-      class="p-button-text"
-    ></p-button>
-    <p-button
       icon="pi pi-times"
       (click)="close()"
       label="Close"
+      class="p-button-text"
+    ></p-button>
+    <p-button
+      icon="pi pi-angle-right"
+      (click)="login()"
+      label="Login"
       class="p-button-text"
     ></p-button>
   </ng-template>

@@ -41,4 +41,23 @@ export class AuthService {
 
     return token.role
   }
+
+  chnagePasswordForCurrentUser(newPass: string,callback: any){
+    const tokeString=localStorage.getItem('user')
+    if(!tokeString){
+      callback('Doslo je do greske','error')
+      return
+    }
+
+    const token=JSON.parse(tokeString)
+
+    this.http
+      .post(environment.baseUrl + 'zaposleni/new-password/'+token.username, newPass, {
+        "responseType": 'text',
+        "observe": 'response'
+      })
+      .subscribe((response: any) => {
+        callback(response.body,response.status===200 ? 'success' : 'error')
+      });
+  }
 }

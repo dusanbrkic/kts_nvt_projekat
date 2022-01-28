@@ -12,6 +12,10 @@ export class AdminPageComponent implements OnInit {
   items!: MenuItem[];
   selectedTab: number = 0;
 
+  showPasswordChanger: boolean=false;
+  passwordCallback: any;
+  passwordOnClose: any;
+
   constructor(private router: Router,private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -31,14 +35,26 @@ export class AdminPageComponent implements OnInit {
         },
       },
       {
+        label: 'Button Change Password',
+        icon: 'pi pi-fw pi-key',
+        style: { 'margin-left': 'auto' },
+        command: (event) => {
+          this.showPasswordChanger=true
+        },
+      },
+      {
         label: 'Button Return',
         icon: 'pi pi-fw pi-power-off',
-        style: { 'margin-left': 'auto' },
+        style: { align: 'left' },
         command: (event) => {
           this.authService.logout()
           this.router.navigateByUrl('/');
         },
       },
     ];
+
+    this.passwordOnClose=()=>{
+      this.showPasswordChanger=false;
+    }
   }
 }
