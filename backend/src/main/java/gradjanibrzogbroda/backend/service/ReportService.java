@@ -1,8 +1,11 @@
 package gradjanibrzogbroda.backend.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,51 +33,66 @@ public class ReportService {
 	@Autowired
 	private StavkaCenovnikaRepository stCenRepo;
 	
-	public double getFinancialReport(int type, LocalDateTime start, LocalDateTime end) {
-		double gain = 0;
-		double loss = 0;
-		double profit = 0;
-		ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) poruRep.findAllNaplaceneInPeriod(start, end);
-		double tempGain;
+	public Map<String, Object> getFinancialReport(LocalDateTime start, LocalDateTime end) {
 		
-		for(Porudzbina p : porudzbine) {
-			ArrayList<StavkaCenovnika> stavke = (ArrayList<StavkaCenovnika>) stCenRepo.findCenovnik(p.getDatumVreme());
-			HashMap<Integer, Double> cenovnik = new HashMap<Integer, Double>();
-			for(StavkaCenovnika st : stavke) {
-				cenovnik.put(st.getArtikal().getId(), st.getCena());
-				
-			}
-			
-			for(PicePorudzbine pp : p.getPicePorudzbine()) {
-				tempGain = cenovnik.get(pp.getPice().getId());
-				loss+=(tempGain*pp.getKolicina())* PICE_TROSAK;
-				gain+=tempGain*pp.getKolicina();
-				
-			}
-			for(JeloPorudzbine jp : p.getJelaPorudzbine()) {
-				double lossCoef = 0.75;
-				switch(jp.getJelo().getTipJela()) {
-					case BUDGET : lossCoef = BUDGET_TROSAK;
-						break;
-					case BASIC : lossCoef = BASIC_TROSAK;
-						break;
-					case BUSINESS : lossCoef = BUSINESS_TROSAK;
-						break;
-					case LUX : lossCoef = LUX_TROSAK;
-						break;
+		Map<String, Object> report = new HashMap<String, Object>();
+		ArrayList<String> dates = new ArrayList<String>();
+		ArrayList<Double> gains = new ArrayList<Double>();
+		ArrayList<Double> losses = new ArrayList<Double>();
+		ArrayList<Double> profits = new ArrayList<Double>();
+		Period period = Period.between(start.toLocalDate(), end.toLocalDate());
+		int days = period.getDays();
+		int day = 0;
+		double tempGain;
+		while(day!=days) {
+			double gain = 0;
+			double loss = 0;
+			double profit = 0;
+			ArrayList<Porudzbina> porudzbine = (ArrayList<Porudzbina>) poruRep.findAllNaplaceneInPeriod(start.with(LocalTime.MIN), start.with(LocalTime.MAX));
+			for(Porudzbina p : porudzbine) {
+				ArrayList<StavkaCenovnika> stavke = (ArrayList<StavkaCenovnika>) stCenRepo.findCenovnik(p.getDatumVreme());
+				HashMap<Integer, Double> cenovnik = new HashMap<Integer, Double>();
+				for(StavkaCenovnika st : stavke) {
+					cenovnik.put(st.getArtikal().getId(), st.getCena());
+					
 				}
-				tempGain = cenovnik.get(jp.getJelo().getId());
-				loss+=(tempGain*jp.getKolicina())* lossCoef;
-				gain+=tempGain*jp.getKolicina();
+				
+				for(PicePorudzbine pp : p.getPicePorudzbine()) {
+					tempGain = cenovnik.get(pp.getPice().getId());
+					loss+=(tempGain*pp.getKolicina())* PICE_TROSAK;
+					gain+=tempGain*pp.getKolicina();
+					
+				}
+				for(JeloPorudzbine jp : p.getJelaPorudzbine()) {
+					double lossCoef = 0.75;
+					switch(jp.getJelo().getTipJela()) {
+						case BUDGET : lossCoef = BUDGET_TROSAK;
+							break;
+						case BASIC : lossCoef = BASIC_TROSAK;
+							break;
+						case BUSINESS : lossCoef = BUSINESS_TROSAK;
+							break;
+						case LUX : lossCoef = LUX_TROSAK;
+							break;
+					}
+					tempGain = cenovnik.get(jp.getJelo().getId());
+					loss+=(tempGain*jp.getKolicina())* lossCoef;
+					gain+=tempGain*jp.getKolicina();
+				}
 			}
-			
-			//gain+= p.getUkupnaCena();
+			profit = gain - loss;
+			dates.add(start.toString());
+			gains.add(gain);
+			losses.add(loss);
+			profits.add(profit);
+			start = start.plusDays(1);
+			day++;
 		}
-		profit = gain - loss;
-		switch(type) {
-			case 1: return gain;
-			case 2: return loss;
-			default: return profit;
-		}
+		report.put("dates", dates);
+		report.put("gains", gains);
+		report.put("losses", losses);
+		report.put("profits", profits);
+		return report;
+		
 	} 
 }

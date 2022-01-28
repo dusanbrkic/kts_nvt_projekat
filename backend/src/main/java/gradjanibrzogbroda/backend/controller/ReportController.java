@@ -2,6 +2,7 @@ package gradjanibrzogbroda.backend.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class ReportController {
 	private ReportService repoService;
 
 	
-	@GetMapping("/{type}")
-	public ResponseEntity<Double> getReport(@PathVariable("type")int type,
+	@GetMapping("")
+	public ResponseEntity<Map<String, Object>> getReport(
 			@RequestParam("start") String start,
 			@RequestParam("end") String end
 			){
@@ -35,8 +36,8 @@ public class ReportController {
 		startTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 		endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 		
-		double value = repoService.getFinancialReport(type, startTime, endTime);
+		Map<String, Object> report = repoService.getFinancialReport(startTime, endTime);
 		
-		return new ResponseEntity<Double>(value, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(report, HttpStatus.OK);
 	}
 }
