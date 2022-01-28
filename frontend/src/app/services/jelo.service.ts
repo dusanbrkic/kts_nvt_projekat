@@ -101,8 +101,9 @@ export class JeloService {
   }
 
   async updateJelo(jelo: Jelo) {
+    console.log(jelo)
     this.http
-      .post(environment.baseUrl + 'jela', jelo)
+      .put(environment.baseUrl + 'jela/update', jelo)
       .subscribe((data: any) => {
         jelo = data;
         const jela: Jelo[] = this.getJela().map((j) =>

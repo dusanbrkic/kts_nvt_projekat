@@ -1,6 +1,6 @@
 import {  Component } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 @Component({
   selector: 'app-root',

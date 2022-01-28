@@ -3,11 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { HeaderComponent } from './header/header.component';
+import { HomeComponent } from './pages/home/home.component';
+import { HeaderComponent } from './shared/header/header.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { KonobarPageComponent } from './konobar-page/konobar-page.component';
+import { KonobarPageComponent } from './pages/konobar-page/konobar-page.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,36 +23,36 @@ import { InputTextModule } from "primeng/inputtext";
 import { FormsModule } from "@angular/forms";
 import {PasswordModule} from 'primeng/password';
 import { DividerModule } from "primeng/divider";
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from './shared/menu/menu.component';
 import {DataViewModule} from 'primeng/dataview';
 import {TableModule} from 'primeng/table';
 import {TabViewModule} from 'primeng/tabview';
 import {DragDropModule} from 'primeng/dragdrop';
 import {TabMenuModule} from 'primeng/tabmenu';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SankerPageComponent } from './sanker-page/sanker-page.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { SankerPageComponent } from './pages/sanker-page/sanker-page.component';
 import {TooltipModule} from 'primeng/tooltip';
-import { PorudzbineViewSankerComponent } from './sanker-page/porudzbine-view-sanker/porudzbine-view-sanker.component';
+import { PorudzbineViewSankerComponent } from './pages/sanker-page/porudzbine-view-sanker/porudzbine-view-sanker.component';
 import {AccordionModule} from 'primeng/accordion';
 import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
-import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
+import { KuvarPageComponent } from './pages/kuvar-page/kuvar-page.component';
 import {InplaceModule} from 'primeng/inplace';
-import { PorudzbineViewKuvarComponent } from './kuvar-page/porudzbine-view-kuvar/porudzbine-view-kuvar.component';
+import { PorudzbineViewKuvarComponent } from './pages/kuvar-page/porudzbine-view-kuvar/porudzbine-view-kuvar.component';
 import {PickListModule} from 'primeng/picklist';
 import {PanelModule} from 'primeng/panel';
-import { LayoutAdminComponent } from './admin-page/layout-admin/layout-admin.component';
-import { AdminPageComponent } from './admin-page/admin-page.component';
+import { LayoutAdminComponent } from './pages/admin-page/layout-admin/layout-admin.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { DragDropModule as DragDropCDKModule} from '@angular/cdk/drag-drop';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
-import { ZaposleniViewComponent } from './zaposleni-view/zaposleni-view.component';
+import { ZaposleniViewComponent } from './shared/zaposleni-view/zaposleni-view.component';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MenuJelaComponent } from './menu/menu-jela/menu-jela.component';
-import { MenuPicaComponent } from './menu/menu-pica/menu-pica.component';
-import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
-import { LayoutKonobarComponent } from './konobar-page/layout-konobar/layout-konobar.component';
+import { MenuJelaComponent } from './shared/menu/menu-jela/menu-jela.component';
+import { MenuPicaComponent } from './shared/menu/menu-pica/menu-pica.component';
+import { MenadzerPageComponent } from './pages/menadzer-page/menadzer-page.component';
+import { LayoutKonobarComponent } from './pages/konobar-page/layout-konobar/layout-konobar.component';
 import {SidebarModule} from 'primeng/sidebar';
 import { FileUploadModule } from 'primeng/fileupload';
 import {ImageModule} from 'primeng/image';
@@ -61,15 +60,15 @@ import {CardModule} from 'primeng/card';
 import {SplitterModule} from 'primeng/splitter';
 import { TagModule } from 'primeng/tag';
 import {CarouselModule} from 'primeng/carousel';
-import { InterInterceptor } from './interceptor/inter.interceptor';
-import { PredloziViewComponent } from './menadzer-page/predlozi-view/predlozi-view.component';
+import { InterInterceptor } from './utils/interceptor/inter.interceptor';
+import { PredloziViewComponent } from './pages/menadzer-page/predlozi-view/predlozi-view.component';
 import {BadgeModule} from 'primeng/badge';
+import { IdInputComponent } from './shared/id-input/id-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
     HeaderComponent,
     KonobarPageComponent,
     MenuComponent,
@@ -86,6 +85,7 @@ import {BadgeModule} from 'primeng/badge';
     MenadzerPageComponent,
     LayoutKonobarComponent,
     PredloziViewComponent,
+    IdInputComponent,
   ],
   imports: [
     ImageModule,

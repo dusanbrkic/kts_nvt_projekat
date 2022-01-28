@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { KonobarPageComponent } from './konobar-page/konobar-page.component';
-import { SankerPageComponent } from './sanker-page/sanker-page.component';
-import { KuvarPageComponent } from './kuvar-page/kuvar-page.component';
-import { AdminPageComponent } from './admin-page/admin-page.component';
-import { MenadzerPageComponent } from './menadzer-page/menadzer-page.component';
-import { RoleGuard } from './guards/role.guard';
+import { HomeComponent } from './pages/home/home.component';
+import { KonobarPageComponent } from './pages/konobar-page/konobar-page.component';
+import { SankerPageComponent } from './pages/sanker-page/sanker-page.component';
+import { KuvarPageComponent } from './pages/kuvar-page/kuvar-page.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { MenadzerPageComponent } from './pages/menadzer-page/menadzer-page.component';
+import { RoleGuard } from './utils/guards/role.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
   { path: 'konobar', component: KonobarPageComponent },
   { path: 'sanker', component: SankerPageComponent },
   { path: 'kuvar', component: KuvarPageComponent },
