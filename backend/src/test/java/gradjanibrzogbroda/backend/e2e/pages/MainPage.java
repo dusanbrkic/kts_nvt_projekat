@@ -6,25 +6,57 @@ import org.openqa.selenium.support.FindBy;
 
 public class MainPage {
 	private WebDriver driver;
-	
-	@FindBy()
-	int a;
 
-    @FindBy(css = "div.property-image")
-    public WebElement propertyimageDiv;
+    @FindBy(css = ".konobar")
+	private WebElement konobarLogin;
 
     @FindBy(css = ".sanker")
-    public WebElement propertyimageDiv2;
+	private WebElement sankerLogin;
 
     @FindBy(css = ".kuvar")
-    public WebElement propertyimageDiv3;
+	private WebElement kuvarLogin;
 
     @FindBy(css = ".manager")
-    public WebElement propertyimageDiv4;
+	private WebElement managerLogin;
 
     @FindBy(css = ".admin")
-    public WebElement propertyimageDiv5;
+	private WebElement adminLogin;
 
     @FindBy(css = ".chef")
-    public WebElement propertyimageDiv6;
+	private WebElement chefLogin;
+
+    @FindBy(css = "#inputgroup")
+	private WebElement usernameInput;
+
+    @FindBy(css = ".p-password-input")
+	private WebElement passwordInput;
+	
+	
+	public void loginAsKonobar(){
+		konobarLogin.click();
+	}
+
+	public void loginAsSanker(){
+		sankerLogin.click();
+	}
+
+	public void loginAsKuvar(){
+		kuvarLogin.click();
+	}
+
+	public void loginAsManager(String username, String password){
+		managerLogin.click();
+		usernameInput.sendKeys(username);
+		passwordInput.sendKeys(password);
+	}
+	public void loginAsChef(String username, String password){
+		chefLogin.click();
+		usernameInput.sendKeys(username);
+		passwordInput.sendKeys(password);
+	}
+	public void loginAsAdmin(String username, String password){
+		adminLogin.click();
+		usernameInput.sendKeys(username);
+		passwordInput.sendKeys(password);
+	}
 }
