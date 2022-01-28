@@ -22,7 +22,7 @@ public class StoDTO {
 	private String naziv;
 	private String id;
 
-	private String porudzbinaId;
+	private Integer porudzbinaId;
 
 	public StoDTO(Sto astal){
 		zauzet = astal.getZauzet();
@@ -32,7 +32,7 @@ public class StoDTO {
 		naziv = astal.getNazivStola();
 		id = astal.getIdentificationNumber();
 		if (astal.getPorudzbina()!=null) {
-			porudzbinaId = astal.getPorudzbina().getIdentificationNumber();
+			porudzbinaId = astal.getPorudzbina().getId();
 		}
 	}
 }
