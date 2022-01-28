@@ -16,19 +16,19 @@ public class PorudzbinaConstants {
     public static final Integer NEW_PORUDZBINA_ID = 4;
     public static final String NEW_PORUDZBINA_NAPOMENA = "Turi senfa.";
     public static final Integer NEW_PORUDZBINA_STO_ID = 1;
-    public static final PorudzbinaDTO NEW_PORUDZBINA = new PorudzbinaDTO(
-            NEW_PORUDZBINA_ID,  StatusPorudzbine.KREIRANO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-            NEW_PORUDZBINA_NAPOMENA, 990.00, 3, NEW_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
-            new ArrayList<PicePorudzbineDTO>());
+//    public static final PorudzbinaDTO NEW_PORUDZBINA = new PorudzbinaDTO(
+//            NEW_PORUDZBINA_ID,  StatusPorudzbine.KREIRANO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+//            NEW_PORUDZBINA_NAPOMENA, 990.00, 3, NEW_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
+//            new ArrayList<PicePorudzbineDTO>());
 
 
     public static final Integer UPDATED_PORUDZBINA_ID = 2;
     public static final String UPDATED_PORUDZBINA_NAPOMENA = "Donesite mi jos jedno sirce";
     public static final Integer UPDATED_PORUDZBINA_STO_ID= 1;
-    public static final PorudzbinaDTO UPDATED_PORUDZBINA = new PorudzbinaDTO(
-            UPDATED_PORUDZBINA_ID,  StatusPorudzbine.PREUZETO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-            UPDATED_PORUDZBINA_NAPOMENA, 990.00, 3, UPDATED_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
-            new ArrayList<PicePorudzbineDTO>());
+//    public static final PorudzbinaDTO UPDATED_PORUDZBINA = new PorudzbinaDTO(
+//            UPDATED_PORUDZBINA_ID,  StatusPorudzbine.PREUZETO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+//            UPDATED_PORUDZBINA_NAPOMENA, 990.00, 3, UPDATED_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
+//            new ArrayList<PicePorudzbineDTO>());
 
 
     public static final Integer DELETED_PORUDZBINA_ID = 3;

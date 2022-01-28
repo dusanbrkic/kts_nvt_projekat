@@ -6,28 +6,26 @@ import org.hibernate.annotations.Where;
 
 import gradjanibrzogbroda.backend.dto.ZaposleniDTO;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="konobari")
 @SQLDelete(sql
-        = "UPDATE zaposleni "
-        + "SET obrisan = true "
-        + "WHERE id = ?")
+		= "UPDATE zaposleni "
+		+ "SET obrisan = true "
+		+ "WHERE id = ?")
 @Where(clause = "obrisan = false")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class Konobar extends Zaposleni{
-        /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	public Konobar(ZaposleniDTO zaposleniDTO){
+		super(zaposleniDTO);
+	}
 
-		public Konobar(ZaposleniDTO zaposleniDTO){
-                super(zaposleniDTO);
-        }
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<Porudzbina> porudzbine;
 }

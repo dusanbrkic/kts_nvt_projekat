@@ -1,8 +1,6 @@
 package gradjanibrzogbroda.backend.controller;
 
-import gradjanibrzogbroda.backend.domain.JeloPorudzbine;
 import gradjanibrzogbroda.backend.domain.PicePorudzbine;
-import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.service.PicePorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;

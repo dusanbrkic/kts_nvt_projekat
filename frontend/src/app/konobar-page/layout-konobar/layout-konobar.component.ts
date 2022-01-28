@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import Jelo from 'src/app/model/Jelo';
 import JeloPorudzbine from 'src/app/model/JeloPorudzbine';
 import Pice from 'src/app/model/Pice';
@@ -10,6 +11,7 @@ import { JeloService } from 'src/app/services/jelo.service';
 import { PiceService } from 'src/app/services/pice.service';
 import { PorudzbinaService } from 'src/app/services/porudzbina.service';
 import { ZonaService } from 'src/app/services/zona-service.service';
+import { Base64Service } from 'src/app/utils/base64.service';
 
 @Component({
   selector: 'app-layout-konobar',
@@ -43,12 +45,16 @@ export class LayoutKonobarComponent implements OnInit {
     private zonaService: ZonaService,
     private jeloService: JeloService,
     private piceService: PiceService,
-    private porudzbinaService: PorudzbinaService
+    private porudzbinaService: PorudzbinaService,
+    private sanitizer: DomSanitizer,
+    private base64Service: Base64Service,
+
   ) {}
 
   ngOnInit(): void {
-    this.zonaService.loadZoneTest();
-    this.porudzbinaService.loadPorudzbineTest();
+    this.zonaService.loadZones(()=>{
+      this.selectedZona = this.zone[0];
+    });
     this.zonaService.zone$.subscribe((value) => {
       this.zone = value;
       console.log(value);
@@ -96,6 +102,10 @@ export class LayoutKonobarComponent implements OnInit {
       jelaPorudzbine: [],
       picaPorudzbine: [],
     };
+  }
+
+  getTemplatePic( stringPic : string ){
+    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
   }
 
   openNewItemDialogForJelo() {

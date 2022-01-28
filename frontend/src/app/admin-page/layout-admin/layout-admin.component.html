@@ -1,4 +1,4 @@
-<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 
 <div class="center">
   <div *ngIf="zone.length > 0">
@@ -31,9 +31,15 @@
       </div>
     </p-toolbar>
     <div
-      style="text-align:center;background-image: url({{selectedZona.template}}); background-size: 100% 100%;background-repeat: no-repeat;"
+      #zoneTemplateDiv
+      [ngStyle]="{ 'text-align': 'center' }"
       class="container"
     >
+      <img
+        [src]="getTemplatePic(selectedZona.templateBase64)"
+        width="100%"
+        height="100%"
+      />
       <ng-container *ngFor="let table of selectedZona.stolovi">
         <div
           [ngStyle]="{ 'left.px': table.x, 'top.px': table.y }"
@@ -88,13 +94,22 @@
         <div class="p-field" style="margin-top: 30px">
           <div class="p-inputgroup" style="margin-bottom: 10px">
             <div class="flex flex-column">
-              <div class="flex align-items-center"><span class="p-float-label">
-                  <input style="align-content: center" type="text" id="inputgroup" pInputText [(ngModel)]="newNaziv" />
+              <div class="flex align-items-center">
+                <span class="p-float-label">
+                  <input
+                    style="align-content: center"
+                    type="text"
+                    id="inputgroup"
+                    pInputText
+                    [(ngModel)]="newNaziv"
+                  />
                   <label for="inputgroup">Naziv</label>
                 </span>
               </div>
               <div class="flex align-items-center">
-                <small class="p-error" *ngIf="!newNaziv.trim()">Naziv je obavezan.</small>
+                <small class="p-error" *ngIf="!newNaziv.trim()"
+                  >Naziv je obavezan.</small
+                >
               </div>
             </div>
           </div>
@@ -110,7 +125,9 @@
                 </span>
               </div>
               <div class="flex align-items-center">
-                <small class="p-error" *ngIf="!(newBroj>0)">Broj mesta je obavezan.</small>
+                <small class="p-error" *ngIf="!(newBroj > 0)"
+                  >Broj mesta je obavezan.</small
+                >
               </div>
             </div>
           </div>
@@ -149,27 +166,53 @@
   [baseZIndex]="10000"
   [draggable]="false"
   [resizable]="false"
+  [style]="{ width: '450px' }"
 >
-  <div class="p-grid">
-    <div class="p-col-5 p-d-flex p-ai-center p-jc-center">
-      <div class="p-fluid">
-        <div class="p-field" style="margin-top: 30px">
-          <div class="p-inputgroup" style="margin-bottom: 10px">
-            <div class="flex flex-column">
-              <div class="flex align-items-center">
-                <span class="p-float-label">
-                  <input style="align-content: center" type="text" id="inputgroup" pInputText [(ngModel)]="newZoneNaziv" />
-                  <label for="inputgroup">Naziv</label></span>
-              </div>
-              <div class="flex align-items-center">
-                <small class="p-error" *ngIf="!newZoneNaziv.trim()">Naziv je obavezan.</small>
-              </div>
-              </div>
-          </div>
-        </div>
+  <ng-template pTemplate="content">
+    <div class="field" class="templateImgPrevDiv">
+      <img id="imgPrev" [src]="novaZonaTemplatePicPreview" alt="Vasa slika" />
+    </div>
+
+    <div class="field" class="imgInpDiv">
+      <p-fileUpload
+        #templatePicUpload
+        mode="basic"
+        name="uploadedFile[]"
+        (onSelect)="onTemplatePicUpload($event)"
+        accept="image/*"
+        chooseLabel="Izaberite sliku za prikaz"
+        [customUpload]="true"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        [maxFileSize]="1000000"
+        (uploadHandler)="doNothing($event)"
+        [auto]="true"
+      >
+      </p-fileUpload>
+      <p-button
+        label="Cancel"
+        [disabled]="novaZonaTemplateCancelBtnDisabled"
+        (onClick)="cancelProfilePicBtnClicked($event)"
+      ></p-button>
+    </div>
+
+    <div style="display: grid; place-items: center;" class="field">
+      <label style="padding-right: 15px" for="naziv">Naziv</label>
+      <input
+        type="text"
+        pInputText
+        id="naziv"
+        [(ngModel)]="newZoneNaziv"
+        required
+        autofocus
+      />
+      <div>
+        <small class="p-error" *ngIf="!newZoneNaziv.trim()"
+          >Naziv je obavezan.</small
+        >
       </div>
     </div>
-  </div>
+  </ng-template>
   <ng-template pTemplate="footer">
     <button
       pButton

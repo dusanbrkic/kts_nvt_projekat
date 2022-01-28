@@ -8,6 +8,8 @@ import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.service.JeloPorudzbineService;
+import gradjanibrzogbroda.backend.service.NotificationService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class JeloPorudzbineController {
 
     @Autowired
     JeloPorudzbineService jeloPorudzbineService;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/preuzeta")
     public ResponseEntity<List<JeloPorudzbineDTO>> getAllPreuzeta(){
@@ -105,6 +110,8 @@ public class JeloPorudzbineController {
         try {
             boolean uspeh = jeloPorudzbineService.pripremiJelo(id);
             if(uspeh){
+            	JeloPorudzbine j=jeloPorudzbineService.findOne(id);
+            	this.notificationService.spremiJeloNotifiation(j.getJelo().getNaziv(), j.getKolicina(), j.getPorudzbina().getId());
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,3 @@
-insert into stolovi (zauzet) values(false);
-
 insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Perica', 'Peric', 0, '1990-01-01', 45000.0, 1, 'pera.jpg', false, '12345','user1','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
 insert into plate (pocetak_vazenja, zaposleni_id) values ('2021-11-11', 1);
@@ -10,6 +8,18 @@ insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposl
 
 insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 1, 'jovana.jpg', false, '13247','user4','dsasd');
 insert into konobari (id) values(4);
+
+--zones
+insert into zone (identification_number, naziv, template_path, obrisan) values ('12345', 'Terasica', 'terasica.jpg', false);
+insert into zone (identification_number, naziv, template_path, obrisan) values ('56789', 'Potkrovlje', 'potkrovljice.jpg', false);
+
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345112', 'astal1', 4, 195.5, 469.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12334512', 'astal2', 4, 195.5, 221.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345212', 'astal3', 4, 651.5, 469.603, false);
+
+insert into zone_stolovi (zone_id, stolovi_id) values (1,1);
+insert into zone_stolovi (zone_id, stolovi_id) values (1,2);
+insert into zone_stolovi (zone_id, stolovi_id) values (2,3);
 
 --jela
 
@@ -71,4 +81,4 @@ insert into roles (role,deleted) values ('ROLE_GLAVNI_KUVAR',false);
 
 INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (1, 1); 
 INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (2, 2); 
-INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (3, 6); 
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (3, 6);

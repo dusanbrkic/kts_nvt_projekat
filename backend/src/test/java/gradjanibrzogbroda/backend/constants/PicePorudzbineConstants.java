@@ -15,7 +15,7 @@ public class PicePorudzbineConstants {
             .id(NEW_PICE_PORUDZBINE_ID)
             .kolicina(NEW_PICE_PORUDZBINE_KOLICINA)
             .napomena(NEW_PICE_PORUDZBINE_NAPOMENA)
-            .piceId(NEW_PICE_PORUDZBINE_PICE)
+//            .piceId(NEW_PICE_PORUDZBINE_PICE)
             .porudzbinaId(NEW_PICE_PORUDZBINE_PORUDZBINA)
             .statusPica(StatusPica.KREIRANO)
             .build();
@@ -29,7 +29,7 @@ public class PicePorudzbineConstants {
             .id(UPDATED_PICE_PORUDZBINE_ID)
             .kolicina(UPDATED_PICE_PORUDZBINE_KOLICINA)
             .napomena(UPDATED_PICE_PORUDZBINE_NAPOMENA)
-            .piceId(UPDATED_PICE_PORUDZBINE_PICE)
+//            .piceId(UPDATED_PICE_PORUDZBINE_PICE)
             .porudzbinaId(UPDATED_PICE_PORUDZBINE_PORUDZBINA)
             .statusPica(StatusPica.KREIRANO)
             .build();

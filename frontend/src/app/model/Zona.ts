@@ -4,5 +4,5 @@ export default interface Zona{
     id: number;
     naziv: string;
     stolovi: Sto[];
-    template: string;
+    templateBase64: string;
 }

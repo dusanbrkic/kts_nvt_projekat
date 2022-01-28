@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeTest;
 @TestPropertySource("classpath:application-test.properties")
 public class PorudzbinaServiceTests extends AbstractTestNGSpringContextTests {
     @Autowired
-    PorudzbinaService porudzbinaService;
+	PorudzbinaService porudzbinaService;
 
     @Autowired
     PorudzbinaRepository porudzbinaRepository;

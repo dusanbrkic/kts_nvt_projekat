@@ -14,12 +14,16 @@ import org.springframework.stereotype.Service;
 
 import gradjanibrzogbroda.backend.domain.Pice;
 import gradjanibrzogbroda.backend.repository.PiceRepository;
+import gradjanibrzogbroda.backend.repository.StavkaCenovnikaRepository;
 
 @Service
 public class PiceService {
 	
 	@Autowired
 	private PiceRepository piceRep;
+	
+	@Autowired
+	private StavkaCenovnikaRepository stCenRepo;
 	
 	public List<Pice> findAll(){
 		return piceRep.findAll();
@@ -34,7 +38,11 @@ public class PiceService {
 	}
 	
 	public Pice addPice(Pice p) {
-		return piceRep.save(p);
+		p.setObrisan(false);
+		Pice pi = piceRep.save(p);
+		StavkaCenovnika st= new StavkaCenovnika(999, LocalDateTime.now(), null, pi.getTrenutnaCena(), pi);
+		stCenRepo.save(st);
+		return pi;
 	}
 	
 	public void deletePice(Integer id) {

@@ -1,11 +1,9 @@
 package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.domain.*;
-import gradjanibrzogbroda.backend.dto.JeloDTO;
-import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
-import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
+import gradjanibrzogbroda.backend.service.NotificationService;
 import gradjanibrzogbroda.backend.service.PorudzbinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +19,9 @@ import java.util.List;
 public class PorudzbinaController {
     @Autowired
     private PorudzbinaService porudzbinaService;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping()
     public ResponseEntity<List<PorudzbinaDTO>> getAll(){
@@ -76,6 +77,8 @@ public class PorudzbinaController {
     @PostMapping()
     public ResponseEntity<PorudzbinaDTO> napraviPorudzbinu(@RequestBody PorudzbinaDTO dto) {
         Porudzbina porudzbina = porudzbinaService.napraviPorudzbinu(dto);
+        
+        this.notificationService.newPorudzbinaNotification(porudzbina.getId());
 
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
     }
@@ -89,6 +92,7 @@ public class PorudzbinaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
+        this.notificationService.spremiPicaNotification(pId);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
@@ -100,7 +104,8 @@ public class PorudzbinaController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
+        
+        this.notificationService.preuzmiPorudzbinaNotification(id);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
