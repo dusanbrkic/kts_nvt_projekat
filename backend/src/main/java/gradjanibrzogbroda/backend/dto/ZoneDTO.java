@@ -1,7 +1,9 @@
 package gradjanibrzogbroda.backend.dto;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.Sto;
 import gradjanibrzogbroda.backend.domain.Zone;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +24,9 @@ public class ZoneDTO {
 
 	private Set<StoDTO> stolovi;
 
-	public ZoneDTO(Zone zone, String _templateBase64){
+	public ZoneDTO(Zone zone){
 		naziv = zone.getNaziv();
-		templateBase64 = _templateBase64;
+		templateBase64 = StorageUtil.loadAsString(StorageProperties.ZONE_LOCATION, zone.getTemplatePath());
 		id = zone.getIdentificationNumber();
 
 		stolovi = zone.getStolovi().stream().map(new Function<Sto, StoDTO>() {

@@ -29,7 +29,7 @@ export class ZaposleniViewComponent implements OnInit {
   newZaposleni!: Zaposleni;
   submitted: boolean = false;
 
-  userGenericImgSrc: any = "http://localhost:4200/assets/home_images/generic_user.jpg";
+  userGenericImgSrc: any = "http://localhost:4200/assets/generic/generic_user.jpg";
 
   noviZaposleniprofilePic: any = {};
   noviZaposleniprofilePicPreview: any = this.userGenericImgSrc;

@@ -33,6 +33,8 @@ public abstract class Artikal {
     private String naziv;
     @Column(name = "trenutna_cena", nullable = false)
     private Double trenutnaCena;
+    @Column(name = "pic_name")
+    private String picName;
 
     @OneToMany(mappedBy = "artikal", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<StavkaCenovnika> ceneArtikla=new ArrayList<StavkaCenovnika>();

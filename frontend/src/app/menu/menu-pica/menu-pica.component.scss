@@ -2,4 +2,26 @@
     place-content: center;
     justify-items: center;
   }
-  
+
+
+  .imgPrevDiv{
+    display: grid;
+    place-items: center;
+  }
+
+  #imgPrev{
+    max-width: 400px;
+    height: auto;
+    max-height: 600px;
+    padding-bottom: 10px;
+  }
+
+  .imgInpDiv{
+    display: grid;
+    place-items: center;
+    padding-bottom: 10px;
+  }
+
+  p-fileUpload{
+    padding-bottom: 10px;
+  }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -96,21 +98,25 @@ public class PiceController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<PiceDTO> addPice(@RequestBody Pice pice) { 
-		if(pice.getNaziv()==null || pice.getTrenutnaCena()==null) {
+	public ResponseEntity<PiceDTO> addPice(@RequestBody PiceDTO piceDTO) {
+		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null) {
 			return new ResponseEntity<PiceDTO>( HttpStatus.BAD_REQUEST);
 		}
-		Pice p = piceService.addPice(pice);
+		Pice p = piceService.addPice(new Pice(piceDTO));
+
+		StorageUtil.store(piceDTO.getPicBase64(), StorageProperties.PICA_LOCATION, p.getPicName());
 
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}
 	
 	@PutMapping()
-	public ResponseEntity<PiceDTO> updatePice(@RequestBody Pice pice){
-		if(pice.getNaziv()==null || pice.getTrenutnaCena()==null) {
+	public ResponseEntity<PiceDTO> updatePice(@RequestBody PiceDTO piceDTO){
+		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null) {
 			return new ResponseEntity<PiceDTO>( HttpStatus.BAD_REQUEST);
 		}
-		Pice p = piceService.updatePice(pice);
+		Pice p = piceService.updatePice(new Pice(piceDTO));
+
+		StorageUtil.store(piceDTO.getPicBase64(), StorageProperties.PICA_LOCATION, p.getPicName());
 		
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}

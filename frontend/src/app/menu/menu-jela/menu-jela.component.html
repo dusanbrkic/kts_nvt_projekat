@@ -18,7 +18,9 @@
     <p-toolbar styleClass="mb-4">
       <ng-template pTemplate="left">
         <button
-          *ngIf="userRole==='ROLE_MANAGER' || userRole==='ROLE_GLAVNI_KUVAR'"
+          *ngIf="
+            userRole === 'ROLE_MANAGER' || userRole === 'ROLE_GLAVNI_KUVAR'
+          "
           pButton
           pRipple
           label="New"
@@ -82,7 +84,7 @@
           <th pSortableColumn="vremePripremeMils">
             Vreme Pripreme <p-sortIcon field="vremePripremeMils"></p-sortIcon>
           </th>
-          <th *ngIf="userRole==='ROLE_MANAGER'"></th>
+          <th *ngIf="userRole === 'ROLE_MANAGER'"></th>
         </tr>
         <tr>
           <th>
@@ -102,8 +104,18 @@
               matchMode="equals"
               [showMenu]="false"
             >
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown [ngModel]="value" [options]="kategorije" (onChange)="filter($event.value)" placeholder="Any" optionLabel="name">
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="kategorije"
+                  (onChange)="filter($event.value)"
+                  placeholder="Any"
+                  optionLabel="name"
+                >
                   <ng-template let-option pTemplate="item">
                     <div>
                       <span class="p-ml-1">{{ option.name }}</span>
@@ -114,10 +126,23 @@
             </p-columnFilter>
           </th>
           <th>
-            <p-columnFilter field="tipJela" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown [ngModel]="value" [options]="tipovi" (onChange)="filter($event.value)" placeholder="Any"
-                  optionLabel="name">
+            <p-columnFilter
+              field="tipJela"
+              matchMode="equals"
+              [showMenu]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [ngModel]="value"
+                  [options]="tipovi"
+                  (onChange)="filter($event.value)"
+                  placeholder="Any"
+                  optionLabel="name"
+                >
                   <ng-template let-option pTemplate="item">
                     <div>
                       <span class="p-ml-1">{{ option.name }}</span>
@@ -128,10 +153,15 @@
             </p-columnFilter>
           </th>
           <th></th>
-          <th *ngIf="userRole==='ROLE_MANAGER'"></th>
+          <th *ngIf="userRole === 'ROLE_MANAGER'"></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-editing="editing" let-jelo let-ri="rowIndex">
+      <ng-template
+        pTemplate="body"
+        let-editing="editing"
+        let-jelo
+        let-ri="rowIndex"
+      >
         <tr [pEditableRow]="jelo" [pContextMenuRow]="jelo">
           <td>
             <p-cellEditor>
@@ -154,7 +184,7 @@
           </td>
           <td>
             <img
-              [src]="'assets/home_images/waiter.jpg'"
+              [src]="getJeloPic(jelo.picBase64)"
               width="100"
               class="p-shadow-4"
             />
@@ -237,7 +267,7 @@
               </ng-template>
             </p-cellEditor>
           </td>
-          <td style="text-align: center" *ngIf="userRole==='ROLE_MANAGER'">
+          <td style="text-align: center" *ngIf="userRole === 'ROLE_MANAGER'">
             <button
               *ngIf="!editing"
               pButton
@@ -304,77 +334,114 @@
   <ng-template pTemplate="content">
     <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
 
-    <div class="field">
-      <label for="naziv">Naziv</label>
-      <input
-        type="text"
-        pInputText
-        id="naziv"
-        [(ngModel)]="newJelo.naziv"
-        required
-        autofocus
-      />
-      <small class="p-error" *ngIf="submitted && !newJelo.naziv.trim()"
-        >Naziv je obavezan.</small
-      >
-    </div>
+    <div class="novoJeloContainer">
+      <div class="field" class="imgPrevDiv">
+        <img
+          id="imgPrev"
+          [src]="novoJeloPicPreview"
+          alt="Vasa slika"
+        />
+      </div>
 
-    <div class="field">
-      <label for="kategorija">Kategorija jela</label>
-      <p-dropdown
-        [(ngModel)]="newJelo.kategorijaJela"
-        optionLabel="name"
-        optionValue="value"
-        inputId="kategorija"
-        [options]="kategorije"
-        placeholder="Kategorija jela"
-      >
-      </p-dropdown>
-    </div>
+      <div class="field" class="imgInpDiv">
+        <p-fileUpload
+          #fileUpload
+          mode="basic"
+          name="uploadedFile[]"
+          (onSelect)="onPicUpload($event)"
+          accept="image/*"
+          chooseLabel="Izaberite profilnu sliku"
+          [customUpload]="true"
+          [showUploadButton]="false"
+          [showCancelButton]="false"
+          [maxFileSize]="1000000"
+          (uploadHandler)="doNothing($event)"
+          [auto]="true"
+        >
+        </p-fileUpload>
+        <p-button
+          label="Cancel"
+          [disabled]="cancelJeloPicBtnDisabled"
+          (onClick)="cancelPicBtnClicked($event)"
+        ></p-button>
+      </div>
 
-    <div class="field">
-      <label for="tip">Tip jela</label>
-      <p-dropdown
-        [(ngModel)]="newJelo.tipJela"
-        optionLabel="name"
-        optionValue="value"
-        inputId="tip"
-        [options]="tipovi"
-        placeholder="Tip jela"
-      >
-      </p-dropdown>
-    </div>
+      <div class="field">
+        <label for="naziv">Naziv</label>
+        <input
+          type="text"
+          pInputText
+          id="naziv"
+          [(ngModel)]="newJelo.naziv"
+          required
+          autofocus
+        />
+        <small class="p-error" *ngIf="submitted && !newJelo.naziv.trim()"
+          >Naziv je obavezan.</small
+        >
+      </div>
 
-    <div class="field">
-      <label for="cena">Cena</label>
-      <p-inputNumber
-        id="cena"
-        [(ngModel)]="newJelo.trenutnaCena"
-        mode="currency"
-        currency="RSD"
-        locale="en-US"
-      ></p-inputNumber>
-      <small class="p-error" *ngIf="submitted && !(newJelo.trenutnaCena > 0)"
-        >Cena mora biti veća od 0.</small
-      >
-    </div>
+      <div class="field">
+        <label for="kategorija">Kategorija jela</label>
+        <p-dropdown
+          [(ngModel)]="newJelo.kategorijaJela"
+          optionLabel="name"
+          optionValue="value"
+          inputId="kategorija"
+          [options]="kategorije"
+          placeholder="Kategorija jela"
+        >
+        </p-dropdown>
+      </div>
 
-    <div class="field">
-      <label for="vreme">Vreme pripreme</label>
-      <p-inputNumber
-        id="vreme"
-        [(ngModel)]="newJelo.vremePripremeMils"
-      ></p-inputNumber>
-      <small
-        class="p-error"
-        *ngIf="submitted && !(newJelo.vremePripremeMils > 0)"
-        >Vreme mora biti veće od 0.</small
-      >
-    </div>
+      <div class="field">
+        <label for="tip">Tip jela</label>
+        <p-dropdown
+          [(ngModel)]="newJelo.tipJela"
+          optionLabel="name"
+          optionValue="value"
+          inputId="tip"
+          [options]="tipovi"
+          placeholder="Tip jela"
+        >
+        </p-dropdown>
+      </div>
 
-    <div class="field">
-      <label for="opis">Opis</label>
-      <textarea id="opis" pInputTextarea [(ngModel)]="newJelo.opis"></textarea>
+      <div class="field">
+        <label for="cena">Cena</label>
+        <p-inputNumber
+          id="cena"
+          [(ngModel)]="newJelo.trenutnaCena"
+          mode="currency"
+          currency="RSD"
+          locale="en-US"
+        ></p-inputNumber>
+        <small class="p-error" *ngIf="submitted && !(newJelo.trenutnaCena > 0)"
+          >Cena mora biti veća od 0.</small
+        >
+      </div>
+
+      <div class="field">
+        <label for="vreme">Vreme pripreme</label>
+        <p-inputNumber
+          id="vreme"
+          [(ngModel)]="newJelo.vremePripremeMils"
+        ></p-inputNumber>
+        <small
+          class="p-error"
+          *ngIf="submitted && !(newJelo.vremePripremeMils > 0)"
+          >Vreme mora biti veće od 0.</small
+        >
+      </div>
+
+      <div class="field">
+        <label for="opis">Opis</label>
+        <textarea
+          id="opis"
+          pInputTextarea
+          [(ngModel)]="newJelo.opis"
+        ></textarea>
+      </div>
     </div>
   </ng-template>
 

@@ -93,7 +93,12 @@
           <th></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-pice let-editing="editing" let-ri="rowIndex">
+      <ng-template
+        pTemplate="body"
+        let-pice
+        let-editing="editing"
+        let-ri="rowIndex"
+      >
         <tr [pEditableRow]="pice" [pContextMenuRow]="pice">
           <td>
             <p-cellEditor>
@@ -116,7 +121,7 @@
           </td>
           <td>
             <img
-              [src]="'assets/home_images/waiter.jpg'"
+              [src]="getPic(pice.picBase64)"
               width="100"
               class="p-shadow-4"
             />
@@ -196,35 +201,66 @@
   <ng-template pTemplate="content">
     <!--<img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.image" class="product-image" *ngIf="product.image">-->
 
-    <div class="field">
-      <label for="naziv">Naziv</label>
-      <input
-        type="text"
-        pInputText
-        id="naziv"
-        [(ngModel)]="newPice.naziv"
-        required
-        autofocus
-      />
-      <small class="p-error" *ngIf="submitted && !newPice.naziv.trim()"
-        >Naziv je obavezan.</small
-      >
-    </div>
+    <div class="novoPiceContainer">
+      <div class="field" class="imgPrevDiv">
+        <img
+          id="imgPrev"
+          [src]="novoPicePicPreview"
+          alt="Vasa slika"
+        />
+      </div>
 
-    <div class="field">
-      <label for="plata">Cena</label>
-      <p-inputNumber
-        id="plata"
-        [(ngModel)]="newPice.trenutnaCena"
-        mode="currency"
-        currency="RSD"
-        locale="en-US"
-      ></p-inputNumber>
-      <small
-        class="p-error"
-        *ngIf="submitted && !(newPice.trenutnaCena > 0)"
-        >Cena mora biti veća od 0.</small
-      >
+      <div class="field" class="imgInpDiv">
+        <p-fileUpload
+          #fileUpload
+          mode="basic"
+          name="uploadedFile[]"
+          (onSelect)="onPicUpload($event)"
+          accept="image/*"
+          chooseLabel="Izaberite profilnu sliku"
+          [customUpload]="true"
+          [showUploadButton]="false"
+          [showCancelButton]="false"
+          [maxFileSize]="1000000"
+          (uploadHandler)="doNothing($event)"
+          [auto]="true"
+        >
+        </p-fileUpload>
+        <p-button
+          label="Cancel"
+          [disabled]="cancelPicePicBtnDisabled"
+          (onClick)="cancelPicBtnClicked($event)"
+        ></p-button>
+      </div>
+
+      <div class="field">
+        <label for="naziv">Naziv</label>
+        <input
+          type="text"
+          pInputText
+          id="naziv"
+          [(ngModel)]="newPice.naziv"
+          required
+          autofocus
+        />
+        <small class="p-error" *ngIf="submitted && !newPice.naziv.trim()"
+          >Naziv je obavezan.</small
+        >
+      </div>
+
+      <div class="field">
+        <label for="plata">Cena</label>
+        <p-inputNumber
+          id="plata"
+          [(ngModel)]="newPice.trenutnaCena"
+          mode="currency"
+          currency="RSD"
+          locale="en-US"
+        ></p-inputNumber>
+        <small class="p-error" *ngIf="submitted && !(newPice.trenutnaCena > 0)"
+          >Cena mora biti veća od 0.</small
+        >
+      </div>
     </div>
   </ng-template>
 

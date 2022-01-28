@@ -30,7 +30,7 @@ public class ZoneService {
 		return zoneRepository.findAll().stream().map(new Function<Zone, ZoneDTO>() {
 			@Override
 			public ZoneDTO apply(Zone zone) {
-				return new ZoneDTO(zone, StorageUtil.loadAsString(StorageProperties.ZONE_LOCATION, zone.getTemplatePath()));
+				return new ZoneDTO(zone);
 			}
 		}).collect(Collectors.toList());
 	}

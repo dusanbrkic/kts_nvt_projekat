@@ -32,7 +32,7 @@ export class LayoutAdminComponent implements OnInit {
 
   templateURL: any;
 
-  zoneGenericImgSrc: any = "http://localhost:4200/assets/zones/zone1.png";
+  zoneGenericImgSrc: any = "http://localhost:4200/assets/generic/generic_zone.png";
 
   novaZonaTemplatePic: any = {};
   novaZonaTemplatePicPreview: any = this.zoneGenericImgSrc;
@@ -80,7 +80,10 @@ export class LayoutAdminComponent implements OnInit {
   }
 
   getTemplatePic(stringPic: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+    if (stringPic.length > 0) {
+      return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+    } else return this.zoneGenericImgSrc;
+
   }
 
   onDragEnded(event: any) {
@@ -202,7 +205,20 @@ export class LayoutAdminComponent implements OnInit {
           });
         });
       });
+    } else {
+      novaZona.templateBase64 = "";
+      that.zonaService.addZone(novaZona, (response: any) => {
+        this.messageService.add({
+          severity: response.ok ? 'success' : 'error',
+          summary: response.ok ? 'Success' : 'Error',
+          detail: response.body,
+          life: 3000,
+        });
+      });
     }
+
+    this.novaZonaTemplatePic = {};
+    this.novaZonaTemplatePicPreview = this.zoneGenericImgSrc;
 
     this.displayModalNewZone = false;
   }

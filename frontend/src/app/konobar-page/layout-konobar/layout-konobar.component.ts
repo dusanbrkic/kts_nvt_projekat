@@ -39,6 +39,8 @@ export class LayoutKonobarComponent implements OnInit {
   newNapomena: string = '';
   newKolicina: number = 0;
 
+  zoneGenericImgSrc: any = "http://localhost:4200/assets/generic/generic_zone.png";
+
   isNewPorudzbina: boolean = false;
 
   constructor(
@@ -89,7 +91,7 @@ export class LayoutKonobarComponent implements OnInit {
     }
     );
     this.showSidebar = true;
-    
+
   }
 
   createNewPorudzbina() {
@@ -106,8 +108,11 @@ export class LayoutKonobarComponent implements OnInit {
     };
   }
 
-  getTemplatePic( stringPic : string ){
-    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+  getTemplatePic(stringPic: string) {
+    if (stringPic.length > 0) {
+      return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.base64Service.decode(stringPic)));
+    } else return this.zoneGenericImgSrc;
+
   }
 
   openNewItemDialogForJelo() {
@@ -142,20 +147,20 @@ export class LayoutKonobarComponent implements OnInit {
           porudzbinaId: this.selectedPorudzbina.id,
           piceId: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
         };
-        
+
         if (!this.isNewPorudzbina){
           let addedItem: PicePorudzbine
           this.porudzbinaService.addPiceToPorudzbina(newItem, this.selectedPorudzbina.id, (response: any) => {addedItem = response
             console.log(response)
             if (addedItem) {
               this.selectedPorudzbina.picaPorudzbine.push(addedItem);
-            } 
+            }
           });
         }else{
           this.selectedPorudzbina.picaPorudzbine.push(newItem);
         }
-        
-        
+
+
       } else {
         let newItem: JeloPorudzbine = {
           id: Math.floor(Math.random() * (1000000 - 0 + 1) + 0),
@@ -165,14 +170,14 @@ export class LayoutKonobarComponent implements OnInit {
           jelo: this.selectedJelo!,
           porudzbinaId: this.selectedPorudzbina.id,
         };
-        
+
         if (!this.isNewPorudzbina){
           let addedItem: JeloPorudzbine
           this.porudzbinaService.addJeloToPorudzbina(newItem, this.selectedPorudzbina.id, (response: any) => {addedItem = response
             console.log(response)
             if (addedItem) {
               this.selectedPorudzbina.jelaPorudzbine.push(addedItem);
-            } 
+            }
           });
         }else{
           this.selectedPorudzbina.jelaPorudzbine.push(newItem)
@@ -195,10 +200,10 @@ export class LayoutKonobarComponent implements OnInit {
             { ...this.selectedSto, porudzbinaId: this.selectedPorudzbina.id,zauzet: true },
             this.selectedZona
           );
-        
+
       }
       );
-    
+
   }
 
   naplatiPorudzbinu(){
@@ -214,7 +219,7 @@ export class LayoutKonobarComponent implements OnInit {
       // });
 
     })
-    
+
   }
 
   dostavi(pice: PicePorudzbine){
@@ -225,7 +230,7 @@ export class LayoutKonobarComponent implements OnInit {
           this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
         });
     });
-    
+
   }
 
   dostaviJelo(jelo: JeloPorudzbine){
@@ -236,6 +241,6 @@ export class LayoutKonobarComponent implements OnInit {
           this.selectedPorudzbina = JSON.parse(JSON.stringify(response));
         });
     });
-    
+
   }
 }

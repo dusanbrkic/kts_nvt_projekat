@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
 import gradjanibrzogbroda.backend.domain.Plata;
 import gradjanibrzogbroda.backend.domain.Pol;
 import gradjanibrzogbroda.backend.domain.TipZaposlenja;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,14 +36,14 @@ public class ZaposleniDTO {
 
     private List<PlataDTO> plate;
 
-    public ZaposleniDTO(Zaposleni zaposleni, String _slikaString) {
+    public ZaposleniDTO(Zaposleni zaposleni) {
         ime = zaposleni.getIme();
         prezime = zaposleni.getPrezime();
         pol = zaposleni.getPol();
         datumRodjenja = zaposleni.getDatumRodjenja();
         trenutnaPlata = zaposleni.getTrenutnaPlata();
         tipZaposlenja = zaposleni.getTipZaposlenja();
-        slikaString = _slikaString;
+        slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
         identificationNumber = zaposleni.getIdentificationNumber();
     }
 }

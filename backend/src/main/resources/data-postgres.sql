@@ -23,7 +23,7 @@ insert into zone_stolovi (zone_id, stolovi_id) values (2,3);
 
 --jela
 
-insert into artikli (naziv, trenutna_cena, obrisan) values ('Pljeskavica', 240, false);
+insert into artikli (naziv, trenutna_cena, obrisan, pic_name) values ('Pljeskavica', 240, false, 'pljeska.jpg');
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (1, 30000, 'Jelo od mlevenog mesa spremljeno na rostilju', 1, 2);
 insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 1);
 
@@ -44,7 +44,7 @@ insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) value
 insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 1100, 5);
 --pice
 
-insert into artikli (naziv, trenutna_cena, obrisan) values ('Coca Cola 0.33l', 125, false);
+insert into artikli (naziv, trenutna_cena, obrisan, pic_name) values ('Coca Cola 0.33l', 125, false, 'coke.jpg');
 insert into pice (id) values (6);
 insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 125, 6);
 

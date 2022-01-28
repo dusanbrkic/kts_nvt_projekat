@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import gradjanibrzogbroda.backend.config.StorageProperties;
+import gradjanibrzogbroda.backend.util.StorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -24,27 +26,27 @@ import gradjanibrzogbroda.backend.service.NotificationService;
 @RestController
 @RequestMapping("/jela")
 public class JeloController {
-	
+
 	@Autowired
 	private JeloService jeloService;
-	
+
 	@GetMapping("/all")
 	public ResponseEntity<List<JeloDTO>> getAllJela(){
-		
+
 		ArrayList<Jelo> jela=(ArrayList<Jelo>) jeloService.findAll();
-		
+
 		System.out.println(jela.size());
-		
+
 		ArrayList<JeloDTO> dtos=new ArrayList<JeloDTO>();
-		
+
 		for(Jelo j:jela) {
 			dtos.add(new JeloDTO(j));
 		}
-		
+
 		return new ResponseEntity<List<JeloDTO>>(dtos,HttpStatus.OK);
-		
+
 	}
-	
+
 	@GetMapping("/page/{sankerIdNum}/")
 	public ResponseEntity<Map<String, Object>> getAllJelaPage(
 			@PathVariable("sankerIdNum") String sId,
@@ -56,67 +58,71 @@ public class JeloController {
 			@RequestParam(value="kategorijaJela") Optional<KategorijaJela> kategorijaJela,
 			@RequestParam(value="tipJela" ) Optional<TipJela> tipJela
 			){
-		
+
 		Page<Jelo> pageJela=jeloService.findPage(first, rows, naziv, sortField, sortOrder, kategorijaJela, tipJela);
-		
+
 		List<Jelo> jela = pageJela.getContent();
         ArrayList<JeloDTO> dtos=new ArrayList<JeloDTO>();
 
         for(Jelo j:jela) {
             dtos.add(new JeloDTO(j));
         }
-		
+
         Map<String, Object> response = new HashMap<>();
         response.put("jela", dtos);
         response.put("currentPage", pageJela.getNumber());
         response.put("totalItems", pageJela.getTotalElements());
         response.put("totalPages", pageJela.getTotalPages());
-		
-		
+
+
 		return new ResponseEntity<>(response,HttpStatus.OK);
-		
+
 	}
-	
+
 	@GetMapping("/id/{id}")
 	public ResponseEntity<JeloDTO> getOneById(@PathVariable("id") Integer id){
-		
+
 		Jelo j=jeloService.findOne(id);
-		
+
 		if(j!=null) {
 			return new ResponseEntity<JeloDTO>(new JeloDTO(j),HttpStatus.OK);
 		}else {
 			return new ResponseEntity<JeloDTO>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@GetMapping("/naziv/{naziv}")
 	public ResponseEntity<JeloDTO> getOneByNaziv(@PathVariable String naziv){
-		
+
 		Jelo j=jeloService.findOneByNaziv(naziv);
-		
+
 		if(j!=null) {
 			return new ResponseEntity<JeloDTO>(new JeloDTO(j),HttpStatus.OK);
 		}else {
 			return new ResponseEntity<JeloDTO>(HttpStatus.NOT_FOUND);
 		}
-		
-		
+
+
 	}
-	
+
 	@PostMapping()
-	public ResponseEntity<JeloDTO> addJelo(@RequestBody Jelo jelo) { 
-		Jelo j = jeloService.addJelo(jelo);
+	public ResponseEntity<JeloDTO> addJelo(@RequestBody JeloDTO jeloDTO) {
+		Jelo j = jeloService.addJelo(new Jelo(jeloDTO));
+
+		StorageUtil.store(jeloDTO.getPicBase64(), StorageProperties.JELA_LOCATION, j.getPicName());
 		
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseEntity<JeloDTO> updateJelo(@RequestBody Jelo jelo){
-		Jelo j = jeloService.updateJelo(jelo);
+	public ResponseEntity<JeloDTO> updateJelo(@RequestBody JeloDTO jeloDTO){
+		Jelo j = jeloService.updateJelo(new Jelo(jeloDTO));
+
+		StorageUtil.store(jeloDTO.getPicBase64(), StorageProperties.JELA_LOCATION, j.getPicName());
 		
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteJelo(@PathVariable("id") Integer id) {
 		try {
