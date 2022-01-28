@@ -9,3 +9,6 @@
 
 # vs code
 .vscode
+
+# chrome driver
+backend/src/test/java/gradjanibrzogbroda/backend/e2e/driver/chromedriver.exe

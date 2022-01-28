@@ -16,11 +16,13 @@ public interface StoRepository extends JpaRepository<Sto, Integer> {
 
 	Sto findOneByIdentificationNumber(String id);
 
-	Sto findByIdentificationNumberAndZauzetFalse(String id);
+	Collection<Sto> findByZoneIdentificationNumberAndZauzetTrueAndIdentificationNumberNotIn(String id, Collection<String>stoIds);
 
 	@Query(value = "select s.identificationNumber from Sto s where s.zone.identificationNumber = :zoneId and s.identificationNumber not in :stoloviId")
 	List<String> selectDeletedTables(@Param("zoneId") String id, @Param("stoloviId") List<String> stoloviId);
 
 	@Transactional
 	void deleteAllByIdentificationNumberIn(Collection<String> identificationNumbers);
+
+	Collection<Sto> findByZoneIdentificationNumberAndZauzetTrue(String zoneId);
 }

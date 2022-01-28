@@ -218,20 +218,37 @@ export class MenuJelaComponent implements OnInit {
   hideDialog() {
     this.addJeloDialog = false;
     this.submitted = false;
+    this.novoJeloPic = {};
+    this.novoJeloPicPreview = this.jeloGenericImgSrc;
   }
 
   async saveJelo() {
     this.submitted = true;
 
     if (this.predlog) {
-      this.predlogService.addPredlog('IZMENA', (response: any) => {
-        this.messageService.add({
-          severity: response.ok ? 'success' : 'error',
-          summary: response.ok ? 'Success' : 'Error',
-          detail: response.body,
-          life: 3000,
+      if (Object.keys(this.novoJeloPic).length !== 0) {
+        let that = this;
+        this.base64Service.encode(this.novoJeloPic, async (slikaString: any) => {
+          that.newJelo.picBase64 = slikaString;
+          await that.predlogService.addPredlog('IZMENA', (response: any) => {
+            that.messageService.add({
+              severity: response.ok ? 'success' : 'error',
+              summary: response.ok ? 'Success' : 'Error',
+              detail: response.body,
+              life: 3000,
+            });
+          }, that.newJelo, that.newJelo.id);
         });
-      }, this.newJelo, this.newJelo.id);
+      } else {
+        this.predlogService.addPredlog('IZMENA', (response: any) => {
+          this.messageService.add({
+            severity: response.ok ? 'success' : 'error',
+            summary: response.ok ? 'Success' : 'Error',
+            detail: response.body,
+            life: 3000,
+          });
+        }, this.newJelo, this.newJelo.id);
+      }
       this.predlog = false;
       this.addJeloDialog = false;
     } else {
@@ -306,6 +323,7 @@ export class MenuJelaComponent implements OnInit {
 
   openEditJelo(jelo: Jelo) {
     this.newJelo = jelo;
+    this.novoJeloPicPreview = this.getJeloPic(jelo.picBase64);
     this.submitted = false;
     this.predlog = true;
     this.addJeloDialog = true;

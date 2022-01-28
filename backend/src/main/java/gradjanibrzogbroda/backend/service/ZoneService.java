@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,15 @@ public class ZoneService {
 	}
 
 	public void update(ZoneDTO zoneDTO) throws StoImaPorudzbinuException {
-		if (stoRepository.findByIdentificationNumberAndZauzetFalse(zoneDTO.getId())==null){
+		Collection<Sto> stos = stoRepository.findByZoneIdentificationNumberAndZauzetTrueAndIdentificationNumberNotIn(zoneDTO.getId(),
+				zoneDTO.getStolovi().stream().map(new Function<StoDTO, String>() {
+					@Override
+					public String apply(StoDTO stoDTO) {
+						return stoDTO.getId();
+					}
+				}).collect(Collectors.toSet()));
+
+		if (stos != null && !stos.isEmpty()) {
 			throw new StoImaPorudzbinuException();
 		}
 
@@ -54,7 +64,7 @@ public class ZoneService {
 		stoRepository.deleteAllByIdentificationNumberIn(ids);
 		zone.setStolovi(new HashSet<>());
 		//add new stolovi
-		if (zoneDTO.getStolovi()!=null) {
+		if (zoneDTO.getStolovi() != null) {
 			zoneDTO.getStolovi().stream().map(new Function<StoDTO, Object>() {
 				@Override
 				public Object apply(StoDTO stoDTO) {
@@ -90,8 +100,9 @@ public class ZoneService {
 		zoneRepository.save(zone);
 	}
 
-	public void delete(String zoneId) throws StoImaPorudzbinuException  {
-		if (stoRepository.findByIdentificationNumberAndZauzetFalse(zoneId)==null){
+	public void delete(String zoneId) throws StoImaPorudzbinuException {
+		Collection<Sto> stos = stoRepository.findByZoneIdentificationNumberAndZauzetTrue(zoneId);
+		if (stos != null && !stos.isEmpty()) {
 			throw new StoImaPorudzbinuException();
 		}
 		zoneRepository.deleteByIdentificationNumber(zoneId);

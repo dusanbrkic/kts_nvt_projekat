@@ -12,9 +12,9 @@ insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, naziv_
 insert into zone (identification_number, naziv, template_path, obrisan) values ('12345', 'Terasica', 'terasica.jpg', false);
 insert into zone (identification_number, naziv, template_path, obrisan) values ('56789', 'Potkrovlje', 'potkrovljice.jpg', false);
 
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345112', 'astal1', 4, 195.5, 469.603, false);
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12334512', 'astal2', 4, 195.5, 221.603, false);
-insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan)values ('false', '12345212', 'astal3', 4, 651.5, 469.603, false);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan, zone_id)values ('false', '12345112', 'astal1', 4, 195.5, 469.603, false, 1);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan, zone_id)values ('false', '12334512', 'astal2', 4, 195.5, 221.603, false, 1);
+insert into stolovi (zauzet, identification_number, naziv_stola, broj_mesta, pozicija_x, pozicija_y, obrisan, zone_id)values ('false', '12345212', 'astal3', 4, 651.5, 469.603, false, 2);
 
 insert into zone_stolovi (zone_id, stolovi_id) values (1,1);
 insert into zone_stolovi (zone_id, stolovi_id) values (1,2);
