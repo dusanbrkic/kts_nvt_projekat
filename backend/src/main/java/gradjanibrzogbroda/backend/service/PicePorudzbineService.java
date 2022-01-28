@@ -97,7 +97,7 @@ public class PicePorudzbineService {
         return true;
     }
 
-    public boolean pripremiPice(Integer id) throws PicePorudzbineNotFoundException, NeodgovarajuciStatusException {
+    public PicePorudzbine pripremiPice(Integer id) throws PicePorudzbineNotFoundException, NeodgovarajuciStatusException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
         if (picePorudzbine == null){
             throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
@@ -112,10 +112,10 @@ public class PicePorudzbineService {
             porudzbina.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
             porudzbinaRepository.save(porudzbina);
         }
-        return true;
+        return picePorudzbineRepository.save(picePorudzbine);
     }
 
-    public boolean dostaviPice(Integer id) throws NeodgovarajuciStatusException, PicePorudzbineNotFoundException {
+    public PicePorudzbine dostaviPice(Integer id) throws NeodgovarajuciStatusException, PicePorudzbineNotFoundException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
         if (picePorudzbine == null){
             throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
@@ -130,7 +130,7 @@ public class PicePorudzbineService {
             porudzbina.setStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
             porudzbinaRepository.save(porudzbina);
         }
-        return true;
+        return picePorudzbineRepository.save(picePorudzbine);
     }
 
 

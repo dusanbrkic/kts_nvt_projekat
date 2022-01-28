@@ -21,8 +21,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 
 import static gradjanibrzogbroda.backend.constants.JeloPorudzbineUnitTestConstants.*;
-import static gradjanibrzogbroda.backend.constants.JeloPorudzbineConstants.*;
-import static gradjanibrzogbroda.backend.constants.JeloPorudzbineUnitTestConstants.UT_NOVO_JELO_PORUDZBINE_KOLICINA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -365,7 +363,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         JeloPorudzbine rezultat = jeloPorudzbineService.izmeniJeloPorudzbine(jeloPorudzbineDTO);
 
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
     }
 
     @Test(expectedExceptions = {NeodgovarajuciStatusException.class})
@@ -417,7 +415,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         JeloPorudzbine rezultat = jeloPorudzbineService.izmeniJeloPorudzbine(jeloPorudzbineDTO);
 
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(DB_JELO_PORUDZBINE_ID);
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_JELO_PORUDZBINE_ID_1);
     }
 
     @Test (priority = 2)
@@ -465,10 +463,10 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
 
     @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
     public void testPreuzmiJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
-        JeloPorudzbine rezultat = jeloPorudzbineService.preuzmiJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        JeloPorudzbine rezultat = jeloPorudzbineService.preuzmiJelo(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
 
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
     }
 
     @Test
@@ -488,10 +486,10 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
 
     @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
     public void testPripremiJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
-        JeloPorudzbine rezultat = jeloPorudzbineService.pripremiJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        JeloPorudzbine rezultat = jeloPorudzbineService.pripremiJelo(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
 
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
     }
 
     @Test
@@ -513,9 +511,9 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
 
     @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
     public void testDostaviJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
-        JeloPorudzbine rezultat = jeloPorudzbineService.dostaviJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        JeloPorudzbine rezultat = jeloPorudzbineService.dostaviJelo(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
 
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_NON_EXISTANT_JELO_PORUDZBINE_ID);
     }
 }
