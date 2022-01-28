@@ -1,0 +1,14 @@
+.center {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    line-height: 1.5;
+  }
+
+  .size{
+    width: 900px;
+    height: 500px;
+  }

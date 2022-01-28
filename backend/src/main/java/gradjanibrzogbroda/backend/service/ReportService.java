@@ -81,7 +81,7 @@ public class ReportService {
 				}
 			}
 			profit = gain - loss;
-			dates.add(start.toString());
+			dates.add(start.toLocalDate().toString());
 			gains.add(gain);
 			losses.add(loss);
 			profits.add(profit);

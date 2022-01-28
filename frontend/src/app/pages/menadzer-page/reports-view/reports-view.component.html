@@ -1,0 +1,19 @@
+<p-card class="center">
+  <div class="size">
+    <p-toolbar>
+        <div class="p-toolbar-group-left">
+            <p-calendar placeholder="Raspon dana" [showButtonBar]="true" [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
+        </div>
+        <div class="p-toolbar-group-right">
+            <button
+            class="p-button-raised p-button-rounded"
+            pButton
+            (click)="dobavi()"
+          >
+            Dobavi izveštaj
+          </button>
+        </div>
+      </p-toolbar>
+    <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
+  </div>
+</p-card>
