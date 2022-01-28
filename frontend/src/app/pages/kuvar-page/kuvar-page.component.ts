@@ -17,7 +17,14 @@ export class KuvarPageComponent implements OnInit {
 
   stompClient: any;
 
-  constructor(private router: Router,private authService: AuthService,private messageService: MessageService) {}
+  showPasswordChanger: boolean = false;
+  passwordOnClose: any;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.items = [
@@ -35,25 +42,60 @@ export class KuvarPageComponent implements OnInit {
           this.selectedTab = 1;
         },
       },
-      {
+    ];
+
+    if (this.authService.isLoggedIn()) {
+      this.items.push({
+        label: 'Button Change Password',
+        icon: 'pi pi-fw pi-key',
+        style: { 'margin-left': 'auto' },
+        command: (event) => {
+          this.showPasswordChanger = true;
+        },
+      });
+      this.items.push({
+        label: 'Button Return',
+        icon: 'pi pi-fw pi-power-off',
+        style: { align: 'left' },
+        command: (event) => {
+          this.authService.logout();
+          this.stompClient.disconnect()
+          this.router.navigateByUrl('/');
+        },
+      });
+    } else {
+      this.items.push({
         label: 'Button Return',
         icon: 'pi pi-fw pi-power-off',
         style: { 'margin-left': 'auto' },
         command: (event) => {
-          this.authService.logout()
+          this.authService.logout();
+          this.stompClient.disconnect()
           this.router.navigateByUrl('/');
         },
-      },
-    ];
+      });
+    }
 
     const socket = new SockJS(environment.baseUrl + 'websocket');
     this.stompClient = Stomp.over(socket);
 
     this.stompClient.connect({}, (frame: any) => {
-      this.stompClient.subscribe('/topic/new-porudzbina-notification',(message: any) => {
-        console.log(JSON.parse(message.body).content)
-        this.messageService.add({severity:'info', sticky: true,summary:'Notification', detail:JSON.parse(message.body).content});
-      });
+      this.stompClient.subscribe(
+        '/topic/new-porudzbina-notification',
+        (message: any) => {
+          console.log(JSON.parse(message.body).content);
+          this.messageService.add({
+            severity: 'info',
+            sticky: true,
+            summary: 'Notification',
+            detail: JSON.parse(message.body).content,
+          });
+        }
+      );
     });
+
+    this.passwordOnClose = () => {
+      this.showPasswordChanger = false;
+    };
   }
 }

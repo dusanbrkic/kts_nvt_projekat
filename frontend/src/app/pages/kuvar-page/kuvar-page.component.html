@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+<app-password-changer [displayModal]="showPasswordChanger" [onCloseCallback]="passwordOnClose"></app-password-changer>
 <app-navbar [items]="items"></app-navbar>
 
 <app-porudzbine-view-kuvar *ngIf="selectedTab === 0"></app-porudzbine-view-kuvar>
