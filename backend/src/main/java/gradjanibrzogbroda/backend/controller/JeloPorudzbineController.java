@@ -45,13 +45,13 @@ public class JeloPorudzbineController {
         try {
             jelo = jeloPorudzbineService.dodajJeloPorudzbine(dto);
         } catch (PorudzbinaNotFoundException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.NOT_FOUND);
         } catch (JeloNotFoundException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.NOT_FOUND);
         } catch (PorudzbinaNaplacenaException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.BAD_REQUEST);
         } catch (NepozitivnaKolicinaException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);
@@ -64,11 +64,11 @@ public class JeloPorudzbineController {
         try {
             jelo = jeloPorudzbineService.izmeniJeloPorudzbine(dto);
         } catch (JeloPorudzbineNotFoundException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.NOT_FOUND);
-        } catch (JeloPorudzbineVecPreuzetoException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
-        } catch (NepozitivnaKolicinaException e) {
-            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.NOT_FOUND);
+        }  catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.BAD_REQUEST);
+        } catch (NeodgovarajuciStatusException e) {
+            return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<JeloPorudzbineDTO>(new JeloPorudzbineDTO(jelo), HttpStatus.OK);

@@ -2,13 +2,15 @@ package gradjanibrzogbroda.backend.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
-import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.*;
 import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class PorudzbinaService {
 
     @Autowired
     private JeloPorudzbineService jeloPorudzbineService;
+
+    @Autowired
+    private PicePorudzbineService picePorudzbineService;
 
     public List <Porudzbina> findAll(){
         return porudzbinaRepository.findAll();
@@ -60,6 +65,12 @@ public class PorudzbinaService {
             }
         }
 
+        Collections.sort(porudzbine, new Comparator<Porudzbina>() {
+            public int compare(Porudzbina o1, Porudzbina o2) {
+                return o1.getDatumVreme().compareTo(o2.getDatumVreme());
+            }
+        });
+
         return porudzbine;
     }
 
@@ -84,7 +95,7 @@ public class PorudzbinaService {
     	}
     	boolean all = true;
     	for(JeloPorudzbine jp : p.getJelaPorudzbine()) {
-    		if(jp.getStatusJela()==StatusJela.KREIRANO) {
+    		if(jp.getStatusJela()==StatusJela.KREIRANO || jp.getStatusJela()==StatusJela.PREUZETO) {
     			all = false;
     		}
     	}
@@ -96,12 +107,15 @@ public class PorudzbinaService {
     	
     }
 
-    public void preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException {
+    public void preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException, NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
         Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
         if(p==null) {
             throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
         }
         for (JeloPorudzbine j: p.getJelaPorudzbine()) {
+            if(j.getStatusJela() != StatusJela.KREIRANO){
+                continue;
+            }
             jeloPorudzbineService.preuzmiJelo(j.getId());
         }
     }
@@ -155,11 +169,40 @@ public class PorudzbinaService {
         return porudzbinaRepository.save(porudzbina);
     }
 
-    public Porudzbina izmeniPorudzbinu(PorudzbinaDTO dto){
+    public Porudzbina izmeniPorudzbinu(PorudzbinaDTO dto) throws PorudzbinaNotFoundException, NepozitivnaKolicinaException, PorudzbinaNaplacenaException, JeloNotFoundException, PiceNotFoundException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getId());
-        if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
-            return null;
+        if (porudzbina == null){
+            throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
         }
+        if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
+            throw new PorudzbinaNaplacenaException("Porudzbina je vec naplacena.");
+        }
+
+        boolean novo;
+        for (JeloPorudzbineDTO jpdto: dto.getJelaPorudzbine()){
+            novo = true;
+            for (JeloPorudzbine jp: porudzbina.getJelaPorudzbine()) {
+                if(jp.getId().equals(jpdto.getId())){
+                    novo = false;
+                }
+            }
+            if (novo){
+                jeloPorudzbineService.dodajJeloPorudzbine(jpdto);
+            }
+        }
+
+        for (PicePorudzbineDTO ppdto: dto.getPicaPorudzbine()){
+            novo = true;
+            for (PicePorudzbine pp: porudzbina.getPicePorudzbine()) {
+                if(pp.getId().equals(ppdto.getId())){
+                    novo = false;
+                }
+            }
+            if (novo){
+                picePorudzbineService.dodajPicePorudzbine(ppdto);
+            }
+        }
+
         porudzbina.setNapomena(dto.getNapomena());
         porudzbina.setSto(stoRepository.findOneByIdentificationNumber(dto.getStoId()));
 
@@ -170,16 +213,19 @@ public class PorudzbinaService {
         porudzbinaRepository.deleteById(id);
     }
 
-    public boolean naplatiPorudzbinu(Integer id){
+    public boolean naplatiPorudzbinu(Integer id) throws NeodgovarajuciStatusException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(id);
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.DOSTAVLJENO)){
             porudzbina.setStatusPorudzbine(StatusPorudzbine.NAPLACENO);
+
+            porudzbina.getSto().setZauzet(false);
+            porudzbina.getSto().setPorudzbina(null);
             porudzbinaRepository.save(porudzbina);
             return true;
         }
-        porudzbina.getSto().setZauzet(false);
-        porudzbina.getSto().setPorudzbina(null);
-        return false;
+        else{
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status porudzbine.");
+        }
     }
 
 }
