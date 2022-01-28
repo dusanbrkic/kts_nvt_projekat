@@ -1,7 +1,9 @@
 package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.domain.PicePorudzbine;
+import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.service.PicePorudzbineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,7 +19,18 @@ public class PicePorudzbineController {
 
     @PostMapping()
     public ResponseEntity<PicePorudzbineDTO> dodajPicePorudzbine(@RequestBody PicePorudzbineDTO dto) {
-        PicePorudzbine pice = picePorudzbineService.dodajPicePorudzbine(dto);
+        PicePorudzbine pice = null;
+        try {
+            pice = picePorudzbineService.dodajPicePorudzbine(dto);
+        } catch (PorudzbinaNotFoundException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.NOT_FOUND);
+        } catch (PorudzbinaNaplacenaException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.BAD_REQUEST);
+        } catch (PiceNotFoundException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.NOT_FOUND);
+        } catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(pice), HttpStatus.OK);
     }
@@ -26,7 +39,16 @@ public class PicePorudzbineController {
 
     @PutMapping()
     public ResponseEntity<PicePorudzbineDTO> izmeniPicePorudzbine(@RequestBody PicePorudzbineDTO dto) {
-        PicePorudzbine pice = picePorudzbineService.izmeniPicePorudzbine(dto);
+        PicePorudzbine pice = null;
+        try {
+            pice = picePorudzbineService.izmeniPicePorudzbine(dto);
+        } catch (PicePorudzbineNotFoundException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.NOT_FOUND);
+        } catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.BAD_REQUEST);
+        } catch (NeodgovarajuciStatusException e) {
+            return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<PicePorudzbineDTO>(new PicePorudzbineDTO(pice), HttpStatus.OK);
     }

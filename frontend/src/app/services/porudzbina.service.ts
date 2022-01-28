@@ -74,13 +74,13 @@ export class PorudzbinaService {
   async savePorudzbina(porudzbina: Porudzbina, isNewPorudzbina: boolean, callback:any) {
     //TO DO dodati na back
 
-    if (!isNewPorudzbina) {
+    if (!isNewPorudzbina) { //treba da se yove drugi endpoint ako se doda jelo ili pice
       const httpZahtev = await this.http
-      .post(environment.baseUrl + 'porudzbine/preuzmiPorudzbinu/' + porudzbina.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .post(environment.baseUrl + 'porudzbine/update', porudzbina,  {responseType : 'json', "observe": 'response'}).toPromise()
       .then((response:any)=>{
-        this.jelaUPripremi();
-        this.porudzbineZaPripremuKuvar();
+        callback(response.body);
       })
+      
 
       // const porudzbine = this.getPorudzbine().map((p) =>
       //   p.id === porudzbina.id ? porudzbina : p
@@ -95,6 +95,16 @@ export class PorudzbinaService {
       // const porudzbine = [...this.getPorudzbine(), porudzbina];
       // this._setPorudzbine(porudzbine);
     }
+  }
+
+  async preuzmiPorudzbinu(porudzbina: Porudzbina, isNewPorudzbina: boolean, callback:any) {
+    const httpZahtev = await this.http
+      .post(environment.baseUrl + 'porudzbine/preuzmiPorudzbinu/' + porudzbina.id, {responseType : 'json', "observe": 'response'}).toPromise()
+      .then((response:any)=>{
+        this.jelaUPripremi();
+        this.porudzbineZaPripremuKuvar();
+      })
+    
   }
 
   async porudzbineZaPripremuKuvar() {

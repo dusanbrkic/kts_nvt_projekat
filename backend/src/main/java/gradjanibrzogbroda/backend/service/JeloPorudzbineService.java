@@ -2,6 +2,7 @@ package gradjanibrzogbroda.backend.service;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
+import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.*;
 import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
@@ -37,6 +38,7 @@ public class JeloPorudzbineService {
         return pronadjeno;
     }
 
+
     public JeloPorudzbine dodajJeloPorudzbine(JeloPorudzbineDTO dto) throws PorudzbinaNotFoundException, JeloNotFoundException, PorudzbinaNaplacenaException, NepozitivnaKolicinaException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());
         if (porudzbina == null){
@@ -67,13 +69,13 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.save(jp);
     }
 
-    public JeloPorudzbine izmeniJeloPorudzbine(JeloPorudzbineDTO dto) throws JeloPorudzbineNotFoundException, JeloPorudzbineVecPreuzetoException, NepozitivnaKolicinaException {
+    public JeloPorudzbine izmeniJeloPorudzbine(JeloPorudzbineDTO dto) throws JeloPorudzbineNotFoundException, NepozitivnaKolicinaException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(dto.getId());
         if (jeloPorudzbine == null){
             throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.KREIRANO)){
-            throw new JeloPorudzbineVecPreuzetoException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
+            throw new NeodgovarajuciStatusException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
         }
         if(dto.getKolicina() <= 0){
             throw new NepozitivnaKolicinaException("Kolicina mora biti pozitivan broj");
@@ -87,13 +89,13 @@ public class JeloPorudzbineService {
         return jeloPorudzbineRepository.save(jeloPorudzbine);
     }
 
-    public boolean obrisiJeloPorudzbine(Integer id) throws JeloPorudzbineNotFoundException, JeloPorudzbineVecPreuzetoException {
+    public boolean obrisiJeloPorudzbine(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
             throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.KREIRANO)){
-            throw new JeloPorudzbineVecPreuzetoException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
+            throw new NeodgovarajuciStatusException("Jelo porudzbine je vec preuzeto - nemoguca izmena.");
         }
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
         porudzbina.setUkupnaCena(porudzbina.getUkupnaCena()-jeloPorudzbine.getJelo().getTrenutnaCena()*jeloPorudzbine.getKolicina());
@@ -101,13 +103,13 @@ public class JeloPorudzbineService {
         return true;
     }
 
-    public boolean preuzmiJelo(Integer id){
+    public boolean preuzmiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
-            return false;
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.KREIRANO)){
-            return false;
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu kreirano.");
         }
         jeloPorudzbine.setStatusJela(StatusJela.PREUZETO);
         jeloPorudzbineRepository.save(jeloPorudzbine);
@@ -119,13 +121,13 @@ public class JeloPorudzbineService {
         return true;
     }
 
-    public boolean pripremiJelo(Integer id){
+    public boolean pripremiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
-            return false;
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.PREUZETO)){
-            return false;
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu preuzeto.");
         }
         jeloPorudzbine.setStatusJela(StatusJela.PRIPREMLJENO);
         jeloPorudzbineRepository.save(jeloPorudzbine);
@@ -137,13 +139,13 @@ public class JeloPorudzbineService {
         return true;
     }
 
-    public boolean dostaviJelo(Integer id){
+    public boolean dostaviJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
-            return false;
+            throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }
         else if (!jeloPorudzbine.getStatusJela().equals(StatusJela.PRIPREMLJENO)){
-            return false;
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu pripremljeno.");
         }
         jeloPorudzbine.setStatusJela(StatusJela.DOSTAVLJENO);
         jeloPorudzbineRepository.save(jeloPorudzbine);

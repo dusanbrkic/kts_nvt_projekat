@@ -73,7 +73,7 @@ export class PorudzbineViewKuvarComponent implements OnInit {
   }
 
   preuzmiPorudzbinu(porudzbina: Porudzbina) {
-    this.porudzbinaService.savePorudzbina(
+    this.porudzbinaService.preuzmiPorudzbinu(
       {
         ...porudzbina,
         jelaPorudzbine: porudzbina.jelaPorudzbine.map((j) =>

@@ -2,6 +2,7 @@ package gradjanibrzogbroda.backend.service;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.*;
 import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,32 @@ public class PicePorudzbineService {
         return picePorudzbineRepository.findAll();
     }
 
-    public PicePorudzbine findOne(Integer id) {
-        return picePorudzbineRepository.findOneById(id);
+    public PicePorudzbine findOne(Integer id) throws PicePorudzbineNotFoundException {
+        PicePorudzbine pronadjeno = picePorudzbineRepository.findOneById(id);
+        if (pronadjeno == null){
+            throw new PicePorudzbineNotFoundException("Nije pronadjeno pice porudzbine sa zadatim id.");
+        }
+        return pronadjeno;
     }
 
 
-    public PicePorudzbine dodajPicePorudzbine(PicePorudzbineDTO dto){
+    public PicePorudzbine dodajPicePorudzbine(PicePorudzbineDTO dto) throws PorudzbinaNotFoundException, PorudzbinaNaplacenaException, PiceNotFoundException, NepozitivnaKolicinaException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(dto.getPorudzbinaId());
+        if (porudzbina == null){
+            throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
+        }
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.NAPLACENO)){
-            return null;
+            throw new PorudzbinaNaplacenaException("Porudzbina je vec naplacena.");
         }
 
         Pice pice = piceRepository.findOneById(dto.getPiceId());
+        if (pice == null){
+            throw new PiceNotFoundException("Nije pronadjeno pice sa zadatim id.");
+        }
+
+        if(dto.getKolicina() <= 0){
+            throw new NepozitivnaKolicinaException("Kolicina mora biti pozitivan broj");
+        }
         PicePorudzbine pp = PicePorudzbine.builder()
                 .kolicina(dto.getKolicina())
                 .napomena(dto.getNapomena())
@@ -48,10 +63,16 @@ public class PicePorudzbineService {
         porudzbina.setStatusPorudzbine(StatusPorudzbine.KREIRANO);
         return picePorudzbineRepository.save(pp);
     }
-    public PicePorudzbine izmeniPicePorudzbine(PicePorudzbineDTO dto){
+    public PicePorudzbine izmeniPicePorudzbine(PicePorudzbineDTO dto) throws PicePorudzbineNotFoundException, NepozitivnaKolicinaException, NeodgovarajuciStatusException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(dto.getId());
-        if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
-            return null;
+        if (picePorudzbine == null){
+            throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
+        }
+        else if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
+            throw new NeodgovarajuciStatusException("Pice porudzbine je vec pripremljeno - nemoguca izmena.");
+        }
+        if(dto.getKolicina() <= 0){
+            throw new NepozitivnaKolicinaException("Kolicina mora biti pozitivan broj");
         }
         Double razlikaKolicine = picePorudzbine.getKolicina() - dto.getKolicina();
         Porudzbina porudzbina = picePorudzbine.getPorudzbina();
@@ -61,10 +82,14 @@ public class PicePorudzbineService {
         picePorudzbine.setNapomena(dto.getNapomena());
         return picePorudzbineRepository.save(picePorudzbine);
     }
-    public boolean obrisiPicePorudzbine(Integer id){
+    public boolean obrisiPicePorudzbine(Integer id) throws PicePorudzbineNotFoundException, NeodgovarajuciStatusException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
-        if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
-            return false;
+
+        if (picePorudzbine == null){
+            throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
+        }
+        else if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
+            throw new NeodgovarajuciStatusException("Pice porudzbine je vec pripremljeno - nemoguce brisanje.");
         }
         Porudzbina porudzbina = picePorudzbine.getPorudzbina();
         porudzbina.setUkupnaCena(porudzbina.getUkupnaCena()-picePorudzbine.getPice().getTrenutnaCena()*picePorudzbine.getKolicina());
@@ -72,13 +97,13 @@ public class PicePorudzbineService {
         return true;
     }
 
-    public boolean pripremiPice(Integer id){
+    public boolean pripremiPice(Integer id) throws PicePorudzbineNotFoundException, NeodgovarajuciStatusException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
         if (picePorudzbine == null){
-            return false;
+            throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
         }
         else if (!picePorudzbine.getStatusPica().equals(StatusPica.KREIRANO)){
-            return false;
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu kreirano.");
         }
         picePorudzbine.setStatusPica(StatusPica.PRIPREMLJENO);
         picePorudzbineRepository.save(picePorudzbine);
@@ -90,13 +115,13 @@ public class PicePorudzbineService {
         return true;
     }
 
-    public boolean dostaviPice(Integer id){
+    public boolean dostaviPice(Integer id) throws NeodgovarajuciStatusException, PicePorudzbineNotFoundException {
         PicePorudzbine picePorudzbine = picePorudzbineRepository.findOneById(id);
         if (picePorudzbine == null){
-            return false;
+            throw new PicePorudzbineNotFoundException("Nije pronadjeno pice sa zadatim id.");
         }
         else if (!picePorudzbine.getStatusPica().equals(StatusPica.PRIPREMLJENO)){
-            return false;
+            throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu pripremljeno.");
         }
         picePorudzbine.setStatusPica(StatusPica.DOSTAVLJENO);
         picePorudzbineRepository.save(picePorudzbine);

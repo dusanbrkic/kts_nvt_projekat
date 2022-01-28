@@ -2,7 +2,7 @@ package gradjanibrzogbroda.backend.controller;
 
 import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
-import gradjanibrzogbroda.backend.exceptions.PorudzbinaNotFoundException;
+import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.service.NotificationService;
 import gradjanibrzogbroda.backend.service.PorudzbinaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,15 +103,33 @@ public class PorudzbinaController {
         } catch (PorudzbinaNotFoundException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (NeodgovarajuciStatusException e) {
+            e.printStackTrace();
+        } catch (JeloPorudzbineNotFoundException e) {
+            e.printStackTrace();
         }
-        
+
         this.notificationService.preuzmiPorudzbinaNotification(id);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PostMapping("/update")
     public ResponseEntity<PorudzbinaDTO> izmeniPorudzbinu(@RequestBody PorudzbinaDTO dto){
-        Porudzbina porudzbina = porudzbinaService.izmeniPorudzbinu(dto);
+        Porudzbina porudzbina = null;
+        try {
+            porudzbina = porudzbinaService.izmeniPorudzbinu(dto);
+        } catch (PorudzbinaNotFoundException e) {
+            return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(), HttpStatus.NOT_FOUND);
+        } catch (NepozitivnaKolicinaException e) {
+            return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(), HttpStatus.BAD_REQUEST);
+        } catch (PorudzbinaNaplacenaException e) {
+            return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(), HttpStatus.BAD_REQUEST);
+        } catch (JeloNotFoundException e) {
+            return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(), HttpStatus.NOT_FOUND);
+        } catch (PiceNotFoundException e) {
+            return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(), HttpStatus.NOT_FOUND);
+
+        }
 
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
     }
