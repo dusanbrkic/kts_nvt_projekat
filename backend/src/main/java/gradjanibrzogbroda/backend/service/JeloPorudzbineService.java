@@ -103,7 +103,7 @@ public class JeloPorudzbineService {
         return true;
     }
 
-    public boolean preuzmiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
+    public JeloPorudzbine preuzmiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
             throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
@@ -112,16 +112,16 @@ public class JeloPorudzbineService {
             throw new NeodgovarajuciStatusException("Neodgovarajuci status - jelo nije u statusu kreirano.");
         }
         jeloPorudzbine.setStatusJela(StatusJela.PREUZETO);
-        jeloPorudzbineRepository.save(jeloPorudzbine);
+
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
         if (porudzbinaUtil.promeniStatusPorudzbine(porudzbina, StatusJela.PREUZETO, StatusPica.KREIRANO)){
             porudzbina.setStatusPorudzbine(StatusPorudzbine.PREUZETO);
             porudzbinaRepository.save(porudzbina);
         }
-        return true;
+        return jeloPorudzbineRepository.save(jeloPorudzbine);
     }
 
-    public boolean pripremiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
+    public JeloPorudzbine pripremiJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
             throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
@@ -136,10 +136,10 @@ public class JeloPorudzbineService {
             porudzbina.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
             porudzbinaRepository.save(porudzbina);
         }
-        return true;
+        return jeloPorudzbineRepository.save(jeloPorudzbine);
     }
 
-    public boolean dostaviJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
+    public JeloPorudzbine dostaviJelo(Integer id) throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
         JeloPorudzbine jeloPorudzbine = jeloPorudzbineRepository.findOneById(id);
         if (jeloPorudzbine == null){
             throw new JeloPorudzbineNotFoundException("Nije pronadjeno jelo sa zadatim id.");
@@ -150,11 +150,13 @@ public class JeloPorudzbineService {
         jeloPorudzbine.setStatusJela(StatusJela.DOSTAVLJENO);
         jeloPorudzbineRepository.save(jeloPorudzbine);
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
+        System.out.println("affeefffffffffffffffffffffffff\n");
         if (porudzbinaUtil.promeniStatusPorudzbine(porudzbina, StatusJela.DOSTAVLJENO, StatusPica.DOSTAVLJENO)){
+            System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm\n");
             porudzbina.setStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
             porudzbinaRepository.save(porudzbina);
         }
-        return true;
+        return jeloPorudzbineRepository.save(jeloPorudzbine);
     }
 
 

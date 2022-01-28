@@ -7,6 +7,7 @@ import gradjanibrzogbroda.backend.exceptions.*;
 import gradjanibrzogbroda.backend.repository.JeloPorudzbineRepository;
 import gradjanibrzogbroda.backend.repository.JeloRepository;
 import gradjanibrzogbroda.backend.repository.PorudzbinaRepository;
+import gradjanibrzogbroda.backend.util.PorudzbinaUtil;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -38,6 +39,9 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
     @Mock
     private JeloRepository jeloRepositoryMock;
 
+    @Mock
+    private PorudzbinaUtil porudzbinaUtilMock;
+
     @InjectMocks
     @Autowired
     private JeloPorudzbineService jeloPorudzbineService;
@@ -64,6 +68,13 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         porudzbina.setId(UT_KREIRANA_PORUDZBINA_ID);
         porudzbina.setPicePorudzbine(new ArrayList<PicePorudzbine>());
 
+        //pripremljena sa 1 jelom
+        Porudzbina porudzbinaPripremljena = new Porudzbina();
+        porudzbina.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
+        porudzbina.setUkupnaCena(UT_PRIPREMLJENA_PORUDZBINA_CENA);
+        porudzbina.setId(UT_PRIPREMLJENA_PORUDZBINA_ID);
+        porudzbina.setPicePorudzbine(new ArrayList<PicePorudzbine>());
+
         ArrayList<JeloPorudzbine> jelaPorudzbine = new ArrayList<>();
         JeloPorudzbine jp = JeloPorudzbine.builder()
                 .id(UT_JELO_PORUDZBINE_ID_1)
@@ -77,22 +88,25 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         jelaPorudzbine.add(jp);
         porudzbina.getJelaPorudzbine().add(jp);
 
-        Porudzbina naplacena = new Porudzbina();
-        naplacena.setStatusPorudzbine(StatusPorudzbine.NAPLACENO);
-        naplacena.setUkupnaCena(600.0);
-        naplacena.setId(UT_NAPLACENA_PORUDZBINA_ID);
-        naplacena.setPicePorudzbine(new ArrayList<PicePorudzbine>());
-
-        JeloPorudzbine novo = JeloPorudzbine.builder()
-                .id(UT_NOVO_JELO_PORUDZBINE_ID)
+        JeloPorudzbine jp2 = JeloPorudzbine.builder()
+                .id(UT_JELO_PORUDZBINE_ID_2)
+                .kolicina(UT_JELO_PORUDZBINE_KOLICINA)
+                .napomena(UT_JELO_PORUDZBINE_NAPOMENA)
                 .jelo(jelo)
                 .porudzbina(porudzbina)
-                .kolicina(UT_NOVO_JELO_PORUDZBINE_KOLICINA)
-                .napomena(UT_NOVO_JELO_PORUDZBINE_NAPOMENA)
-                .statusJela(UT_NOVO_JELO_PORUDZBINE_STATUS)
+                .statusJela(UT_JELO_PORUDZBINE_STATUS)
                 .obrisan(false)
                 .build();
-////////////////////////////////////////////////////////
+        jelaPorudzbine.add(jp2);
+        porudzbina.getJelaPorudzbine().add(jp2);
+
+        Porudzbina porudzbinaNaplacena = new Porudzbina();
+        porudzbinaNaplacena.setStatusPorudzbine(StatusPorudzbine.NAPLACENO);
+        porudzbinaNaplacena.setUkupnaCena(600.0);
+        porudzbinaNaplacena.setId(UT_NAPLACENA_PORUDZBINA_ID);
+        porudzbinaNaplacena.setPicePorudzbine(new ArrayList<PicePorudzbine>());
+
+
         JeloPorudzbine preuzeto = JeloPorudzbine.builder()
                 .id(UT_PREUZETO_JELO_PORUDZBINE_ID)
                 .kolicina(UT_PREUZETO_JELO_PORUDZBINE_KOLICINA)
@@ -106,26 +120,43 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         ArrayList<JeloPorudzbine> preuzetaJelaPorudzbine = new ArrayList<JeloPorudzbine>();
         preuzetaJelaPorudzbine.add(preuzeto);
 
+        JeloPorudzbine pripremljeno = JeloPorudzbine.builder()
+                .id(UT_PRIPREMLJENO_JELO_PORUDZBINE_ID)
+                .kolicina(UT_PRIPREMLJENO_JELO_PORUDZBINE_KOLICINA)
+                .napomena(UT_PRIPREMLJENO_JELO_PORUDZBINE_NAPOMENA)
+                .jelo(jelo)
+                .porudzbina(porudzbinaPripremljena)
+                .statusJela(UT_PRIPREMLJENO_JELO_PORUDZBINE_STATUS)
+                .obrisan(false)
+                .build();
+        jelaPorudzbine.add(pripremljeno);
+        porudzbinaPripremljena.getJelaPorudzbine().add(pripremljeno);
+
         given(jeloPorudzbineRepositoryMock.findAll()).willReturn(jelaPorudzbine);
         given(jeloPorudzbineRepositoryMock.findAllByStatusJela(StatusJela.PREUZETO)).willReturn(preuzetaJelaPorudzbine);
         given(jeloPorudzbineRepositoryMock.findOneById(UT_JELO_PORUDZBINE_ID_1)).willReturn(jp);
+        given(jeloPorudzbineRepositoryMock.findOneById(UT_JELO_PORUDZBINE_ID_2)).willReturn(jp2);
         given(jeloPorudzbineRepositoryMock.findOneById(UT_NON_EXISTANT_JELO_PORUDZBINE_ID)).willReturn(null);
         given(jeloPorudzbineRepositoryMock.findOneById(UT_PREUZETO_JELO_PORUDZBINE_ID)).willReturn(preuzeto);
+        given(jeloPorudzbineRepositoryMock.findOneById(UT_PRIPREMLJENO_JELO_PORUDZBINE_ID)).willReturn(pripremljeno);
         when(jeloPorudzbineRepositoryMock.save(Mockito.any(JeloPorudzbine.class)))
                 .thenAnswer(i -> i.getArguments()[0]);
 
         given(porudzbinaRepositoryMock.findOneById(UT_KREIRANA_PORUDZBINA_ID)).willReturn(porudzbina);
-        given(porudzbinaRepositoryMock.findOneById(UT_NAPLACENA_PORUDZBINA_ID)).willReturn(naplacena);
+        given(porudzbinaRepositoryMock.findOneById(UT_NAPLACENA_PORUDZBINA_ID)).willReturn(porudzbinaNaplacena);
+        given(porudzbinaRepositoryMock.findOneById(UT_PRIPREMLJENA_PORUDZBINA_ID)).willReturn(porudzbinaPripremljena);
 
         given(jeloRepositoryMock.findOneById(UT_JELO_ID)).willReturn(jelo);
         given(jeloRepositoryMock.findOneById(UT_NON_EXISTANT_JELO_ID)).willReturn(null);
+
+        given(porudzbinaUtilMock.promeniStatusPorudzbine(porudzbinaPripremljena, StatusJela.DOSTAVLJENO, StatusPica.DOSTAVLJENO)).willReturn(true);
 
     }
 
     @Test
     public void testFindAll() {
         ArrayList<JeloPorudzbine> rezultat = (ArrayList<JeloPorudzbine>) jeloPorudzbineService.findAll();
-        Assert.assertEquals(rezultat.size(), 2);
+        Assert.assertEquals(rezultat.size(), 4);
 
         Assert.assertEquals(rezultat.get(0).getId(), UT_JELO_PORUDZBINE_ID_1);
         Assert.assertEquals(rezultat.get(0).getNapomena(), UT_JELO_PORUDZBINE_NAPOMENA);
@@ -154,7 +185,6 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         Assert.assertEquals(rezultat.getNapomena(), UT_JELO_PORUDZBINE_NAPOMENA);
         Assert.assertEquals(rezultat.getKolicina(), UT_JELO_PORUDZBINE_KOLICINA);
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(DB_JELO_PORUDZBINE_ID);
     }
 
     @Test(expectedExceptions = {JeloPorudzbineNotFoundException.class})
@@ -175,7 +205,7 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         Assert.assertEquals(rezultat.getKolicina(), UT_NOVO_JELO_PORUDZBINE_KOLICINA);
         Assert.assertEquals(rezultat.getJelo().getId(), UT_JELO_ID);
         Assert.assertEquals(rezultat.getStatusJela(), StatusJela.KREIRANO);
-        Assert.assertEquals(rezultat.getPorudzbina().getId(), UT_NOVO_JELO_PORUDZBINE_PORUDZBINA);
+        Assert.assertEquals(rezultat.getPorudzbina().getStatusPorudzbine(), StatusPorudzbine.KREIRANO);
 
         //verify(porudzbinaRepositoryMock, times(1)).findOneById(NEW_JELO_PORUDZBINE_PORUDZBINA);
         //verify(jeloRepositoryMock, times(1)).findOneById(NEW_JELO_PORUDZBINE_JELO);
@@ -307,7 +337,6 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         Assert.assertEquals(rezultat.getKolicina(), UT_IZMENJENO_JELO_PORUDZBINE_KOLICINA);
         Assert.assertEquals(rezultat.getJelo().getId(), UT_JELO_ID);
         Assert.assertEquals(rezultat.getStatusJela(), StatusJela.KREIRANO);
-        Assert.assertEquals(rezultat.getPorudzbina().getId(), UT_KREIRANA_PORUDZBINA_ID);
         Assert.assertEquals(rezultat.getPorudzbina().getUkupnaCena(), 720.0); //3 pljeskavice od po 240
 
         //verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(DB_JELO_PORUDZBINE_ID);
@@ -394,11 +423,11 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
     @Test (priority = 2)
     public void testObrisiJeloPorudzbine() throws JeloPorudzbineNotFoundException, NeodgovarajuciStatusException {
 
-        boolean rezultat = jeloPorudzbineService.obrisiJeloPorudzbine(UT_JELO_PORUDZBINE_ID_1);
+        boolean rezultat = jeloPorudzbineService.obrisiJeloPorudzbine(UT_JELO_PORUDZBINE_ID_2);
 
         Assert.assertTrue(rezultat);
 
-        verify(jeloPorudzbineRepositoryMock, times(1)).deleteById(UT_JELO_PORUDZBINE_ID_1);
+        verify(jeloPorudzbineRepositoryMock, times(1)).deleteById(UT_JELO_PORUDZBINE_ID_2);
 
     }
 
@@ -416,5 +445,77 @@ public class JeloPorudzbineServiceUnitTests extends AbstractTestNGSpringContextT
         boolean rezultat = jeloPorudzbineService.obrisiJeloPorudzbine(UT_PREUZETO_JELO_PORUDZBINE_ID);
 
         verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_PREUZETO_JELO_PORUDZBINE_ID);
+    }
+
+    @Test
+    public void testPreuzmiJelo() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.preuzmiJelo(UT_JELO_PORUDZBINE_ID_1);
+
+        Assert.assertEquals(rezultat.getStatusJela(), StatusJela.PREUZETO);
+
+    }
+
+    @Test(expectedExceptions = NeodgovarajuciStatusException.class)
+    public void testPreuzmiJelo_Status_Nije_KREIRANO() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.preuzmiJelo(UT_PREUZETO_JELO_PORUDZBINE_ID);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_PREUZETO_JELO_PORUDZBINE_ID);
+    }
+
+    @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
+    public void testPreuzmiJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.preuzmiJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+    }
+
+    @Test
+    public void testPripremiJelo() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.pripremiJelo(UT_PREUZETO_JELO_PORUDZBINE_ID);
+
+        Assert.assertEquals(rezultat.getStatusJela(), StatusJela.PRIPREMLJENO);
+    }
+
+    @Test(expectedExceptions = NeodgovarajuciStatusException.class)
+    public void testPripremiJelo_Status_Nije_PREUZETO() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.pripremiJelo(UT_PRIPREMLJENO_JELO_PORUDZBINE_ID);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_PRIPREMLJENO_JELO_PORUDZBINE_ID);
+    }
+
+    @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
+    public void testPripremiJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.pripremiJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
+    }
+
+    @Test
+    public void testDostaviJelo() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.dostaviJelo(UT_PRIPREMLJENO_JELO_PORUDZBINE_ID);
+
+        Assert.assertEquals(rezultat.getStatusJela(), StatusJela.DOSTAVLJENO);
+        Assert.assertEquals(rezultat.getPorudzbina().getStatusPorudzbine(), StatusPorudzbine.DOSTAVLJENO);
+
+    }
+
+    @Test(expectedExceptions = NeodgovarajuciStatusException.class)
+    public void testDostaviJelo_Status_Nije_PRIPREMLJENO() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.dostaviJelo(UT_JELO_PORUDZBINE_ID_1);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(UT_JELO_PORUDZBINE_ID_1);
+    }
+
+    @Test(expectedExceptions = JeloPorudzbineNotFoundException.class)
+    public void testDostaviJelo_Jelo_Not_Found() throws NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+        JeloPorudzbine rezultat = jeloPorudzbineService.dostaviJelo(NON_EXISTANT_JELO_PORUDZBINE_ID);
+
+
+        verify(jeloPorudzbineRepositoryMock, times(1)).findOneById(NON_EXISTANT_JELO_PORUDZBINE_ID);
     }
 }
