@@ -62,6 +62,7 @@
               type="button"
               styleClass="p-button p-button-rounded"
               (click)="preuzmiPorudzbinu(porudzbina)"
+              [id]="'preuzmiPorudzbinu' +porudzbina.id"
             >
               Preuzmi
             </button>
@@ -120,6 +121,7 @@
                   type="button"
                   styleClass="p-button p-button-rounded"
                   (click)="spremiJelo(jelo)"
+                  [id]="'spremiJelo' + jelo.id"
                 >
                   Spremi
                 </button>
