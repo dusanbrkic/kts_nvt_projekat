@@ -148,12 +148,12 @@ insert into jela_porudzbine (kolicina, napomena, status_jela, jelo_id, porudzbin
 -----piceporudzbine test
 --KREIRANA id =7
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-28', 'Gosti zure, posluziti brzo.', false, 0, 7, 375.0);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda', 0, 7, 7, false);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (1.0, 'Sa ledok', 0, 8, 7, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Bez leda', 0, 7, 7, false); --id=5
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (1.0, 'Sa ledok', 0, 8, 7, false); --id=6
 
 --PRIPREMLJENA id = 8
 insert into porudzbine (datum_vreme, napomena, obrisan, status_porudzbine, sto_id, ukupna_cena) values ('2022-01-28', 'Gosti jako zedni.', false, 2, 8, 250.0);
-insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Puno leda.', 1, 7, 8, false);
+insert into pice_porudzbine (kolicina, napomena, status_pica, pice_id, porudzbina_id, obrisan) values (2.0, 'Puno leda.', 1, 7, 8, false); --id=7
 
 ------porudzbina test
 --KREIRANA za preuzimanje kuvar i pripremanje sanker id =9

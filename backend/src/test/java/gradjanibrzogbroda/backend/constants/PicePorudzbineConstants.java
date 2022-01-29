@@ -6,43 +6,50 @@ import gradjanibrzogbroda.backend.domain.StatusPorudzbine;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 
 public class PicePorudzbineConstants {
-    public static final Integer NEW_PICE_PORUDZBINE_ID = 5;
-    public static final Double NEW_PICE_PORUDZBINE_KOLICINA = 3.0;
-    public static final String NEW_PICE_PORUDZBINE_NAPOMENA = "Bez sira.";
-    public static final Integer NEW_PICE_PORUDZBINE_PICE = 7;
-    public static final Integer NEW_PICE_PORUDZBINE_PORUDZBINA = 1;
-    public static final PicePorudzbineDTO NEW_PICE_PORUDZBINE = PicePorudzbineDTO.builder()
-            .id(NEW_PICE_PORUDZBINE_ID)
-            .kolicina(NEW_PICE_PORUDZBINE_KOLICINA)
-            .napomena(NEW_PICE_PORUDZBINE_NAPOMENA)
-//            .piceId(NEW_PICE_PORUDZBINE_PICE)
-            .porudzbinaId(NEW_PICE_PORUDZBINE_PORUDZBINA)
-            .statusPica(StatusPica.KREIRANO)
-            .build();
+    public static final Integer DB_PICE_ID = 6;
+    public static final Double DB_PICE_CENA = 125.0;
+    public static final String DB_PICE_NAZIV = "Coca Cola 0.33l";
 
-    public static final Integer UPDATED_PICE_PORUDZBINE_ID = 2;
-    public static final Double UPDATED_PICE_PORUDZBINE_KOLICINA = 3.0;
-    public static final String UPDATED_PICE_PORUDZBINE_NAPOMENA = "Stavite mi majoneza i kecapa.";
-    public static final Integer UPDATED_PICE_PORUDZBINE_PICE = 6;
-    public static final Integer UPDATED_PICE_PORUDZBINE_PORUDZBINA = 2;
-    public static final PicePorudzbineDTO UPDATED_PICE_PORUDZBINE = PicePorudzbineDTO.builder()
-            .id(UPDATED_PICE_PORUDZBINE_ID)
-            .kolicina(UPDATED_PICE_PORUDZBINE_KOLICINA)
-            .napomena(UPDATED_PICE_PORUDZBINE_NAPOMENA)
-//            .piceId(UPDATED_PICE_PORUDZBINE_PICE)
-            .porudzbinaId(UPDATED_PICE_PORUDZBINE_PORUDZBINA)
-            .statusPica(StatusPica.KREIRANO)
-            .build();
 
-    public static final Integer DELETED_PICE_PORUDZBINE_ID = 1;
+    public static final Integer DB_PICE_PORUDZBINE_ID_1 = 5;
+    public static final Integer DB_PICE_PORUDZBINE_ID_2 = 6;
 
-    public static final Integer DB_PICE_PORUDZBINE_ID = 1;
-    public static final String DB_PICE_PORUDZBINE_NAPOMENA = "Sa svezim sastojcima.";
     public static final Double DB_PICE_PORUDZBINE_KOLICINA = 2.0;
+    public static final String DB_PICE_PORUDZBINE_NAPOMENA = "Da bude lepo.";
+    public static final StatusPica DB_PICE_PORUDZBINE_STATUS = StatusPica.KREIRANO;
+    public static final Double DB_IZMENJENO_PICE_PORUDZBINE_KOLICINA = 3.0;
+    public static final String DB_IZMENJENO_PICE_PORUDZBINE_NAPOMENA = "Da bude lepo i fino.";
+
+    public static final Integer DB_NOVO_PICE_PORUDZBINE_ID = 4;
+    public static final Integer DB_NOVO_PICE_PORUDZBINE_PORUDZBINA = 5;
+    public static final Double DB_NOVO_PICE_PORUDZBINE_KOLICINA = 3.0;
+    public static final String DB_NOVO_PICE_PORUDZBINE_NAPOMENA = "Bez sira.";
+    public static final StatusPica DB_NOVO_PICE_PORUDZBINE_STATUS = StatusPica.KREIRANO;
+    public static final PicePorudzbineDTO DB_NOVO_PICE_PORUDZBINE_DTO = PicePorudzbineDTO.builder()
+            .id(DB_NOVO_PICE_PORUDZBINE_ID)
+            .kolicina(DB_NOVO_PICE_PORUDZBINE_KOLICINA)
+            .napomena(DB_NOVO_PICE_PORUDZBINE_NAPOMENA)
+            .statusPica(DB_NOVO_PICE_PORUDZBINE_STATUS)
+            .porudzbinaId(DB_NOVO_PICE_PORUDZBINE_PORUDZBINA)
+            .build();
 
 
-    public static final Integer KREIRANO_PICE_PORUDZBINE_ID = 2;
-    public static final Integer PRIPREMLJENO_PICE_PORUDZBINE_ID = 3;
+    public static final Integer DB_PRIPREMLJENO_PICE_PORUDZBINE_ID = 7;
+    public static final Double DB_PRIPREMLJENO_PICE_PORUDZBINE_KOLICINA = 2.0;
+    public static final String DB_PRIPREMLJENO_PICE_PORUDZBINE_NAPOMENA = "Puno leda.";
+    public static final StatusPica DB_PRIPREMLJENO_PICE_PORUDZBINE_STATUS = StatusPica.PRIPREMLJENO;
+
+    public static final Integer DB_KREIRANA_PORUDZBINA_ID = 7;
+    public static final Double DB_KREIRANA_PORUDZBINA_CENA = 480.0;
+
+    public static final Integer DB_PRIPREMLJENA_PORUDZBINA_ID = 8;
+    public static final Double DB_PRIPREMLJENA_PORUDZBINA_CENA = 480.0;
+
+    public static final Integer DB_NAPLACENA_PORUDZBINA_ID = 12;
+
+
+
+    public static final Integer DB_NON_EXISTANT_ID = 100;
 
 
 }
