@@ -67,35 +67,46 @@ insert into zone_stolovi (zone_id, stolovi_id) values (2,18);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Pljeskavica', 240, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (1, 30000, 'Jelo od mlevenog mesa spremljeno na rostilju', 1, 2);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 1);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Cevapi', 220, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (2, 30000, 'Rolovano jelo od mlevenog mesa spremljeno na rostilju', 1, 2);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 2);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Kavijar', 1200, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (3, 30000, 'Luksuzno jelo od ribljih jaja', 0, 0);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 3);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Grcka salata', 300, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (4, 30000, 'Salata spremljena na grcki nacin sa povrcem i feta sirom', 2, 2);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 4);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Rib-eye', 1100, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (5, 30000, 'Odrezak govedine spremljen na rostilju na nacin po zahtevu kupca', 1, 1);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 5);
 
 --pice
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Coca Cola 0.33l', 125, false);
 insert into pice (id) values (6);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 6);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Sprite 0.33l', 125, false);
 insert into pice (id) values (7);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 7);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Fanta 0.33l', 125, false);
 insert into pice (id) values (8);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 8);
+
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Limunada 0.33l', 80, false);
 insert into pice (id) values (9);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 9);
 
 insert into artikli (naziv, trenutna_cena, obrisan) values ('Limanada 0.5l', 125, false);
 insert into pice (id) values (10);
+insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 10);
 
 --porudzbine
 

@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.apache.catalina.mbeans.RoleMBean;
 import org.springframework.core.io.Resource;
 
 @Getter
@@ -45,4 +47,16 @@ public class ZaposleniDTO {
         slikaString = StorageUtil.loadAsString(StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
         username = zaposleni.getUsername();
     }
+
+	public ZaposleniDTO(String newZaposleniIme, String newZaposleniPrezime, Pol pol, LocalDate now, double d,
+			String string, String string2, String newZaposleniUsername) {
+		this.ime = newZaposleniIme;
+		this.prezime = newZaposleniPrezime;
+		this.pol = pol;
+		this.datumRodjenja = now;
+		this.trenutnaPlata = d;
+		this.roleName = string;
+		this.slikaString = string2;
+		this.username = newZaposleniIme;
+	}
 }
