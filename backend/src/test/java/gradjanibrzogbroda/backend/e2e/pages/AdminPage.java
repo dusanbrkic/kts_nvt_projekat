@@ -72,7 +72,7 @@ public class AdminPage {
 	@FindBy(css = "button[label='Save']")
 	private WebElement sacuvajKorisnikaBtn;
 
-	@FindBy(css = "button[ng-reflect-text='Return']")
+	@FindBy(xpath = "//button[@ng-reflect-text='Return']")
 	private WebElement logOutBtn;
 
 	@FindBy(xpath = "//button[normalize-space(text()) = 'Delete zone']")
@@ -93,8 +93,17 @@ public class AdminPage {
 	@FindBy(xpath = "//*[text() = 'Uspesno.Zona obrisana']")
 	private WebElement zonaObrisanaNotification;
 
+    @FindBy(css = "button[ng-reflect-label='Yes']")
+    private WebElement sayYesBtn;
+
 	public void dodajStoBtnClick() {
+		Utilities.clickableWait(webDriver, dodajStoBtn, 10);
 		dodajStoBtn.click();
+	}
+
+	public void sayYesBtnClick() {
+		Utilities.clickableWait(webDriver, sayYesBtn, 10);
+		sayYesBtn.click();
 	}
 
 	public void saveStoBtnClick() {
@@ -110,6 +119,7 @@ public class AdminPage {
 	}
 
 	public void zaposleniTableBtnClick() {
+		Utilities.clickableWait(webDriver, zaposleniTableBtn, 10);
 		zaposleniTableBtn.click();
 	}
 
@@ -122,6 +132,7 @@ public class AdminPage {
 	}
 
 	public void deleteUserBtnClick() {
+		Utilities.clickableWait(webDriver, deleteUserBtn, 10);
 		deleteUserBtn.click();
 	}
 
@@ -130,14 +141,16 @@ public class AdminPage {
 	}
 
 	public void noviStoDivDoubleClick() {
-		actions.doubleClick(noviStoDiv);
+		actions.doubleClick(noviStoDiv).perform();
 	}
 
 	public void jovanaCellContextClick() {
-		actions.contextClick(jovanaCell);
+		Utilities.clickableWait(webDriver, jovanaCell, 10);
+		actions.contextClick(jovanaCell).perform();
 	}
 
 	public void setNazivStolaInput(String keys) {
+		nazivStolaInput.clear();
 		nazivStolaInput.sendKeys(keys);
 	}
 
@@ -146,6 +159,8 @@ public class AdminPage {
 	}
 
 	public void setChangePrezimeInput(String prezime) {
+		Utilities.visibilityWait(webDriver, changePrezimeInput, 10);
+		changePrezimeInput.clear();
 		changePrezimeInput.sendKeys(prezime);
 	}
 
@@ -158,7 +173,8 @@ public class AdminPage {
 	}
 
 	public void setImeInput(String ime) {
-		changePrezimeInput.sendKeys(ime);
+		Utilities.visibilityWait(webDriver, imeInput, 10);
+		imeInput.sendKeys(ime);
 	}
 
 	public void setPlataInput(Integer plata) {
@@ -174,10 +190,12 @@ public class AdminPage {
 	}
 
 	public void obrisiZonuBtnClick() {
+		Utilities.clickableWait(webDriver, obrisiZonuBtn, 10);
 		obrisiZonuBtn.click();
 	}
 
 	public void dodajZonuBtnClick() {
+		Utilities.clickableWait(webDriver, dodajZonuBtn, 10);
 		dodajZonuBtn.click();
 	}
 

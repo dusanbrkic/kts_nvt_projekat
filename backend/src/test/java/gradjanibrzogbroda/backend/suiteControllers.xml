@@ -10,6 +10,8 @@
       <class name="gradjanibrzogbroda.backend.contoller.JeloPorudzbineControllerTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.PorudzbinaControllerTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.PredlogControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.ZoneControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.ReportControllerTests"/>
     </classes>
   </test> <!-- TestAll -->
 </suite> <!-- SuiteAll -->

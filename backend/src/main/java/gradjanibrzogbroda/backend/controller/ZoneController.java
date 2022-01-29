@@ -20,11 +20,11 @@ public class ZoneController {
 	private ZoneService zoneService;
 
 	@GetMapping()
-	public ResponseEntity<List<ZoneDTO>> getAllZones(){
+	public ResponseEntity<Object> getAllZones(){
 
 		List<ZoneDTO> zoneDTOS = zoneService.getAll();
 
-		return new ResponseEntity<List<ZoneDTO>>(zoneDTOS, HttpStatus.OK);
+		return new ResponseEntity<Object>(zoneDTOS, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
