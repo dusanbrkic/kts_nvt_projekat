@@ -218,8 +218,11 @@ public class PorudzbinaService {
         porudzbinaRepository.deleteById(id);
     }
 
-    public boolean naplatiPorudzbinu(Integer id) throws NeodgovarajuciStatusException {
+    public boolean naplatiPorudzbinu(Integer id) throws NeodgovarajuciStatusException, PorudzbinaNotFoundException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(id);
+        if(porudzbina == null){
+            throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
+        }
         if (porudzbina.getStatusPorudzbine().equals(StatusPorudzbine.DOSTAVLJENO)){
             porudzbina.setStatusPorudzbine(StatusPorudzbine.NAPLACENO);
 

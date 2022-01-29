@@ -46,6 +46,13 @@
 <p-sidebar [(visible)]="showSidebar" [style]="{ overflow: 'scroll',width:'30em' }">
   <h2>{{ selectedSto ? selectedSto.naziv : "Greska" }}</h2>
   <h4>Broj mesta: {{ selectedSto ? selectedSto.brojMesta : "Greska" }}</h4>
+  <h4>Ukupna cena: {{
+    selectedSto
+      ? selectedPorudzbina
+        ? selectedPorudzbina.ukupnaCena
+        : "Nema porudzbine"
+      : "Greska"
+  }}</h4>
   <h4>
     Status porudzbine:
     {{
