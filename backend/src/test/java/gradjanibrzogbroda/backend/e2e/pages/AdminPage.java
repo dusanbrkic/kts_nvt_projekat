@@ -93,8 +93,17 @@ public class AdminPage {
 	@FindBy(xpath = "//*[text() = 'Uspesno.Zona obrisana']")
 	private WebElement zonaObrisanaNotification;
 
+    @FindBy(css = "button[ng-reflect-label='Yes']")
+    private WebElement sayYesBtn;
+
 	public void dodajStoBtnClick() {
+		Utilities.clickableWait(webDriver, dodajStoBtn, 10);
 		dodajStoBtn.click();
+	}
+
+	public void sayYesBtnClick() {
+		Utilities.clickableWait(webDriver, sayYesBtn, 10);
+		sayYesBtn.click();
 	}
 
 	public void saveStoBtnClick() {
@@ -132,7 +141,7 @@ public class AdminPage {
 	}
 
 	public void noviStoDivDoubleClick() {
-		actions.doubleClick(noviStoDiv);
+		actions.doubleClick(noviStoDiv).perform();
 	}
 
 	public void jovanaCellContextClick() {
@@ -141,6 +150,7 @@ public class AdminPage {
 	}
 
 	public void setNazivStolaInput(String keys) {
+		nazivStolaInput.clear();
 		nazivStolaInput.sendKeys(keys);
 	}
 
@@ -180,6 +190,7 @@ public class AdminPage {
 	}
 
 	public void obrisiZonuBtnClick() {
+		Utilities.clickableWait(webDriver, obrisiZonuBtn, 10);
 		obrisiZonuBtn.click();
 	}
 

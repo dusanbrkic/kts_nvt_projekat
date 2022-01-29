@@ -101,4 +101,6 @@ public class PorudzbinaConstants {
 
 
     public static final Integer DB_NON_EXISTANT_ID = 100;
+
+    public static final Integer DB_PORUDZBINA_COUNT = 12;
 }

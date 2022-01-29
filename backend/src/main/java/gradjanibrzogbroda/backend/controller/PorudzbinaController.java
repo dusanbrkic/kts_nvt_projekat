@@ -108,9 +108,9 @@ public class PorudzbinaController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (NeodgovarajuciStatusException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (JeloPorudzbineNotFoundException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         this.notificationService.preuzmiPorudzbinaNotification(id);
