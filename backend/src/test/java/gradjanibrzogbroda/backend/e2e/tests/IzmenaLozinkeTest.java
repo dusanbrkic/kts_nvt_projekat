@@ -3,6 +3,7 @@ package gradjanibrzogbroda.backend.e2e.tests;
 import gradjanibrzogbroda.backend.e2e.pages.GlavniKuvarPage;
 import gradjanibrzogbroda.backend.e2e.pages.MainPage;
 import gradjanibrzogbroda.backend.e2e.pages.ManagerPage;
+import gradjanibrzogbroda.backend.e2e.util.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -35,7 +36,7 @@ public class IzmenaLozinkeTest {
 
 	@Test
 	public void commenceTesting(){
-		mainPage.loginAsChef("user3", "baraba");
+		mainPage.loginAsChef("user3", "pass1");
 
 		glavniKuvarPage.changePassBtnClick();
 		glavniKuvarPage.setPassInput("baraba");
@@ -46,6 +47,7 @@ public class IzmenaLozinkeTest {
 
 		mainPage.loginAsChef("user3", "baraba");
 
+		Utilities.urlWait(browser, "http://localhost:4200/kuvar", 10);
 		Assert.assertEquals(browser.getCurrentUrl(), "http://localhost:4200/kuvar");
 
 	}
