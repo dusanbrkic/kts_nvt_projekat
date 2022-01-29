@@ -41,7 +41,7 @@ public class PreporucivanjeBrisanjaJela {
 		glavniKuvarPage.jelaBtnClick();
 		glavniKuvarPage.pljeskavicaJeloRowRightClick();
 		glavniKuvarPage.deleteBtnClick();
-		glavniKuvarPage.logOutBtnClick();
+		browser.navigate().to("http://localhost:4200");
 
 		mainPage.loginAsManager("user2", "pass1");
 

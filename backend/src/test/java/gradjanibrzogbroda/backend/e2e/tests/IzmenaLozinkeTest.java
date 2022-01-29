@@ -11,7 +11,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class PreporucivanjeNovogJelaTest {
+public class IzmenaLozinkeTest {
 	private WebDriver browser;
 
 	private MainPage mainPage;
@@ -35,25 +35,18 @@ public class PreporucivanjeNovogJelaTest {
 
 	@Test
 	public void commenceTesting(){
-		mainPage.loginAsChef("user3", "pass1");
+		mainPage.loginAsChef("user3", "baraba");
 
-		glavniKuvarPage.jelovnikBtnClick();
-		glavniKuvarPage.jelaBtnClick();
-		glavniKuvarPage.newJeloBtnClick();
-		glavniKuvarPage.setNazivInput("Brkina Salata");
-		glavniKuvarPage.setCenaInput(420.0);
-		glavniKuvarPage.setOpisJela("Jelo od specijalnih Brkinih namirnica.");
-		glavniKuvarPage.setVremeInput(150000);
-		glavniKuvarPage.saveBtnClick();
+		glavniKuvarPage.changePassBtnClick();
+		glavniKuvarPage.setPassInput("baraba");
+		glavniKuvarPage.setRptPassInput("baraba");
+		glavniKuvarPage.confirmPassChangeBtnClick();
+
 		browser.navigate().to("http://localhost:4200");
 
-		mainPage.loginAsManager("user2", "pass1");
+		mainPage.loginAsChef("user3", "baraba");
 
-		managerPage.predloziBtnClick();
-
-		Assert.assertTrue(managerPage.prihvatiPredlogBtnDisplayed());
-
-		managerPage.prihvatiPredlogBtnClick();
+		Assert.assertEquals(browser.getCurrentUrl(), "http://localhost:4200/kuvar");
 
 	}
 

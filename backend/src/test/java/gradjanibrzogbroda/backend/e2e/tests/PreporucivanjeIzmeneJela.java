@@ -45,7 +45,7 @@ public class PreporucivanjeIzmeneJela {
 		glavniKuvarPage.setOpisJela("Jelo od specijalnih Brkinih namirnica.");
 		glavniKuvarPage.setVremeInput(150000);
 		glavniKuvarPage.saveBtnClick();
-		glavniKuvarPage.logOutBtnClick();
+		browser.navigate().to("http://localhost:4200");
 
 		mainPage.loginAsManager("user2", "pass1");
 

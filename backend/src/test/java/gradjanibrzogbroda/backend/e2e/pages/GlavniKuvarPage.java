@@ -121,6 +121,7 @@ public class GlavniKuvarPage {
 	}
 
 	public void changePassBtnClick() {
+		Utilities.clickableWait(webDriver, changePassBtn, 10);
 		changePassBtn.click();
 	}
 
