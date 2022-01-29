@@ -88,6 +88,7 @@ public class GlavniKuvarPage {
 	}
 
 	public void editBtnClick() {
+		Utilities.clickableWait(webDriver, editBtn, 10);
 		editBtn.click();
 	}
 
@@ -96,18 +97,22 @@ public class GlavniKuvarPage {
 	}
 
 	public void setNazivInput(String naziv) {
+		nazivInput.clear();
 		nazivInput.sendKeys(naziv);
 	}
 
 	public void setCenaInput(Double cena) {
+		cenaInput.clear();
 		cenaInput.sendKeys(cena.toString());
 	}
 
 	public void setVremeInput(Integer vreme) {
+		vremeInput.clear();
 		vremeInput.sendKeys(vreme.toString());
 	}
 
 	public void setOpisJela(String opis) {
+		opisJela.clear();
 		opisJela.sendKeys(opis);
 	}
 
