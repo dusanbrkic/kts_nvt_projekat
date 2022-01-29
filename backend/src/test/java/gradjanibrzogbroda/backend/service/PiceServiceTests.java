@@ -67,7 +67,7 @@ public class PiceServiceTests extends AbstractTestNGSpringContextTests {
         
         Pice actual = piceSer.updatePice(j);
         
-		assertEquals(actual.getTrenutnaCena(), PiceConstants.DB_PICE_ID);
+		assertEquals(actual.getTrenutnaCena(), PiceConstants.DB_PICE_CENA);
 		assertEquals(actual.getNaziv(), PiceConstants.UPDATED_PICE_NAZIV);
 		
 	}

@@ -31,6 +31,7 @@ public class JelaControllerTests extends AbstractTestNGSpringContextTests{
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
+	
 	@Test // prio -1
 	public void testGetAllJela() {
 		ResponseEntity<JeloDTO[]> responseEntity = restTemplate.getForEntity("/jela/all", JeloDTO[].class);
@@ -74,8 +75,37 @@ public class JelaControllerTests extends AbstractTestNGSpringContextTests{
 		
 		assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
 		assertEquals(actual.get("currentPage"), 0);
+		assertEquals(actual.get("totalItems"), 5);
 		
 	}
+	
+	@Test
+	public void testGetJelaPageSearchKa() {
+		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("/jela/page/523/?first=0&rows=5&sortField=trenutnaCena&sortOrder=1&naziv=ka",
+				Object.class);
+		
+		Map<String, Object> actual = (Map<String, Object>) responseEntity.getBody();
+		
+		assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
+		assertEquals(actual.get("currentPage"), 0);
+		assertEquals(actual.get("totalItems"), 3);
+		
+	}
+	
+	@Test
+	public void testGetJelaPageSearchLuxKategorija() {
+		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("/jela/page/523/?first=0&rows=5&sortField=trenutnaCena&sortOrder=1&tipJela=LUX",
+				Object.class);
+		
+		Map<String, Object> actual = (Map<String, Object>) responseEntity.getBody();
+		
+		assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
+		assertEquals(actual.get("currentPage"), 0);
+		assertEquals(actual.get("totalItems"), 1);
+		
+	}
+	
+	
 	
 	@Test(priority = 1)
 	public void testAddJelo() {

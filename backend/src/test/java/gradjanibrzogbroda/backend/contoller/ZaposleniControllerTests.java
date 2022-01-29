@@ -135,12 +135,12 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
     }
 
     @Test(priority = 3)
-    public void testDeleteZaposleniError() throws UserNotFoundException {
+    public void testDeleteZaposleni() throws UserNotFoundException {
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 "/zaposleni/delete/" + ZaposleniConstants.DELETED_ZAPOSLENI_USERNAME,
                 HttpMethod.DELETE, new HttpEntity<Object>(null), String.class);
 
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
  //       zaposleniService.findOneByIdentificationNumber(ZaposleniConstants.DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER);
 
     }

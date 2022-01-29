@@ -48,10 +48,10 @@ public class JeloPorudzbineController {
             JeloPorudzbine j = jeloPorudzbineService.pripremiJelo(id);
             this.notificationService.spremiJeloNotifiation(j.getJelo().getNaziv(), j.getKolicina(), j.getPorudzbina().getId());
 
-        }catch(EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
+        } catch (NeodgovarajuciStatusException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (JeloPorudzbineNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -62,10 +62,10 @@ public class JeloPorudzbineController {
         try {
             JeloPorudzbine j  = jeloPorudzbineService.dostaviJelo(id);
 
-        }catch(EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
+        } catch (NeodgovarajuciStatusException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (JeloPorudzbineNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
