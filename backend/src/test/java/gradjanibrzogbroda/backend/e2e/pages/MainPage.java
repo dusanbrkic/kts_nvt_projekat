@@ -1,11 +1,16 @@
 package gradjanibrzogbroda.backend.e2e.pages;
 
+import gradjanibrzogbroda.backend.e2e.util.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class MainPage {
 	private WebDriver driver;
+
+	public MainPage(WebDriver webDriver){
+		driver = webDriver;
+	}
 
     @FindBy(css = ".konobar")
 	private WebElement konobarLogin;
@@ -30,9 +35,13 @@ public class MainPage {
 
     @FindBy(css = ".p-password-input")
 	private WebElement passwordInput;
-	
+
+    @FindBy(xpath = "//*[normalize-space(text()) = 'Login']")
+	private WebElement loginBtn;
+
 	
 	public void loginAsKonobar(){
+		Utilities.visibilityWait(driver, konobarLogin, 10);
 		konobarLogin.click();
 	}
 
@@ -48,15 +57,18 @@ public class MainPage {
 		managerLogin.click();
 		usernameInput.sendKeys(username);
 		passwordInput.sendKeys(password);
+		loginBtn.click();
 	}
 	public void loginAsChef(String username, String password){
 		chefLogin.click();
 		usernameInput.sendKeys(username);
 		passwordInput.sendKeys(password);
+		loginBtn.click();
 	}
 	public void loginAsAdmin(String username, String password){
 		adminLogin.click();
 		usernameInput.sendKeys(username);
 		passwordInput.sendKeys(password);
+		loginBtn.click();
 	}
 }

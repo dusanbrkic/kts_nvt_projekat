@@ -26,6 +26,11 @@ public class SankerPage {
 	@FindBy(css = "p-button[label='Login'] button")
 	private WebElement confirmOrderBtn;
 
+	@FindBy(xpath = "//button[@ng-reflect-text='Return']")
+	private WebElement logOutBtn;
+
+	public void logOutBtnClick(){logOutBtn.click();}
+
 
 	public void porudzbinaId2BtnClick(){
 		porudzbinaId2Btn.click();
