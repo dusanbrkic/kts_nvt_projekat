@@ -131,5 +131,7 @@ public class PredlogConstants {
 	public static final int PAGE_SIZE_4=5;
 	public static final int PAGE_4=0;
 	public static final PredlogTip PAGE_TIP_4=PredlogTip.IZMENA;
+	
+	public static final Integer NON_EXISTING_STARO_JELO_ID_DB=122;
 
 }

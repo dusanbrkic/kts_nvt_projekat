@@ -1,5 +1,6 @@
 package gradjanibrzogbroda.backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import gradjanibrzogbroda.backend.config.StorageProperties;
@@ -64,6 +65,10 @@ public class PredlogService {
 	public Page<Predlog> getAllPaged(int page, int size,Optional<PredlogTip> tip){
 		Pageable pageable = PageRequest.of(page, size);
 		return predlogRepository.getAllPaged(pageable, tip);
+	}
+	
+	public List<Predlog> getAll(){
+		return predlogRepository.findAll();
 	}
 
 }
