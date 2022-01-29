@@ -47,6 +47,15 @@ public class ZaposleniConstants {
         public static final Integer DELETED_ZAPOSLENI_ID = 3;
         public static final String DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER = "13245";
         public static final String DELETED_ZAPOSLENI_USERNAME = NEW_ZAPOSLENI_USERNAME;
+        
+        public static final String DELETE_ZAPOSLENI_UNIT_IME = "Del";
+        public static final String DELETE_ZAPOSLENI_UNIT_PREZIME = "Del";
+        public static final String DELETE_ZAPOSLENI_UNIT_USERNAME = "deleteUnit";
+        public static final ZaposleniDTO DELETE_ZAPOSLENI_UNIT_DTO = new ZaposleniDTO(DELETE_ZAPOSLENI_UNIT_IME, DELETE_ZAPOSLENI_UNIT_PREZIME,
+                Pol.MUSKI, LocalDate.now(), 52000.0, NEW_ZAPOSLENI_ROLE, "slika", DELETE_ZAPOSLENI_UNIT_USERNAME);
+        
+        public static final Zaposleni ZAPOSLENI_TO_DELETE=new Zaposleni().builder().id(ZaposleniConstants.DELETED_ZAPOSLENI_ID).build();
+        
 
         public static final String NEW_ZAPOSLENI_SIFRA = "jkli";
         
