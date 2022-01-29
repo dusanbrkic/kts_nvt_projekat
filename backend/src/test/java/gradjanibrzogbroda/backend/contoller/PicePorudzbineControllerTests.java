@@ -28,69 +28,69 @@ public class PicePorudzbineControllerTests extends AbstractTestNGSpringContextTe
     @Autowired
     PicePorudzbineService PicePorudzbineService;
 
-    @Test
-    public void testDodajPicePorudzbine(){
-        ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.postForEntity("/pice-porudzbine",
-                PicePorudzbineConstants.NEW_PICE_PORUDZBINE, PicePorudzbineDTO.class);
-        PicePorudzbineDTO actual = responseEntity.getBody();
-
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        assertNotNull(actual);
-
-        assertEquals(actual.getId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_ID);
-        assertEquals(actual.getNapomena(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_NAPOMENA);
-        assertEquals(actual.getKolicina(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_KOLICINA);
-//        assertEquals(actual.getPiceId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_PICE);
-
-    }
-
-    @Test
-    public void testIzmeniPicePorudzbine(){
-        ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.exchange("/pice-porudzbine",
-                HttpMethod.PUT,
-                new HttpEntity<PicePorudzbineDTO>(PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE), PicePorudzbineDTO.class);
-        PicePorudzbineDTO actual = responseEntity.getBody();
-
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        assertNotNull(actual);
-
-        assertEquals(actual.getId(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_ID);
-        assertEquals(actual.getNapomena(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_NAPOMENA);
-        assertEquals(actual.getKolicina(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_KOLICINA);
-
-    }
-
-    @Test(priority = 1)
-    public void testObrisiPicePorudzbine() throws PicePorudzbineNotFoundException {
-        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/" + PicePorudzbineConstants.DELETED_PICE_PORUDZBINE_ID,
-                HttpMethod.DELETE,
-                new HttpEntity<Object>(null), Object.class);
-//        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.DELETED_PICE_PORUDZBINE_ID);
-
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-//        assertNull(actual);
-    }
-
-
-    @Test
-    public void testPripremiPicePorudzbine() throws PicePorudzbineNotFoundException {
-        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/pripremi/" + PicePorudzbineConstants.KREIRANO_PICE_PORUDZBINE_ID,
-                HttpMethod.PUT,
-                new HttpEntity<Object>(null), Object.class);
-//        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.KREIRANO_PICE_PORUDZBINE_ID);
-
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-//        assertEquals(actual.getStatusPica(), StatusPica.PRIPREMLJENO);
-    }
-
-    @Test
-    public void testDostaviPicePorudzbine() throws PicePorudzbineNotFoundException {
-        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/dostavi/" + PicePorudzbineConstants.PRIPREMLJENO_PICE_PORUDZBINE_ID,
-                HttpMethod.PUT,
-                new HttpEntity<Object>(null), Object.class);
-//        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.PRIPREMLJENO_PICE_PORUDZBINE_ID);
-
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-//        assertEquals(actual.getStatusPica(), StatusPica.DOSTAVLJENO);
-    }
+//    @Test
+//    public void testDodajPicePorudzbine(){
+//        ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.postForEntity("/pice-porudzbine",
+//                PicePorudzbineConstants.NEW_PICE_PORUDZBINE, PicePorudzbineDTO.class);
+//        PicePorudzbineDTO actual = responseEntity.getBody();
+//
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+//        assertNotNull(actual);
+//
+//        assertEquals(actual.getId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_ID);
+//        assertEquals(actual.getNapomena(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_NAPOMENA);
+//        assertEquals(actual.getKolicina(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_KOLICINA);
+////        assertEquals(actual.getPiceId(), PicePorudzbineConstants.NEW_PICE_PORUDZBINE_PICE);
+//
+//    }
+//
+//    @Test
+//    public void testIzmeniPicePorudzbine(){
+//        ResponseEntity<PicePorudzbineDTO> responseEntity = restTemplate.exchange("/pice-porudzbine",
+//                HttpMethod.PUT,
+//                new HttpEntity<PicePorudzbineDTO>(PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE), PicePorudzbineDTO.class);
+//        PicePorudzbineDTO actual = responseEntity.getBody();
+//
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+//        assertNotNull(actual);
+//
+//        assertEquals(actual.getId(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_ID);
+//        assertEquals(actual.getNapomena(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_NAPOMENA);
+//        assertEquals(actual.getKolicina(), PicePorudzbineConstants.UPDATED_PICE_PORUDZBINE_KOLICINA);
+//
+//    }
+//
+//    @Test(priority = 1)
+//    public void testObrisiPicePorudzbine() throws PicePorudzbineNotFoundException {
+//        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/" + PicePorudzbineConstants.DELETED_PICE_PORUDZBINE_ID,
+//                HttpMethod.DELETE,
+//                new HttpEntity<Object>(null), Object.class);
+////        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.DELETED_PICE_PORUDZBINE_ID);
+//
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+////        assertNull(actual);
+//    }
+//
+//
+//    @Test
+//    public void testPripremiPicePorudzbine() throws PicePorudzbineNotFoundException {
+//        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/pripremi/" + PicePorudzbineConstants.KREIRANO_PICE_PORUDZBINE_ID,
+//                HttpMethod.PUT,
+//                new HttpEntity<Object>(null), Object.class);
+////        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.KREIRANO_PICE_PORUDZBINE_ID);
+//
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+////        assertEquals(actual.getStatusPica(), StatusPica.PRIPREMLJENO);
+//    }
+//
+//    @Test
+//    public void testDostaviPicePorudzbine() throws PicePorudzbineNotFoundException {
+//        ResponseEntity<Object> responseEntity = restTemplate.exchange("/pice-porudzbine/dostavi/" + PicePorudzbineConstants.PRIPREMLJENO_PICE_PORUDZBINE_ID,
+//                HttpMethod.PUT,
+//                new HttpEntity<Object>(null), Object.class);
+////        PicePorudzbine actual = PicePorudzbineService.findOne(PicePorudzbineConstants.PRIPREMLJENO_PICE_PORUDZBINE_ID);
+//
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+////        assertEquals(actual.getStatusPica(), StatusPica.DOSTAVLJENO);
+//    }
 }

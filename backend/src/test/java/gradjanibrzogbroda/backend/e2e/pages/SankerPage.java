@@ -1,5 +1,6 @@
 package gradjanibrzogbroda.backend.e2e.pages;
 
+import gradjanibrzogbroda.backend.e2e.util.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -14,11 +15,11 @@ public class SankerPage {
 		actions = new Actions(_webDriver);
 	}
 
-	@FindBy(css="#2")
+	@FindBy(id="2")
 	private WebElement porudzbinaId2Btn;
 
-	@FindBy(css="#5")
-	private WebElement porudzbinaId5Btn;
+	@FindBy(id="9")
+	private WebElement porudzbinaId9Btn;
 
 	@FindBy(css = "#inputgroup")
 	private WebElement usernameInput;
@@ -29,18 +30,23 @@ public class SankerPage {
 	@FindBy(xpath = "//button[@ng-reflect-text='Return']")
 	private WebElement logOutBtn;
 
+    @FindBy(xpath = "//*[normalize-space(text()) = 'Porudzbina 2']")
+    public WebElement porudzbinaId2;
+
 	public void logOutBtnClick(){logOutBtn.click();}
 
 
 	public void porudzbinaId2BtnClick(){
+		Utilities.clickableWait(webDriver, porudzbinaId2Btn, 10);
 		porudzbinaId2Btn.click();
 	}
 
-	public void porudzbinaId5BtnClick(){
-		porudzbinaId5Btn.click();
+	public void porudzbinaId9BtnClick(){
+		porudzbinaId9Btn.click();
 	}
 
 	public void setUsernameInput(String username){
+		usernameInput.clear();
 		usernameInput.sendKeys(username);
 	}
 
@@ -49,5 +55,8 @@ public class SankerPage {
 	}
 
 
-
+	public boolean porudzbinaId9BtnDisplayed() {
+		Utilities.visibilityWait(webDriver, porudzbinaId9Btn, 10);
+		return porudzbinaId9Btn.isDisplayed();
+	}
 }
