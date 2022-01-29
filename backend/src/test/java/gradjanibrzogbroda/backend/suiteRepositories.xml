@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SuiteRepositories">
+  <test thread-count="5" name="TestRepositories">
+    <classes>
+      <class name="gradjanibrzogbroda.backend.repository.JelaRepositoryTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.JeloPorudzbineRepositoryTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.PiceRepositoryTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.PicePorudzbineRepositoryTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.PorudzbinaRepositoryTests"/>
+      <class name="gradjanibrzogbroda.backend.repository.ZaposleniRepositoryTests"/>
+    </classes>
+  </test> <!-- TestAll -->
+</suite> <!-- SuiteAll -->
