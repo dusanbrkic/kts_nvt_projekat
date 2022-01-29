@@ -48,6 +48,8 @@ public class JeloPorudzbineUnitTestConstants {
     public static final String UT_PRIPREMLJENO_JELO_PORUDZBINE_NAPOMENA = "Sa puno kecapa.";
     public static final StatusJela UT_PRIPREMLJENO_JELO_PORUDZBINE_STATUS = StatusJela.PRIPREMLJENO;
 
+
+
     public static final Integer UT_KREIRANA_PORUDZBINA_ID = 1;
     public static final Double UT_KREIRANA_PORUDZBINA_CENA = 480.0;
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SuiteControllers">
+  <test thread-count="5" name="TestControllers">
+    <classes>
+      <class name="gradjanibrzogbroda.backend.contoller.ZaposleniControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.PiceControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.JelaControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.PicePorudzbineControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.JeloPorudzbineControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.PorudzbinaControllerTests"/>
+      <class name="gradjanibrzogbroda.backend.contoller.PredlogControllerTests"/>
+    </classes>
+  </test> <!-- TestAll -->
+</suite> <!-- SuiteAll -->
