@@ -57,6 +57,6 @@ public class ZaposleniDTO {
 		this.trenutnaPlata = d;
 		this.roleName = string;
 		this.slikaString = string2;
-		this.username = newZaposleniIme;
+		this.username = newZaposleniUsername;
 	}
 }
