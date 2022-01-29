@@ -149,16 +149,14 @@ public class PorudzbinaController {
     @PostMapping("/naplati/{id}")
     public ResponseEntity<Object> naplatiPorudzbinu(@PathVariable("id") Integer id) {
         try {
-            boolean uspeh = porudzbinaService.naplatiPorudzbinu(id);
-            if(uspeh){
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Porudzbina p = porudzbinaService.naplatiPorudzbinu(id);
+
         }catch(EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

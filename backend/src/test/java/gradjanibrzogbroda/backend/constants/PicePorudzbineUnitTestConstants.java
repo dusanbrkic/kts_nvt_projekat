@@ -10,7 +10,7 @@ import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
 public class PicePorudzbineUnitTestConstants {
     public static final Integer UT_PICE_ID = 1;
     public static final Double UT_PICE_CENA = 240.0;
-    public static final String UT_PICE_NAZIV = "Pljeskavica";
+    public static final String UT_PICE_NAZIV = "Limunada";
 
 
     public static final Integer UT_PICE_PORUDZBINE_ID_1 = 1;
