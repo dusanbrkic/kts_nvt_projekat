@@ -13,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
@@ -105,6 +106,7 @@ public class JeloController {
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PostMapping()
 	public ResponseEntity<JeloDTO> addJelo(@RequestBody JeloDTO jeloDTO) {
 		Jelo j = jeloService.addJelo(new Jelo(jeloDTO));
@@ -114,6 +116,7 @@ public class JeloController {
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PutMapping("/update")
 	public ResponseEntity<JeloDTO> updateJelo(@RequestBody JeloDTO jeloDTO){
 		Jelo j = jeloService.updateJelo(new Jelo(jeloDTO));
@@ -123,6 +126,7 @@ public class JeloController {
 		return new ResponseEntity<JeloDTO>(new JeloDTO(j), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteJelo(@PathVariable("id") Integer id) {
 		try {
@@ -135,6 +139,7 @@ public class JeloController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PutMapping("/izmeni-cenu/{id}")
 	public ResponseEntity<JeloDTO> izmeniCenuJela(@PathVariable("id") Integer id, @RequestParam Double novaCena){
 		Jelo j = jeloService.izmeniCenu(id, novaCena);

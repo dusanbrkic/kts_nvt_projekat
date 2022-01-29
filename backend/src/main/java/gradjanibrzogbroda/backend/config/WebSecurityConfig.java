@@ -3,6 +3,7 @@ package gradjanibrzogbroda.backend.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,7 +24,6 @@ import gradjanibrzogbroda.backend.util.TokenUtils;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Bean
@@ -59,7 +59,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 			.authorizeRequests().antMatchers("/auth/login").permitAll()
-								.antMatchers("/**").permitAll()
+								.antMatchers("/jela/all").permitAll()
+								.antMatchers("/jela/page/**").permitAll()
+								.antMatchers("/jela/id/**").permitAll()
+								.antMatchers("/jela/naziv/**").permitAll()
+								.antMatchers(HttpMethod.GET,"/zone").permitAll()
+								.antMatchers(HttpMethod.GET,"/porudzbine").permitAll()
+								.antMatchers("/porudzbine/zaSankera").permitAll()
+								.antMatchers("/porudzbine/zaKuvara").permitAll()
+								.antMatchers("/porudzbine/status/**").permitAll()
+								.antMatchers(HttpMethod.GET,"/porudzbine/{id}").permitAll()
+								.antMatchers("/jelo-porudzbine/preuzeta").permitAll()
+								.antMatchers("/pice/all").permitAll()
+								.antMatchers("/pice/page/**").permitAll()
+								.antMatchers("/pice/id/**").permitAll()
+								.antMatchers("/pice/naziv/**").permitAll()
+								.antMatchers("/websocket/**").permitAll()
+								//.antMatchers("/**").permitAll()
 			.anyRequest().authenticated().and()
 			.cors().and()
 			.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService), BasicAuthenticationFilter.class);

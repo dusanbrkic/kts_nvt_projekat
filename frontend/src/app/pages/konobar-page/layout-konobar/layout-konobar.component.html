@@ -118,6 +118,7 @@
           ></p-tag>
         </div>
         <button
+          [id]="'jelo' + jelo.id"
           pButton
           class="p-button-rounded p-button-outlined green"
           *ngIf="jelo.statusJela === 'PRIPREMLJENO'"
@@ -199,6 +200,7 @@
       <div>Napomena: {{pice.napomena}}</div>
       <ng-template pTemplate="footer">
         <button
+          [id]="'pice' + pice.id"
           pButton
           class="p-button-rounded p-button-outlined green"
           *ngIf="pice.statusPica === 'PRIPREMLJENO'"

@@ -11,23 +11,26 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import gradjanibrzogbroda.backend.config.TestWebSecurity;
 import gradjanibrzogbroda.backend.constants.PredlogConstants;
-import gradjanibrzogbroda.backend.domain.Predlog;
-import gradjanibrzogbroda.backend.domain.PredlogStatus;
 import gradjanibrzogbroda.backend.dto.PredlogDTO;
 import gradjanibrzogbroda.backend.exceptions.JeloNotFoundException;
 import gradjanibrzogbroda.backend.exceptions.PredlogWrongFormatException;
 
+@Import(TestWebSecurity.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
@@ -98,7 +101,7 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(priority = -1)
-    public void testGetAllZaposleniBeforeAdd() {
+    public void testGetAllPredloziBeforeAdd() {
         ResponseEntity<Map> responseEntity = restTemplate.getForEntity("/predlog?page="+0+"&size="+5,
         		Map.class);
 
@@ -109,7 +112,7 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
     }
 	
 	@Test(priority = 10)
-    public void testGetAllZaposleniAfterAdd() {
+    public void testGetAllPredloziAfterAdd() {
         ResponseEntity<Map> responseEntity = restTemplate.getForEntity("/predlog?page="+0+"&size="+5,
         		Map.class);
 

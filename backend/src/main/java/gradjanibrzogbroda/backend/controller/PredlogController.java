@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ public class PredlogController {
 	@Autowired
 	private PredlogService predlogService;
 	
+	@PreAuthorize("hasRole('GLAVNI_KUVAR')")
 	@PostMapping()
     public ResponseEntity<PredlogDTO> dodajPredlog(@RequestBody PredlogDTO dto) {
         Predlog predlog;
@@ -49,8 +51,9 @@ public class PredlogController {
         return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.OK);
     }
 	
+	@PreAuthorize("hasRole('MANAGER')")
 	@GetMapping()
-	public ResponseEntity<Map<String, Object>> getAllJelaPage(
+	public ResponseEntity<Map<String, Object>> getAllPredloziPage(
 			@RequestParam("page") Integer page,
 			@RequestParam("size") Integer size,
 			@RequestParam(value="tip") Optional<PredlogTip> tip
@@ -77,6 +80,7 @@ public class PredlogController {
 		
 	}
 	
+	@PreAuthorize("hasRole('MANAGER')")
 	@PutMapping()
     public ResponseEntity<PredlogDTO> izmeniPredlog(@RequestBody PredlogDTO dto) {
         Predlog predlog;

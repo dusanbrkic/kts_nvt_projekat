@@ -49,7 +49,7 @@ public class Utilities {
 
 	}
 
-	public static Boolean nonVisibilityWait(WebDriver webDriver, WebElement exitCardBtn, int wait) {
-		return new WebDriverWait(webDriver, wait).until(ExpectedConditions.invisibilityOf(exitCardBtn));
+	public static Boolean nonVisibilityWait(WebDriver webDriver, WebElement element, int wait) {
+		return new WebDriverWait(webDriver, wait).until(ExpectedConditions.invisibilityOf(element));
 	}
 }

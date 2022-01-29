@@ -50,6 +50,7 @@ public class KuvarPage {
 	}
 
 	public void preuzmiPorudzbinu1ButtonClick() {
+		Utilities.clickableWait(webDriver, preuzmiPorudzbinu1Button, 10);
 		preuzmiPorudzbinu1Button.click();
 	}
 
@@ -78,5 +79,10 @@ public class KuvarPage {
 
 	public void preuzmiPorudzbinu9ButtonClick() {
 		preuzmiPorudzbinu9Button.click();
+	}
+
+	public void spremiJelo1ButtonClick() {
+		Utilities.clickableWait(webDriver, spremiJelo1Button, 10);
+		spremiJelo1Button.click();
 	}
 }
