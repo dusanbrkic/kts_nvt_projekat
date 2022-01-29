@@ -24,10 +24,6 @@ public class Jelo extends Artikal{
     @Column(name = "vreme_pripreme_mils")
     private Long vremePripremeMils;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "jela_alergeni", joinColumns = @JoinColumn(name = "jelo_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "alergen_id", referencedColumnName = "id"))
-    private Set<Alergen> alergeni=new HashSet<Alergen>();
-
     @Column(name = "opis")
     private String opis;
 

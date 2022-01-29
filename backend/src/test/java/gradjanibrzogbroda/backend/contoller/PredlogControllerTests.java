@@ -14,6 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,8 @@ import org.testng.annotations.Test;
 
 import gradjanibrzogbroda.backend.config.TestWebSecurity;
 import gradjanibrzogbroda.backend.constants.PredlogConstants;
+import gradjanibrzogbroda.backend.domain.Predlog;
+import gradjanibrzogbroda.backend.domain.PredlogStatus;
 import gradjanibrzogbroda.backend.dto.PredlogDTO;
 import gradjanibrzogbroda.backend.exceptions.JeloNotFoundException;
 import gradjanibrzogbroda.backend.exceptions.PredlogWrongFormatException;
@@ -39,7 +42,7 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
     private TestRestTemplate restTemplate;
 	
 	@Test
-    public void testDodajPredlogWrongFormat() throws JSONException {
+    public void testDodajPredlogWrongFormatIzmena() throws JSONException {
 		
 		PredlogDTO dto=new PredlogDTO();
 		dto.setId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_ID);
@@ -47,21 +50,7 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
 		dto.setStaroJeloId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID);
 		dto.setStatus(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STATUS);
 		dto.setTipIzmene(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE);
-		
-		JSONObject predlogJsonObject = new JSONObject();
-		predlogJsonObject.put("id", PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_ID);
-		predlogJsonObject.put("novoJelo", PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_NOVO_JELO);
-		predlogJsonObject.put("staroJeloId", PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID);
-		predlogJsonObject.put("status", PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STATUS);
-		predlogJsonObject.put("tipIzmene", PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE);
-		
-		HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
 	    
-	    HttpEntity<String> request = 
-	    	      new HttpEntity<String>(predlogJsonObject.toString(), headers);
-	    
-		
         ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
         
         
@@ -69,7 +58,57 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
 
     }
 	
-	@Test(priority = 0)
+	@Test
+    public void testDodajPredlogWrongFormatBrisanje() throws JSONException {
+		
+		PredlogDTO dto=new PredlogDTO();
+		dto.setId(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_ID_BRISANJE);
+		dto.setNovoJelo(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_NOVO_JELO_BRISANJE);
+		dto.setStaroJeloId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID_BRISANJE);
+		dto.setStatus(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STATUS_BRISANJE);
+		dto.setTipIzmene(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE_BRISANJE);
+	    
+        ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
+        
+        
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+	
+	@Test
+    public void testDodajPredlogWrongFormatDodavanje() throws JSONException {
+		
+		PredlogDTO dto=new PredlogDTO();
+		dto.setId(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_ID_DODAVANJE);
+		dto.setNovoJelo(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_NOVO_JELO_DODAVANJE);
+		dto.setStaroJeloId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID_DODAVANJE);
+		dto.setStatus(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STATUS_DODAVANJE);
+		dto.setTipIzmene(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE_DODAVANJE);
+	    
+        ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
+        
+        
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+	
+	@Test
+    public void testDodajPredlogNonExistingJeloId() throws JSONException {
+		
+		PredlogDTO dto=new PredlogDTO();
+		dto.setNovoJelo(PredlogConstants.PREDLOG_DTO_NOVO_JELO_BRISANJE);
+		dto.setStaroJeloId(PredlogConstants.NON_EXISTING_STARO_JELO_ID_DB);
+		dto.setStatus(PredlogConstants.PREDLOG_DTO_STATUS_BRISANJE);
+		dto.setTipIzmene(PredlogConstants.PREDLOG_DTO_TIP_IZMENE_BRISANJE);
+	    
+        ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
+        
+        
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+	
+	@Test(priority = 1)
 	public void testAddPredlogTipIzmena() throws PredlogWrongFormatException, JeloNotFoundException, JSONException {
 		
 		JSONObject jeloJSONObject=new JSONObject();
@@ -93,11 +132,61 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
 	    HttpEntity<String> request = 
 	    	      new HttpEntity<String>(predlogJsonObject.toString(), headers);
 		
-		@SuppressWarnings("unused")
 		PredlogDTO responseEntity = restTemplate.postForObject("/predlog",request,PredlogDTO.class);
 		
 		Assert.assertEquals(responseEntity.getId(), Integer.valueOf(1));
         
+	}
+	
+	@Test(priority = 2)
+    public void testDodajPredlogTipDodavanje() throws JSONException {
+		
+		PredlogDTO dto=new PredlogDTO();
+		dto.setNovoJelo(PredlogConstants.PREDLOG_DTO_NOVO_JELO_DTO_DODAVANJE);
+		dto.setStaroJeloId(PredlogConstants.PREDLOG_DTO_STARO_JELO_ID_DODAVANJE);
+		dto.setStatus(PredlogStatus.NOV);
+		dto.setTipIzmene(PredlogConstants.PREDLOG_DTO_TIP_IZMENE_DODAVANJE);
+	    
+        ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
+        
+        Assert.assertEquals(responseEntity.getBody().getId(),  Integer.valueOf(2));
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+
+    }
+	
+	
+	@Test(priority = 3)
+    public void testDodajPredlogTipBrisanje() throws JSONException {
+		
+		PredlogDTO dto=new PredlogDTO();
+		dto.setNovoJelo(PredlogConstants.PREDLOG_DTO_NOVO_JELO_BRISANJE);
+		dto.setStaroJeloId(PredlogConstants.PREDLOG_DTO_STARO_JELO_ID_BRISANJE);
+		dto.setStatus(PredlogStatus.NOV);
+		dto.setTipIzmene(PredlogConstants.PREDLOG_DTO_TIP_IZMENE_BRISANJE);
+	    
+        ResponseEntity<PredlogDTO> responseEntity = restTemplate.postForEntity("/predlog",dto,PredlogDTO.class);
+        
+        Assert.assertEquals(responseEntity.getBody().getId(),  Integer.valueOf(3));
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+
+    }
+	
+	@Test(priority = 5)
+	public void testIzmeniPredlogTipBrisanjeUpdateStatus() throws PredlogWrongFormatException, JeloNotFoundException {
+		PredlogDTO dto=new PredlogDTO();
+		dto.setId(3);
+		dto.setNovoJelo(PredlogConstants.PREDLOG_DTO_NOVO_JELO_BRISANJE);
+		dto.setStaroJeloId(PredlogConstants.PREDLOG_DTO_STARO_JELO_ID_BRISANJE);
+		dto.setStatus(PredlogStatus.ODBIJEN);
+		dto.setTipIzmene(PredlogConstants.PREDLOG_DTO_TIP_IZMENE_BRISANJE);
+		
+		HttpEntity<PredlogDTO> requestUpdate = new HttpEntity<>(dto);
+		
+		ResponseEntity<PredlogDTO> responseEntity = restTemplate.exchange("/predlog",HttpMethod.PUT,requestUpdate,PredlogDTO.class);
+		
+		Assert.assertEquals(responseEntity.getBody().getId(), Integer.valueOf(3));
+		Assert.assertEquals(responseEntity.getBody().getStatus(), PredlogStatus.ODBIJEN);
+		Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 	}
 	
 	@Test(priority = -1)
@@ -111,15 +200,17 @@ public class PredlogControllerTests extends AbstractTestNGSpringContextTests {
 
     }
 	
-	@Test(priority = 10)
+	@Test(priority = 4)
     public void testGetAllPredloziAfterAdd() {
         ResponseEntity<Map> responseEntity = restTemplate.getForEntity("/predlog?page="+0+"&size="+5,
         		Map.class);
 
         Map<String, Object> actual = responseEntity.getBody();
         
-        Assert.assertEquals(actual.get("totalItems"), 1);
+        Assert.assertEquals(actual.get("totalItems"), 3);
 
     }
+	
+	
 
 }

@@ -3,7 +3,6 @@ package gradjanibrzogbroda.backend.dto;
 import java.util.Set;
 
 import gradjanibrzogbroda.backend.config.StorageProperties;
-import gradjanibrzogbroda.backend.domain.Alergen;
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.KategorijaJela;
 import gradjanibrzogbroda.backend.domain.TipJela;

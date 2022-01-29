@@ -24,6 +24,7 @@ public class PorudzbinaRepositoryTests extends AbstractTestNGSpringContextTests 
 
     @Test(priority = -2)
     public void testFindAllByStatusPorudzbine() {
+
         List<Porudzbina> found = porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
         assertEquals(found.size(), 1);
     }
