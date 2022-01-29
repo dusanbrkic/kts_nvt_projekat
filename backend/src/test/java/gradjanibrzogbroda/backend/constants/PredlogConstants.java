@@ -9,11 +9,11 @@ import gradjanibrzogbroda.backend.dto.JeloDTO;
 
 public class PredlogConstants {
 	
-	public static final Integer WRONT_FORMAT_PREDLOG_DTO_ID=1;
+	public static final Integer WRONG_FORMAT_PREDLOG_DTO_ID=1;
 	public static final PredlogTip WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE=PredlogTip.IZMENA;
 	public static final PredlogStatus WRONG_FORMAT_PREDLOG_DTO_STATUS=PredlogStatus.NOV;
 	public static final Integer WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID= null;
-	public static final JeloDTO WRONT_FORMAT_PREDLOG_DTO_NOVO_JELO=null;
+	public static final JeloDTO WRONG_FORMAT_PREDLOG_DTO_NOVO_JELO=null;
 	
 	public static final Integer WRONT_FORMAT_PREDLOG_DTO_ID_BRISANJE=2;
 	public static final PredlogTip WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE_BRISANJE=PredlogTip.BRISANJE;

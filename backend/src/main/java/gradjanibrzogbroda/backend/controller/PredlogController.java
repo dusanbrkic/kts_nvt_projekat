@@ -43,7 +43,7 @@ public class PredlogController {
 		} catch (PredlogWrongFormatException | JeloNotFoundException e) {
 			predlog=null;
 			e.printStackTrace();
-			return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<PredlogDTO>(new PredlogDTO(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
         return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.OK);
@@ -85,7 +85,7 @@ public class PredlogController {
 		} catch (PredlogWrongFormatException | JeloNotFoundException e) {
 			predlog=null;
 			e.printStackTrace();
-			return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<PredlogDTO>(new PredlogDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
         return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.OK);
