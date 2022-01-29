@@ -20,8 +20,15 @@ public class ManagerPage {
 	public void logOutBtnClick(){logOutBtn.click();}
 
     @FindBy(xpath = "//a[.//div[normalize-space(text()) = 'Predlozi']]")
-    public WebElement predlogBtn;
+    private WebElement predloziBtn;
 
     @FindBy(xpath = "//button[@icon='pi pi-check']")
-    public WebElement prihvatiPredlogBtn;
+	private WebElement prihvatiPredlogBtn;
+
+	public void predloziBtnClick(){predloziBtn.click();}
+	public void prihvatiPredlogBtnClick(){prihvatiPredlogBtn.click();}
+
+	public boolean prihvatiPredlogBtnDisplayed() {
+		return prihvatiPredlogBtn.isDisplayed();
+	}
 }
