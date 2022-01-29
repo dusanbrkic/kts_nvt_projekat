@@ -9,6 +9,7 @@ import gradjanibrzogbroda.backend.util.StorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.dto.PlataDTO;
@@ -25,6 +26,7 @@ public class ZaposleniController {
 	@Autowired
 	private ZaposleniService zaposleniService;
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<ZaposleniDTO>> getAllZaposleni() {
 
@@ -33,6 +35,7 @@ public class ZaposleniController {
 		return new ResponseEntity<List<ZaposleniDTO>>(zaposleniDTOs, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@GetMapping(value = "/allPaged")
 	public ResponseEntity<Map<String, Object>> getAllZaposleniPaged(
 			@RequestParam("page") Integer page,
@@ -50,6 +53,7 @@ public class ZaposleniController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@GetMapping(value = "/username/{username}")
 	public ResponseEntity<ZaposleniDTO> getOneByUsername(@PathVariable("username") String username) {
 		try {
@@ -63,7 +67,7 @@ public class ZaposleniController {
 	}
 
 
-
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PostMapping(value = "/update")
 	public ResponseEntity<String> updateZaposleni(
 			@RequestBody ZaposleniDTO zaposleniDTO) {
@@ -76,6 +80,7 @@ public class ZaposleniController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PostMapping(value = "/add")
 	public ResponseEntity<String> addZaposleni(
 			@RequestBody ZaposleniDTO zaposleniDTO) {
@@ -91,6 +96,7 @@ public class ZaposleniController {
 
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@DeleteMapping(value = "/delete/{username}")
 	public ResponseEntity<String> deleteZaposleni(@PathVariable("username") String username) {
 		try {
@@ -101,6 +107,7 @@ public class ZaposleniController {
 		} 
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PutMapping("izmeni-platu")
 	public ResponseEntity<ZaposleniDTO> izmeniPlatu(@RequestBody PlataDTO dto) {
 		Zaposleni z = zaposleniService.izmeniPlatu(dto);
@@ -108,6 +115,7 @@ public class ZaposleniController {
 		return new ResponseEntity<ZaposleniDTO>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('GLAVNI_KUVAR')")
 	@PostMapping("/new-password/{username}")
 	public ResponseEntity<String> newPassword(@PathVariable("username") String username,@RequestBody String newPass){
 		

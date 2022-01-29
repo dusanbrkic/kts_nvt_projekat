@@ -29,8 +29,8 @@ public class PredlogServiceTests extends AbstractTestNGSpringContextTests {
 	@Test(expectedExceptions=PredlogWrongFormatException.class)
 	public void testAddPredlogWrongFormatIzmena() throws PredlogWrongFormatException, JeloNotFoundException {
 		PredlogDTO dto=new PredlogDTO();
-		dto.setId(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_ID);
-		dto.setNovoJelo(PredlogConstants.WRONT_FORMAT_PREDLOG_DTO_NOVO_JELO);
+		dto.setId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_ID);
+		dto.setNovoJelo(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_NOVO_JELO);
 		dto.setStaroJeloId(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STARO_JELO_ID);
 		dto.setStatus(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_STATUS);
 		dto.setTipIzmene(PredlogConstants.WRONG_FORMAT_PREDLOG_DTO_TIP_IZMENE);

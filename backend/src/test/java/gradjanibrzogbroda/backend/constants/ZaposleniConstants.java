@@ -1,6 +1,7 @@
 package gradjanibrzogbroda.backend.constants;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ZaposleniConstants {
         public static final String NEW_ZAPOSLENI_IDENTIFICATION_NUMBER = "67890";
         public static final String NEW_ZAPOSLENI_IME = "Dusan";
         public static final String NEW_ZAPOSLENI_PREZIME = "Hajduk";
+        public static final String NEW_ZAPOSLENI_USERNAME = "KSNAGA";
 
         public static final Integer UPDATED_ZAPOSLENI_ID = 1;
         public static final String UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER = "12345";
@@ -33,8 +35,12 @@ public class ZaposleniConstants {
 //        public static final ZaposleniDTO UPDATED_ZAPOSLENI_DTO = new ZaposleniDTO(UPDATED_ZAPOSLENI_IME, UPDATED_ZAPOSLENI_PREZIME,
 //                        null, null, 52000.0, TipZaposlenja.MENADZER, null, UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
 
-//        public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
-//                        null, null, 52000.0, TipZaposlenja.MENADZER, null, NEW_ZAPOSLENI_IDENTIFICATION_NUMBER, new ArrayList<>());
+        public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
+                        Pol.MUSKI, LocalDate.now(), 52000.0, "ROLE_MANAGER", "slika", NEW_ZAPOSLENI_USERNAME);
+        
+        public static final String FAKE_ZAPOSLENI_USERNAME = "Hajducka snaga";
+        public static final ZaposleniDTO UPDATE_FAKE_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
+                Pol.MUSKI, LocalDate.now(), 52000.0, "ROLE_MANAGER", "slika", FAKE_ZAPOSLENI_USERNAME);
 
 //        public static final Menadzer UPDATED_ZAPOSLENI = new Menadzer(UPDATED_ZAPOSLENI_DTO);
 //
@@ -44,13 +50,17 @@ public class ZaposleniConstants {
 
         public static final Integer DELETED_ZAPOSLENI_ID = 3;
         public static final String DELETED_ZAPOSLENI_IDENTIFICATION_NUMBER = "13245";
+        public static final String DELETED_ZAPOSLENI_USERNAME = NEW_ZAPOSLENI_USERNAME;
 
-        public static final Integer DB_ZAPOSLENI_COUNT = 3;
+        public static final String NEW_ZAPOSLENI_SIFRA = "jkli";
+        
+        public static final Integer DB_ZAPOSLENI_COUNT = 6;
 
         public static final String DB_ZAPOSLENI_IDENTIFICATION_NUMBER = "54321";
         public static final Integer DB_ZAPOSLENI_ID = 2;
         public static final String DB_ZAPOSLENI_IME = "Marko";
         public static final String DB_ZAPOSLENI_PREZIME = "Maric";
+        public static final String DB_ZAPOSLENI_USERNAME = "user2";
         public static final LocalDate DB_ZAPOSLENI_DATUM_RODJENJA = LocalDate.parse("1990-01-01",
                         DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 

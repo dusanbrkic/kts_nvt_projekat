@@ -208,8 +208,11 @@ public class ZaposleniService {
 			zaposleni.setPassword(passwordEncoder.encode(psw));
 			zaposleni = zaposleniRepository.save(zaposleni);
 		}
-
+		try {
 		StorageUtil.store(zaposleniDTO.getSlikaString(), StorageProperties.ZAPOSLENI_LOCATION, zaposleni.getNazivSlike());
+		}catch(Exception e){
+			
+		}
 		return zaposleni;
 	}
 
