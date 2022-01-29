@@ -27,6 +27,7 @@ import java.util.List;
 @Where(clause = "obrisan = false")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldNameConstants

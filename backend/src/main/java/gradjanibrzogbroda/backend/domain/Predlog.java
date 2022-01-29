@@ -22,6 +22,7 @@ import org.hibernate.annotations.Where;
 import gradjanibrzogbroda.backend.dto.PredlogDTO;
 import gradjanibrzogbroda.backend.util.JeloConverter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ import lombok.experimental.FieldNameConstants;
 @Where(clause = "obrisan = false")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldNameConstants

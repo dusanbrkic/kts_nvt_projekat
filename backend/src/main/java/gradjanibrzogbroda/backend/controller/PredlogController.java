@@ -23,6 +23,8 @@ import gradjanibrzogbroda.backend.domain.Predlog;
 import gradjanibrzogbroda.backend.domain.PredlogStatus;
 import gradjanibrzogbroda.backend.domain.PredlogTip;
 import gradjanibrzogbroda.backend.dto.PredlogDTO;
+import gradjanibrzogbroda.backend.exceptions.JeloNotFoundException;
+import gradjanibrzogbroda.backend.exceptions.PredlogWrongFormatException;
 import gradjanibrzogbroda.backend.service.PredlogService;
 
 @RestController
@@ -35,7 +37,14 @@ public class PredlogController {
 	
 	@PostMapping()
     public ResponseEntity<PredlogDTO> dodajPredlog(@RequestBody PredlogDTO dto) {
-        Predlog predlog = predlogService.addPredlog(dto);
+        Predlog predlog;
+		try {
+			predlog = predlogService.addPredlog(dto);
+		} catch (PredlogWrongFormatException | JeloNotFoundException e) {
+			predlog=null;
+			e.printStackTrace();
+			return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
         return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.OK);
     }
@@ -70,7 +79,14 @@ public class PredlogController {
 	
 	@PutMapping()
     public ResponseEntity<PredlogDTO> izmeniPredlog(@RequestBody PredlogDTO dto) {
-        Predlog predlog = predlogService.addPredlog(dto);
+        Predlog predlog;
+		try {
+			predlog = predlogService.addPredlog(dto);
+		} catch (PredlogWrongFormatException | JeloNotFoundException e) {
+			predlog=null;
+			e.printStackTrace();
+			return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
         return new ResponseEntity<PredlogDTO>(new PredlogDTO(predlog), HttpStatus.OK);
     }
