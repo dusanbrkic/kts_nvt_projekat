@@ -19,6 +19,7 @@ import gradjanibrzogbroda.backend.service.ZaposleniService;
 
 @RestController
 @RequestMapping("/zaposleni")
+@CrossOrigin(origins = {"http://localhost:4200/" })
 public class ZaposleniController {
 
 	@Autowired
