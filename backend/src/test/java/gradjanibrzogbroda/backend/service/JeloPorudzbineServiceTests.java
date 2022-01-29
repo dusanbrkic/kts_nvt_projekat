@@ -70,7 +70,7 @@ public class JeloPorudzbineServiceTests extends AbstractTestNGSpringContextTests
     public void testDodajJeloPorudzbine() throws PorudzbinaNotFoundException, PorudzbinaNaplacenaException, JeloNotFoundException, NepozitivnaKolicinaException {
 
         Jelo jelo = new Jelo();
-        jelo.setId(DB_JELO_ID);
+        jelo.setId(2);
         jelo.setTrenutnaCena(DB_JELO_CENA);
         jelo.setNaziv(DB_JELO_NAZIV);
         jelo.setTipJela(DB_JELO_TIP);
@@ -82,7 +82,7 @@ public class JeloPorudzbineServiceTests extends AbstractTestNGSpringContextTests
 
         Assert.assertEquals(rezultat.getNapomena(), DB_NOVO_JELO_PORUDZBINE_NAPOMENA);
         Assert.assertEquals(rezultat.getKolicina(), DB_NOVO_JELO_PORUDZBINE_KOLICINA);
-        Assert.assertEquals(rezultat.getJelo().getId(), DB_JELO_ID);
+        Assert.assertEquals(rezultat.getJelo().getId(), Integer.valueOf(2));
         Assert.assertEquals(rezultat.getStatusJela(), StatusJela.KREIRANO);
         Assert.assertEquals(rezultat.getPorudzbina().getStatusPorudzbine(), StatusPorudzbine.KREIRANO);
 

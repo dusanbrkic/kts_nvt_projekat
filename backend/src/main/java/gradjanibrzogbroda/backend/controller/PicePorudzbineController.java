@@ -23,9 +23,9 @@ public class PicePorudzbineController {
     public ResponseEntity<Object> dostaviPicePorudzbine(@PathVariable("id") Integer id) {
         try {
             PicePorudzbine pice  = picePorudzbineService.dostaviPice(id);
-        }catch(EmptyResultDataAccessException e) {
+        } catch (PicePorudzbineNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
+        } catch (NeodgovarajuciStatusException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);

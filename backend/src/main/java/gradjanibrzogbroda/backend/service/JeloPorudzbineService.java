@@ -48,7 +48,7 @@ public class JeloPorudzbineService {
             throw new PorudzbinaNaplacenaException("Porudzbina je vec naplacena.");
         }
 
-        Jelo jelo = jeloRepository.findOneById(dto.getJeloId());
+        Jelo jelo = jeloRepository.findOneById(dto.getJelo().getId());
         if (jelo == null){
             throw new JeloNotFoundException("Nije pronadjeno jelo sa zadatim id.");
         }

@@ -57,7 +57,7 @@ public class PicePorudzbineServiceTests extends AbstractTestNGSpringContextTests
     @Test(priority = 5)
     public void testDodajPicePorudzbine() throws PorudzbinaNotFoundException, PorudzbinaNaplacenaException, PiceNotFoundException, NepozitivnaKolicinaException {
         Pice pice = new Pice();
-        pice.setId(DB_PICE_ID);
+        pice.setId(7);
         pice.setTrenutnaCena(DB_PICE_CENA);
         pice.setNaziv(DB_PICE_NAZIV);
 
@@ -66,7 +66,7 @@ public class PicePorudzbineServiceTests extends AbstractTestNGSpringContextTests
 
         Assert.assertEquals(rezultat.getNapomena(), DB_NOVO_PICE_PORUDZBINE_NAPOMENA);
         Assert.assertEquals(rezultat.getKolicina(), DB_NOVO_PICE_PORUDZBINE_KOLICINA);
-        Assert.assertEquals(rezultat.getPice().getId(), DB_PICE_ID);
+        Assert.assertEquals(rezultat.getPice().getId(), Integer.valueOf(7));
         Assert.assertEquals(rezultat.getStatusPica(), StatusPica.KREIRANO);
         Assert.assertEquals(rezultat.getPorudzbina().getStatusPorudzbine(), StatusPorudzbine.KREIRANO);
 

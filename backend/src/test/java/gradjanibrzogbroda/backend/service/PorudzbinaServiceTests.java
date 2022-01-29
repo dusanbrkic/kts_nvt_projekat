@@ -200,8 +200,8 @@ public class PorudzbinaServiceTests extends AbstractTestNGSpringContextTests {
     @Test(priority = 5)
     public void testNapraviPorudzbinu() {
 
-        Pice pice = piceRepository.findOneById(DB_PICE_ID);
-        Jelo jelo = jeloRepository.findOneById(DB_JELO_ID);
+        Pice pice = piceRepository.findOneById(7);
+        Jelo jelo = jeloRepository.findOneById(2);
         Sto sto = stoRepository.findOneById(10);
 
         Porudzbina porudzbina1 = new Porudzbina();
@@ -237,7 +237,7 @@ public class PorudzbinaServiceTests extends AbstractTestNGSpringContextTests {
         Assert.assertEquals(rezultat.getJelaPorudzbine().size(), 1);
         Assert.assertEquals(rezultat.getPicePorudzbine().size(), 1);
         Assert.assertEquals(rezultat.getStatusPorudzbine(), StatusPorudzbine.KREIRANO);
-        Assert.assertEquals(rezultat.getUkupnaCena(), 365.0);
+        Assert.assertEquals(rezultat.getUkupnaCena(), 345.0);
 
         Assert.assertEquals(rezultat.getNapomena(), "Nova napomena");
 
