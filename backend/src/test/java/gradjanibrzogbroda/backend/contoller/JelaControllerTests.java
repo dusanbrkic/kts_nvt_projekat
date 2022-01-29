@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
+import gradjanibrzogbroda.backend.config.TestWebSecurity;
 import gradjanibrzogbroda.backend.constants.JeloConstants;
 import gradjanibrzogbroda.backend.constants.PiceConstants;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
 import gradjanibrzogbroda.backend.dto.PiceDTO;
 
+@Import(TestWebSecurity.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class JelaControllerTests extends AbstractTestNGSpringContextTests{

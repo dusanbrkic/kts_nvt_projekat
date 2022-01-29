@@ -65,7 +65,7 @@ insert into zone_stolovi (zone_id, stolovi_id) values (2,18);
 
 --jela
 
-insert into artikli (naziv, trenutna_cena, obrisan) values ('Pljeskavica', 240, false);
+insert into artikli (naziv, trenutna_cena, obrisan) values ('Pljeskavica', 240.0, false);
 insert into jela (id, vreme_pripreme_mils, opis,kategorija_jela, tip_jela) values (1, 30000, 'Jelo od mlevenog mesa spremljeno na rostilju', 1, 2);
 insert into cenovnik (pocetak_vazenja, kraj_vazenja, cena, artikal_id) values ('2022-01-10 13:30:00', null, 240, 1);
 

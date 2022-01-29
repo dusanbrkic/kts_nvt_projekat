@@ -81,6 +81,7 @@ public class JeloService {
 	
 	public Jelo updateJelo(Jelo j) {
 		Jelo st = jeloRep.findOneById(j.getId());
+		//System.out.println(j.getTrenutnaCena()+" poredi sa "+st.getTrenutnaCena());
 		if(j.getTrenutnaCena()!=st.getTrenutnaCena()) {
 			izmeniCenu(j.getId(), j.getTrenutnaCena());
 		}
