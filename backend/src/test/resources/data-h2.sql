@@ -1,14 +1,16 @@
-/*insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Perica', 'Peric', 0, '1990-01-01', 45000.0, 1, 'pera.jpg', false, '12345','user1','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, naziv_slike, obrisan,username,password) values ('Perica', 'Peric', 0, '1990-01-01', 45000.0, 'pera.jpg', false,'user1','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
 insert into plate (pocetak_vazenja, zaposleni_id) values ('2021-11-11', 1);
 
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Marko', 'Maric', 0, '1990-01-01', 60000.0, 3, 'marko.jpg', false, '54321','user2','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata , naziv_slike, obrisan,username,password) values ('Marko', 'Maric', 0, '1990-01-01', 60000.0, 'marko.jpg', false,'user2','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 3, 'jovana.jpg', false, '13245','user3','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata , naziv_slike, obrisan,username,password) values ('Jovana', 'Jovic', 1, '1990-07-08', 43000.0, 'jovana.jpg', false,'user3','$2a$12$XG8yzdx3RghoK0y2RnMON.gLs1ky7e/R4toD.kSCwIokZWKKdIVSW');
 
-insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, zaposlenje, naziv_slike, obrisan, identification_number,username,password) values ('Jovana', 'Jovic', 0, '1990-07-08', 43000.0, 1, 'jovana.jpg', false, '13247','user4','dsasd');
-insert into konobari (id) values(4);
-*/
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, naziv_slike, obrisan,username,password) values ('Jovana', 'Jovic', 1, '1990-07-08', 43000.0, 'jovana.jpg', false,'user4','$2a$12$2Juja5C8eWU3IDEH8FGN2.5p6GV3uK7h2NlTQ0qnKgwhMB2eFyb4q');
+
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, naziv_slike, obrisan,username,password) values ('Petar', 'Petrovic', 0, '1990-07-08', 43000.0, 'marko.jpg', false,'user5','$2a$12$2Juja5C8eWU3IDEH8FGN2.5p6GV3uK7h2NlTQ0qnKgwhMB2eFyb4q');
+
+insert into zaposleni (ime, prezime, pol, datum_rodjenja, trenutna_plata, naziv_slike, obrisan,username,password) values ('Mirko', 'Mirkovic', 0, '1990-07-08', 43000.0, 'marko.jpg', false,'user6','$2a$12$2Juja5C8eWU3IDEH8FGN2.5p6GV3uK7h2NlTQ0qnKgwhMB2eFyb4q');
 --zones
 insert into zone (identification_number, naziv, template_path, obrisan) values ('12345', 'Terasica', 'terasica.jpg', false);
 insert into zone (identification_number, naziv, template_path, obrisan) values ('56789', 'Potkrovlje', 'potkrovljice.jpg', false);
@@ -142,8 +144,9 @@ insert into roles (role,deleted) values ('ROLE_KUVAR',false);
 insert into roles (role,deleted) values ('ROLE_GLAVNI_KUVAR',false);
 
 --user-roles
-/*
 INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (1, 1); 
 INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (2, 2); 
 INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (3, 6);
-*/
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (4, 3);
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (5, 4);
+INSERT INTO ZAPOSLENI_ROLE (zaposleni_id, role_id) VALUES (6, 5);
