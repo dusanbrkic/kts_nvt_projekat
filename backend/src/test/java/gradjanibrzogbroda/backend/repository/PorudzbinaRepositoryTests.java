@@ -4,6 +4,7 @@ import gradjanibrzogbroda.backend.constants.JeloConstants;
 import gradjanibrzogbroda.backend.constants.PorudzbinaConstants;
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.Porudzbina;
+import gradjanibrzogbroda.backend.domain.StatusPorudzbine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -23,8 +24,8 @@ public class PorudzbinaRepositoryTests extends AbstractTestNGSpringContextTests 
 
     @Test(priority = -2)
     public void testFindAllByStatusPorudzbine() {
-        List<Porudzbina> found = porudzbinaRepository.findAllByStatusPorudzbine(PorudzbinaConstants.FIND_PORUDZBINA_STATUS);
-        assertEquals(PorudzbinaConstants.FIND_STATUS_NUMBER_OF_ITEMS, found.size());
+        List<Porudzbina> found = porudzbinaRepository.findAllByStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
+        assertEquals(found.size(), 1);
     }
 
     @Test(priority = -2)

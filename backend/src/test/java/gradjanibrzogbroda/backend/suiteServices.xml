@@ -9,6 +9,7 @@
 	  <class name="gradjanibrzogbroda.backend.service.UserDetailsServiceTests"/>
 	  <class name="gradjanibrzogbroda.backend.service.PredlogServiceTests"/>
 	  <class name="gradjanibrzogbroda.backend.service.PorudzbinaServiceTests"/>
+        <class name="gradjanibrzogbroda.backend.service.PicePorudzbineServiceTests"/>
     </classes>
   </test> <!-- TestAll -->
 </suite> <!-- SuiteAll -->
