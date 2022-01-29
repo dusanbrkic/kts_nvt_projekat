@@ -79,5 +79,18 @@ public class ZaposleniServiceTest extends AbstractTestNGSpringContextTests {
     public void testUpdateZaposleniDoesntExist() throws UserNotFoundException {
         zaposleniService.updateZaposleni(ZaposleniConstants.UPDATE_FAKE_ZAPOSLENI_DTO);
     }
+    
+    @Test(priority = 6)
+    public void testDeleteZaposleni() throws UserNotFoundException {
+        zaposleniService.deleteZaposleni(ZaposleniConstants.DB_ZAPOSLENI_USERNAME);
+    }
+    
+    @Test(priority = 7)
+    public void testGetAllZaposleniAfterDelete() {
+        List<ZaposleniDTO> found = zaposleniService.getAllZaposleni();
+
+        Assert.assertEquals(found.size(), 6);
+    }
+
 
 }

@@ -150,9 +150,7 @@ public class JeloPorudzbineService {
         jeloPorudzbine.setStatusJela(StatusJela.DOSTAVLJENO);
         jeloPorudzbineRepository.save(jeloPorudzbine);
         Porudzbina porudzbina = jeloPorudzbine.getPorudzbina();
-        System.out.println("affeefffffffffffffffffffffffff\n");
         if (porudzbinaUtil.promeniStatusPorudzbine(porudzbina, StatusJela.DOSTAVLJENO, StatusPica.DOSTAVLJENO)){
-            System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm\n");
             porudzbina.setStatusPorudzbine(StatusPorudzbine.DOSTAVLJENO);
             porudzbinaRepository.save(porudzbina);
         }
