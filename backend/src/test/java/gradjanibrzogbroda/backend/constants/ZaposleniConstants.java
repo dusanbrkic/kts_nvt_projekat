@@ -35,7 +35,7 @@ public class ZaposleniConstants {
                         null, UPDATED_ZAPOSLENI_ID);
 
        public static final ZaposleniDTO UPDATED_ZAPOSLENI_DTO = new ZaposleniDTO(UPDATED_ZAPOSLENI_IME, UPDATED_ZAPOSLENI_PREZIME,
-                       null, null, 52000.0,UPDATED_ZAPOSLENI_ROLE,"", UPDATED_ZAPOSLENI_USERNAME);
+    		   Pol.MUSKI, LocalDate.now(), 52000.0,UPDATED_ZAPOSLENI_ROLE,"", UPDATED_ZAPOSLENI_USERNAME);
 
         public static final ZaposleniDTO NEW_ZAPOSLENI_DTO = new ZaposleniDTO(NEW_ZAPOSLENI_IME, NEW_ZAPOSLENI_PREZIME,
                         Pol.MUSKI, LocalDate.now(), 52000.0, NEW_ZAPOSLENI_ROLE, "slika", NEW_ZAPOSLENI_USERNAME);
