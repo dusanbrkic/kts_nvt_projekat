@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SuiteServices">
+  <test thread-count="5" name="TestServices">
+    <classes>
+      <class name="gradjanibrzogbroda.backend.service.PiceServiceTests"/>
+	  <class name="gradjanibrzogbroda.backend.service.JeloServiceTest"/>
+	  <class name="gradjanibrzogbroda.backend.service.JeloPorudzbineServiceTests"/>
+	  <class name="gradjanibrzogbroda.backend.service.UserDetailsServiceTests"/>
+	  <class name="gradjanibrzogbroda.backend.service.PredlogServiceTests"/>
+	  <class name="gradjanibrzogbroda.backend.service.PorudzbinaServiceTests"/>
+    </classes>
+  </test> <!-- TestAll -->
+</suite> <!-- SuiteAll -->

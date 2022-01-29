@@ -83,7 +83,7 @@ public class PorudzbinaService {
     }
 
     
-    public void spremiPica(int porudzbinaId) throws PorudzbinaNotFoundException {
+    public Porudzbina spremiPica(int porudzbinaId) throws PorudzbinaNotFoundException {
     	Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
     	if(p==null) {
     		throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
@@ -102,12 +102,12 @@ public class PorudzbinaService {
     	if(all) {
     		p.setStatusPorudzbine(StatusPorudzbine.PRIPREMLJENO);
     	}
-    	porudzbinaRepository.save(p);
+    	return porudzbinaRepository.save(p);
     	
     	
     }
 
-    public void preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException, NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
+    public Porudzbina preuzmiPorudzbinu(int porudzbinaId) throws PorudzbinaNotFoundException, NeodgovarajuciStatusException, JeloPorudzbineNotFoundException {
         Porudzbina p = porudzbinaRepository.findOneById(porudzbinaId);
         if(p==null) {
             throw new PorudzbinaNotFoundException("Ne postoji takva porudzbina");
@@ -118,6 +118,8 @@ public class PorudzbinaService {
             }
             jeloPorudzbineService.preuzmiJelo(j.getId());
         }
+        p.setStatusPorudzbine(StatusPorudzbine.PREUZETO);
+        return porudzbinaRepository.save(p);
     }
 
 
@@ -209,16 +211,23 @@ public class PorudzbinaService {
 
 
         porudzbina.setNapomena(dto.getNapomena());
-        porudzbina.setSto(stoRepository.findOneByIdentificationNumber(dto.getStoId()));
 
         return porudzbinaRepository.save(porudzbina);
     }
 
-    public void obrisiPorudzbinuPoId(Integer id){
+    public boolean obrisiPorudzbinuPoId(Integer id) throws PorudzbinaNotFoundException, NeodgovarajuciStatusException {
+        Porudzbina p = porudzbinaRepository.findOneById(id);
+        if (p == null){
+            throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
+        }
+        else if (!p.getStatusPorudzbine().equals(StatusPorudzbine.KREIRANO)){
+            throw new NeodgovarajuciStatusException("Nemoguca izmena.");
+        }
         porudzbinaRepository.deleteById(id);
+        return true;
     }
 
-    public boolean naplatiPorudzbinu(Integer id) throws NeodgovarajuciStatusException, PorudzbinaNotFoundException {
+    public Porudzbina naplatiPorudzbinu(Integer id) throws NeodgovarajuciStatusException, PorudzbinaNotFoundException {
         Porudzbina porudzbina = porudzbinaRepository.findOneById(id);
         if(porudzbina == null){
             throw new PorudzbinaNotFoundException("Nije pronadjena porudzbina sa zadatim id.");
@@ -228,8 +237,8 @@ public class PorudzbinaService {
 
             porudzbina.getSto().setZauzet(false);
             porudzbina.getSto().setPorudzbina(null);
-            porudzbinaRepository.save(porudzbina);
-            return true;
+
+            return porudzbinaRepository.save(porudzbina);
         }
         else{
             throw new NeodgovarajuciStatusException("Neodgovarajuci status porudzbine.");
