@@ -66,7 +66,7 @@ public class JeloServiceTest extends AbstractTestNGSpringContextTests{
         
         Jelo actual = jeloService.updateJelo(j);
         
-		assertEquals(actual.getTrenutnaCena(), DB_JELO_ID);
+		assertEquals(actual.getTrenutnaCena(), DB_JELO_CENA);
 		assertEquals(actual.getNaziv(), JeloConstants.UPDATED_JELO_NAZIV);
 		
 	}
