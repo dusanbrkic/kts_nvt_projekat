@@ -4,6 +4,7 @@ import gradjanibrzogbroda.backend.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
+import gradjanibrzogbroda.backend.config.TestWebSecurity;
 import gradjanibrzogbroda.backend.constants.ZaposleniConstants;
 import gradjanibrzogbroda.backend.domain.Zaposleni;
 import gradjanibrzogbroda.backend.dto.PlataDTO;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 import static org.testng.Assert.*;
 
+@Import(TestWebSecurity.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
