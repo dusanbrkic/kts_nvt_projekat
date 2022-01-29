@@ -3,6 +3,7 @@
 <suite name="SuiteServicesUnit">
   <test thread-count="5" name="TestServicesUnit">
     <classes>
+      <class name="gradjanibrzogbroda.backend.service.JeloServiceUnitTests"/>
       <class name="gradjanibrzogbroda.backend.service.PiceServiceUnitTests"/>
       <class name="gradjanibrzogbroda.backend.service.JeloPorudzbineServiceUnitTests"/>
       <class name="gradjanibrzogbroda.backend.service.PicePorudzbineServiceUnitTests"/>
