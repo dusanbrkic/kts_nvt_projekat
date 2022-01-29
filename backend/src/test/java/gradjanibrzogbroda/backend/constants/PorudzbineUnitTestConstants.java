@@ -73,20 +73,6 @@ public class PorudzbineUnitTestConstants {
             .porudzbinaId(UT_NOVO_PICE_PORUDZBINE_PORUDZBINA)
             .build();
 
-    public static final Integer UT_PREUZETO_JELO_PORUDZBINE_ID = 3;
-    public static final Double UT_PREUZETO_JELO_PORUDZBINE_KOLICINA = 3.0;
-    public static final String UT_PREUZETO_JELO_PORUDZBINE_NAPOMENA = "Sa puno sira.";
-    public static final StatusJela UT_PREUZETO_JELO_PORUDZBINE_STATUS = StatusJela.PREUZETO;
-
-    public static final Integer UT_PRIPREMLJENO_JELO_PORUDZBINE_ID = 4;
-    public static final Double UT_PRIPREMLJENO_JELO_PORUDZBINE_KOLICINA = 3.0;
-    public static final String UT_PRIPREMLJENO_JELO_PORUDZBINE_NAPOMENA = "Sa puno kecapa.";
-    public static final StatusJela UT_PRIPREMLJENO_JELO_PORUDZBINE_STATUS = StatusJela.PRIPREMLJENO;
-
-    public static final Integer UT_PRIPREMLJENO_PICE_PORUDZBINE_ID = 3;
-    public static final Double UT_PRIPREMLJENO_PICE_PORUDZBINE_KOLICINA = 3.0;
-    public static final String UT_PRIPREMLJENO_PICE_PORUDZBINE_NAPOMENA = "Sa puno kecapa.";
-    public static final StatusPica UT_PRIPREMLJENO_PICE_PORUDZBINE_STATUS = StatusPica.PRIPREMLJENO;
 
     public static final Integer UT_KREIRANA_PORUDZBINA_ID_1 = 1;
     public static final Integer UT_KREIRANA_PORUDZBINA_ID_2 = 2;

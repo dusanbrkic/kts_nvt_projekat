@@ -1,54 +1,104 @@
 package gradjanibrzogbroda.backend.constants;
 
-import gradjanibrzogbroda.backend.domain.Porudzbina;
-import gradjanibrzogbroda.backend.domain.StatusPorudzbine;
+import gradjanibrzogbroda.backend.domain.*;
 import gradjanibrzogbroda.backend.dto.JeloPorudzbineDTO;
 import gradjanibrzogbroda.backend.dto.PicePorudzbineDTO;
-import gradjanibrzogbroda.backend.dto.PorudzbinaDTO;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PorudzbinaConstants {
-    public static final Integer NEW_PORUDZBINA_ID = 4;
-    public static final String NEW_PORUDZBINA_NAPOMENA = "Turi senfa.";
-    public static final Integer NEW_PORUDZBINA_STO_ID = 1;
-//    public static final PorudzbinaDTO NEW_PORUDZBINA = new PorudzbinaDTO(
-//            NEW_PORUDZBINA_ID,  StatusPorudzbine.KREIRANO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-//            NEW_PORUDZBINA_NAPOMENA, 990.00, 3, NEW_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
-//            new ArrayList<PicePorudzbineDTO>());
+    public static final Integer DB_JELO_ID = 1;
+    public static final Double DB_JELO_CENA = 240.0;
+    public static final String DB_JELO_NAZIV = "Pljeskavica";
+    public static final TipJela DB_JELO_TIP = TipJela.BASIC;
+    public static final KategorijaJela DB_JELO_KAT = KategorijaJela.GLAVNO_JELO;
+
+    public static final Integer DB_PICE_ID = 6;
+    public static final Double DB_PICE_CENA = 125.0;
+    public static final String DB_PICE_NAZIV = "Coca Cola 0.33l";
+
+    public static final Integer DB_STO_ID = 1;
+    public static final String DB_STO_IDENTIF_NUM = "11111";
+
+    public static final Integer DB_STO_ID_2 = 2;
+    public static final String DB_STO_IDENTIF_NUM_2 = "22222";
 
 
-    public static final Integer UPDATED_PORUDZBINA_ID = 2;
-    public static final String UPDATED_PORUDZBINA_NAPOMENA = "Donesite mi jos jedno sirce";
-    public static final Integer UPDATED_PORUDZBINA_STO_ID= 1;
-//    public static final PorudzbinaDTO UPDATED_PORUDZBINA = new PorudzbinaDTO(
-//            UPDATED_PORUDZBINA_ID,  StatusPorudzbine.PREUZETO, LocalDateTime.parse("2021-11-27 12:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-//            UPDATED_PORUDZBINA_NAPOMENA, 990.00, 3, UPDATED_PORUDZBINA_STO_ID, new ArrayList<JeloPorudzbineDTO>(),
-//            new ArrayList<PicePorudzbineDTO>());
+    public static final Integer DB_JELO_PORUDZBINE_ID_1 = 10;
+    public static final Integer DB_JELO_PORUDZBINE_ID_2 = 11;
+    public static final Integer DB_JELO_PORUDZBINE_ID_3 = 12;
+    public static final Integer DB_JELO_PORUDZBINE_ID_4 = 13;
+
+    public static final Integer DB_PICE_PORUDZBINE_ID_1 = 8;
+
+    public static final Double DB_JELO_PORUDZBINE_KOLICINA = 2.0;
+    public static final String DB_JELO_PORUDZBINE_NAPOMENA = "Da bude lepo.";
+    public static final StatusJela DB_JELO_PORUDZBINE_STATUS = StatusJela.KREIRANO;
+//    public static final Double DB_IZMENJENO_JELO_PORUDZBINE_KOLICINA = 3.0;
+//    public static final String DB_IZMENJENO_JELO_PORUDZBINE_NAPOMENA = "Da bude lepo i fino.";
+
+    public static final Double DB_PICE_PORUDZBINE_KOLICINA = 2.0;
+    public static final String DB_PICE_PORUDZBINE_NAPOMENA = "Da bude lepo.";
+    public static final StatusPica DB_PICE_PORUDZBINE_STATUS = StatusPica.KREIRANO;
+    //    public static final Double DB_IZMENJENO_PICE_PORUDZBINE_KOLICINA = 3.0;
+//    public static final String DB_IZMENJENO_PICE_PORUDZBINE_NAPOMENA = "Da bude lepo i fino.";
+//
+    public static final Integer DB_NOVO_JELO_PORUDZBINE_ID = 14;
+    public static final Integer DB_NOVO_JELO_PORUDZBINE_PORUDZBINA = 9;
+    public static final Double DB_NOVO_JELO_PORUDZBINE_KOLICINA = 3.0;
+    public static final String DB_NOVO_JELO_PORUDZBINE_NAPOMENA = "Bez sira.";
+    public static final StatusJela DB_NOVO_JELO_PORUDZBINE_STATUS = StatusJela.KREIRANO;
+    public static final JeloPorudzbineDTO DB_NOVO_JELO_PORUDZBINE_DTO = JeloPorudzbineDTO.builder()
+            .id(DB_NOVO_JELO_PORUDZBINE_ID)
+            .kolicina(DB_NOVO_JELO_PORUDZBINE_KOLICINA)
+            .napomena(DB_NOVO_JELO_PORUDZBINE_NAPOMENA)
+            .statusJela(DB_NOVO_JELO_PORUDZBINE_STATUS)
+            .porudzbinaId(DB_NOVO_JELO_PORUDZBINE_PORUDZBINA)
+            .build();
+    //
+    public static final Integer DB_NOVO_PICE_PORUDZBINE_ID = 10;
+    public static final Integer DB_NOVO_PICE_PORUDZBINE_PORUDZBINA = 9;
+    public static final Double DB_NOVO_PICE_PORUDZBINE_KOLICINA = 3.0;
+    public static final String DB_NOVO_PICE_PORUDZBINE_NAPOMENA = "Bez sira.";
+    public static final StatusPica DB_NOVO_PICE_PORUDZBINE_STATUS = StatusPica.KREIRANO;
+    public static final PicePorudzbineDTO DB_NOVO_PICE_PORUDZBINE_DTO = PicePorudzbineDTO.builder()
+            .id(DB_NOVO_PICE_PORUDZBINE_ID)
+            .kolicina(DB_NOVO_PICE_PORUDZBINE_KOLICINA)
+            .napomena(DB_NOVO_PICE_PORUDZBINE_NAPOMENA)
+            .statusPica(DB_NOVO_PICE_PORUDZBINE_STATUS)
+            .porudzbinaId(DB_NOVO_PICE_PORUDZBINE_PORUDZBINA)
+            .build();
 
 
-    public static final Integer DELETED_PORUDZBINA_ID = 3;
+    public static final Integer DB_KREIRANA_PORUDZBINA_ID_1 = 9;
+    public static final Integer DB_KREIRANA_PORUDZBINA_ID_2 = 10;
+    public static final Double DB_KREIRANA_PORUDZBINA_CENA = 2650.0;
 
-    public static final Integer DB_PORUDZBINA_COUNT = 3;
-    public static final Integer DB_PORUDZBINA_ID = 1;
-    public static final String DB_PORUDZBINA_NAPOMENA = "Posluziti hranu dok je topla.";
-    public static final Integer DB_PORUDZBINA_STO_ID = 1;
-
-    public static final StatusPorudzbine DB_STATUS_PORUDZBINE = StatusPorudzbine.KREIRANO;
-    public static final Integer DB_PORUDZBINA_STATUS_COUNT = 1;
-
-    public static final Integer DB_PORUDZBINA_KONOBAR_ID = 3;
-    public static final Integer DB_PORUDZBINA_KONOBAR_COUNT = 3;
+    public static final Integer DB_DOSTAVLJENA_PORUDZBINA_ID = 11;
 
 
-    public static final Integer NAPLACENA_PORUDZBINA_ID = 3;
-    public static final StatusPorudzbine NAPLACENA_PORUDZBINA_STATUS = StatusPorudzbine.NAPLACENO;
+    public static final Integer DB_NAPLACENA_PORUDZBINA_ID = 12;
 
-    public static final StatusPorudzbine FIND_PORUDZBINA_STATUS = StatusPorudzbine.KREIRANO;
-    public static final long FIND_STATUS_NUMBER_OF_ITEMS = 1;
-    public static final long FIND_PORUDZBINA_KONOBAR_COUNT = 3;
+    public static final Integer DB_NOVA_PORUDZBINA_ID = 13;
+    public static final Integer DB_DODATO_JELO_PORUDZBINE_ID = 6;
+    public static final Integer DB_DODATO_PICE_PORUDZBINE_ID = 7;
+
+    public static final JeloPorudzbine JP1 = JeloPorudzbine.builder()
+            .id(DB_JELO_PORUDZBINE_ID_1)
+            .kolicina(DB_JELO_PORUDZBINE_KOLICINA)
+            .napomena(DB_JELO_PORUDZBINE_NAPOMENA)
+            .statusJela(DB_JELO_PORUDZBINE_STATUS)
+            .obrisan(false)
+            .build();
+
+    public static final PicePorudzbine PP1 = PicePorudzbine.builder()
+            .id(DB_PICE_PORUDZBINE_ID_1)
+            .kolicina(DB_PICE_PORUDZBINE_KOLICINA)
+            .napomena(DB_PICE_PORUDZBINE_NAPOMENA)
+            .statusPica(DB_PICE_PORUDZBINE_STATUS)
+            .obrisan(false)
+            .build();
+
+
+
+    public static final Integer DB_NON_EXISTANT_ID = 100;
 }
