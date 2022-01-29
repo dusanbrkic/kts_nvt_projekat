@@ -44,7 +44,7 @@ public class PiceController {
 	}
 	
 	@GetMapping("/page")
-	public ResponseEntity<Map<String, Object>> getPicaPage(
+	public ResponseEntity<Object> getPicaPage(
 			@RequestParam("first") Integer first,
 			@RequestParam("rows") Integer rows,
 			@RequestParam(value="naziv", defaultValue="", required=false) String naziv,
@@ -111,12 +111,24 @@ public class PiceController {
 	
 	@PutMapping()
 	public ResponseEntity<PiceDTO> updatePice(@RequestBody PiceDTO piceDTO){
-		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null) {
+		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null || piceDTO.getId()==null) {
 			return new ResponseEntity<PiceDTO>( HttpStatus.BAD_REQUEST);
 		}
-		Pice p = piceService.updatePice(new Pice(piceDTO));
-
+		Pice p;
+		try
+		{
+		p = piceService.updatePice(new Pice(piceDTO));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		try {
 		StorageUtil.store(piceDTO.getPicBase64(), StorageProperties.PICA_LOCATION, p.getPicName());
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}

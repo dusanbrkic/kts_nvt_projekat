@@ -48,7 +48,7 @@ public class JeloController {
 	}
 
 	@GetMapping("/page/{sankerIdNum}/")
-	public ResponseEntity<Map<String, Object>> getAllJelaPage(
+	public ResponseEntity<Object> getAllJelaPage(
 			@PathVariable("sankerIdNum") String sId,
 			@RequestParam("first") Integer first,
 			@RequestParam("rows") Integer rows,

@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import gradjanibrzogbroda.backend.domain.Jelo;
 import gradjanibrzogbroda.backend.domain.StavkaCenovnika;
+import gradjanibrzogbroda.backend.exceptions.PiceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,8 +53,11 @@ public class PiceService {
 		piceRep.save(p);
 	}
 	
-	public Pice updatePice(Pice p) {
+	public Pice updatePice(Pice p) throws PiceNotFoundException {
 		Pice st = piceRep.findOneById(p.getId());
+		if(st==null) {
+			throw new PiceNotFoundException("Nema pica");
+		}
 		if(p.getTrenutnaCena()!=st.getTrenutnaCena()) {
 			izmeniCenu(p.getId(), p.getTrenutnaCena());
 		}
