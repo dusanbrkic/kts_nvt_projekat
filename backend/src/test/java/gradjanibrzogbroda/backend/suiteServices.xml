@@ -11,6 +11,7 @@
 	  <class name="gradjanibrzogbroda.backend.service.PorudzbinaServiceTests"/>
       <class name="gradjanibrzogbroda.backend.service.PicePorudzbineServiceTests"/>
 	  <class name="gradjanibrzogbroda.backend.service.ZaposleniServiceTest"/>
+	  <class name="gradjanibrzogbroda.backend.service.ReportServiceTests"/>
     </classes>
   </test> <!-- TestAll -->
 </suite> <!-- SuiteAll -->

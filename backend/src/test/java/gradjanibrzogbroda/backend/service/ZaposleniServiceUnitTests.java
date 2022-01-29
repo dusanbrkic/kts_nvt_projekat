@@ -67,6 +67,11 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
         given(zaposleniRepositoryMock.findOneByUsername(ZaposleniConstants.FAKE_ZAPOSLENI_USERNAME))
         .willReturn(null);
         
+        doNothing().when(zaposleniRepositoryMock).deleteById(ZaposleniConstants.DELETED_ZAPOSLENI_ID);
+        
+        given(zaposleniRepositoryMock.findOneByUsername(ZaposleniConstants.DELETE_ZAPOSLENI_UNIT_USERNAME))
+        .willReturn(ZaposleniConstants.ZAPOSLENI_TO_DELETE);
+        
         when(zaposleniRepositoryMock.save(any(Zaposleni.class))).thenAnswer(i -> i.getArguments()[0]);
         
     }
@@ -128,5 +133,10 @@ public class ZaposleniServiceUnitTests extends AbstractTestNGSpringContextTests 
     @Test(expectedExceptions = {UserNotFoundException.class})
     public void testUpdateZaposleniDoesntExist() throws UserNotFoundException {
         zaposleniService.updateZaposleni(ZaposleniConstants.UPDATE_FAKE_ZAPOSLENI_DTO);
+    }
+    
+    @Test
+    public void testDeleteZaposleni() throws UserNotFoundException {
+        zaposleniService.deleteZaposleni(ZaposleniConstants.DELETE_ZAPOSLENI_UNIT_USERNAME);
     }
 }
