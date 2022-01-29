@@ -79,7 +79,7 @@ public class ZaposleniControllerTests extends AbstractTestNGSpringContextTests {
     @Test
     public void testUpdateZaposleni() throws UserNotFoundException {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/zaposleni/update?identificationNumber=" + ZaposleniConstants.UPDATED_ZAPOSLENI_IDENTIFICATION_NUMBER
+                "/zaposleni/update?identificationNumber=" + "4342"
                         + "&ime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_IME +
                         "&prezime=" + ZaposleniConstants.UPDATED_ZAPOSLENI_PREZIME
                         + "&pol=MUSKI&datumRodjenja=1999-11-10&trenutnaPlata=90000.0&tipZaposlenja=MENADZER&slikaString",
