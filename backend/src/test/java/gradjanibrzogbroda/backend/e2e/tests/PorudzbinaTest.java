@@ -3,6 +3,7 @@ package gradjanibrzogbroda.backend.e2e.tests;
 import gradjanibrzogbroda.backend.e2e.pages.KonobarPage;
 import gradjanibrzogbroda.backend.e2e.pages.KuvarPage;
 import gradjanibrzogbroda.backend.e2e.pages.MainPage;
+import gradjanibrzogbroda.backend.e2e.pages.SankerPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -17,6 +18,7 @@ public class PorudzbinaTest {
 	private MainPage mainPage;
 	private KonobarPage konobarPage;
 	private KuvarPage kuvarPage;
+	private SankerPage sankerPage;
 
 	@BeforeClass
 	public void setupSelenium() {
@@ -31,6 +33,7 @@ public class PorudzbinaTest {
 		mainPage = PageFactory.initElements(browser, MainPage.class);
 		konobarPage = PageFactory.initElements(browser, KonobarPage.class);
 		kuvarPage = PageFactory.initElements(browser, KuvarPage.class);
+		sankerPage = PageFactory.initElements(browser, SankerPage.class);
 	}
 
 	@Test
@@ -47,6 +50,14 @@ public class PorudzbinaTest {
 		konobarPage.setNapomenaInput("puno luka i malo pavlake");
 		konobarPage.saveBtnClick();
 
+		// koka kola
+		konobarPage.izaberiPiceClick();
+		konobarPage.selectKokaKolaDiv();
+		konobarPage.dodajPiceBtnClick();
+		konobarPage.setKolicinaInput(3);
+		konobarPage.setNapomenaInput("sa hledom");
+		konobarPage.saveBtnClick();
+
 		//save
 		konobarPage.sacuvajIzmeneBtnClick();
 		konobarPage.setUsernameInput("user4");
@@ -56,7 +67,19 @@ public class PorudzbinaTest {
 		// logout
 		konobarPage.logOutBtnClick();
 
-		//login as kuvar
+		// login as sanker
+		mainPage.loginAsSanker();
+
+		// check if sanker recieved the order
+		Assert.assertTrue(sankerPage.porudzbinaId9BtnDisplayed());
+
+		sankerPage.porudzbinaId9BtnClick();
+		sankerPage.setUsernameInput("user5");
+		sankerPage.confirmOrderBtnClick();
+
+		sankerPage.logOutBtnClick();
+
+		// login as kuvar
 		mainPage.loginAsKuvar();
 		kuvarPage.nextPageOrdersBtnClick();
 
@@ -76,10 +99,26 @@ public class PorudzbinaTest {
 		mainPage.loginAsKonobar();
 		konobarPage.doubleClickAstal();
 
-		konobarPage.dostaviBtnClick();
+		// dostavi pljesku
+		konobarPage.dostaviPljesku();
 		konobarPage.setUsernameInput("user4");
 		konobarPage.confirmOrderBtnClick();
 
+		//Thread sleep se koristi zbog backenda
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		//dostavi kolu
+		konobarPage.dostaviKolu();
+		konobarPage.setUsernameInput("user4");
+		konobarPage.confirmOrderBtnClick();
+
+
+
+		// naplati
 		konobarPage.naplatiBtnClick();
 		konobarPage.setUsernameInput("user4");
 		konobarPage.confirmOrderBtnClick();

@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class KonobarPage {
 	private WebDriver webDriver;
 	private Actions actions;
@@ -68,7 +70,13 @@ public class KonobarPage {
     private WebElement exitCardBtn;
 
     @FindBy(xpath = "//button[normalize-space(text()) = 'Dostavi']")
-	private WebElement dostaviBtn;
+	private List<WebElement> dostaviBtns;
+
+	@FindBy(id="jelo11")
+	private WebElement dostaviBtnPljeska;
+
+	@FindBy(id="pice12")
+	private WebElement dostaviBtnKola;
 
     @FindBy(xpath = "//button[normalize-space(text()) = 'Naplati']")
 	private WebElement naplatiBtn;
@@ -77,10 +85,7 @@ public class KonobarPage {
 		Utilities.clickableWait(webDriver, naplatiBtn, 10);
 		naplatiBtn.click();
 	}
-	public void dostaviBtnClick() {
-		Utilities.clickableWait(webDriver, dostaviBtn, 10);
-		dostaviBtn.click();
-	}
+
 	public void logOutBtnClick() {
 		Utilities.clickableWait(webDriver, logOutBtn, 10);
 		logOutBtn.click();
@@ -129,7 +134,7 @@ public class KonobarPage {
 	}
 
 	public void selectKokaKolaDiv() {
-		actions.sendKeys(Keys.ARROW_DOWN);
+		actions.sendKeys(Keys.DOWN).perform();
 	}
 
 	public void sacuvajIzmeneBtnClick() {
@@ -146,11 +151,13 @@ public class KonobarPage {
 	}
 
 	public void setUsernameInput(String username) {
+		Utilities.visibilityWait(webDriver, usernameInput, 10);
 		usernameInput.clear();
 		usernameInput.sendKeys(username);
 	}
 
 	public void confirmOrderBtnClick() {
+		Utilities.clickableWait(webDriver, confirmOrderBtn, 10);
 		confirmOrderBtn.click();
 	}
 
@@ -161,5 +168,15 @@ public class KonobarPage {
 
 	public void waitForExitBtnNotVisible() {
 		Utilities.nonVisibilityWait(webDriver, exitCardBtn, 10);
+	}
+
+	public void dostaviKolu() {
+		Utilities.clickableWait(webDriver, dostaviBtnKola, 10);
+		dostaviBtnKola.click();
+	}
+
+	public void dostaviPljesku() {
+		Utilities.clickableWait(webDriver, dostaviBtnPljeska, 10);
+		dostaviBtnPljeska.click();
 	}
 }
