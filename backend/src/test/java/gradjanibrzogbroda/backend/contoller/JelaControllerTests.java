@@ -1,12 +1,10 @@
 package gradjanibrzogbroda.backend.contoller;
 
 
+import static org.testng.Assert.assertEquals;
 
+import java.util.Map;
 
-
-import static org.junit.Assert.assertEquals;
-
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,13 +13,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
 import gradjanibrzogbroda.backend.constants.JeloConstants;
+import gradjanibrzogbroda.backend.constants.PiceConstants;
 import gradjanibrzogbroda.backend.dto.JeloDTO;
+import gradjanibrzogbroda.backend.dto.PiceDTO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class JelaControllerTests{
+public class JelaControllerTests extends AbstractTestNGSpringContextTests{
 	
 	@Autowired
 	private TestRestTemplate restTemplate;
@@ -61,20 +63,33 @@ public class JelaControllerTests{
 	}
 	
 	@Test
+	public void testGetJelaPage() {
+		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("/jela/page/523/?first=0&rows=5&sortField=trenutnaCena&sortOrder=1",
+				Object.class);
+		
+		Map<String, Object> actual = (Map<String, Object>) responseEntity.getBody();
+		
+		assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
+		assertEquals(actual.get("currentPage"), 0);
+		
+	}
+	
+	@Test(priority = 1)
 	public void testAddJelo() {
 		ResponseEntity<JeloDTO> responseEntity = restTemplate.postForEntity("/jela", JeloConstants.NEW_JELO_DTO, JeloDTO.class);
 		
 		JeloDTO actual = responseEntity.getBody();
 		
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-		assertEquals(actual.getId(),JeloConstants.NEW_JELO_ID);
+		//assertEquals(actual.getId(),JeloConstants.NEW_JELO_ID);
 		assertEquals(actual.getTrenutnaCena(),JeloConstants.NEW_JELO_CENA);
 		assertEquals(actual.getNaziv(),JeloConstants.NEW_JELO_NAZIV);
 	}
 	
-	@Test
+	@Test(priority = 2)
 	public void testUpdateJelo() {
-		ResponseEntity<JeloDTO> responseEntity = restTemplate.postForEntity("/jela", JeloConstants.UPDATED_JELO_DTO, JeloDTO.class);
+		//ResponseEntity<JeloDTO> responseEntity = restTemplate.postForEntity("/jela", JeloConstants.UPDATED_JELO_DTO, JeloDTO.class);
+		ResponseEntity<JeloDTO> responseEntity = restTemplate.exchange("/jela/update",HttpMethod.PUT,  new HttpEntity<JeloDTO>(JeloConstants.UPDATED_JELO_DTO),  JeloDTO.class);
 		
 		JeloDTO actual = responseEntity.getBody();
 		
@@ -84,7 +99,7 @@ public class JelaControllerTests{
 		assertEquals(actual.getNaziv(),JeloConstants.UPDATED_JELO_NAZIV);
 	}
 	
-	@Test//prio -2
+	@Test(priority = 3)
 	public void testDeleteJelo() {
 		ResponseEntity<Object> responseEntity = restTemplate.exchange("/jela/"+JeloConstants.DELETED_JELO_ID, HttpMethod.DELETE, new HttpEntity<Object>(null), Object.class);
 		

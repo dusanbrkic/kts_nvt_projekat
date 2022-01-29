@@ -25,6 +25,7 @@ public class Pice extends Artikal{
 		this.setNaziv(piceDTO.getNaziv());
 		this.setTrenutnaCena(piceDTO.getTrenutnaCena());
 		this.setPicName(generatePicName());
+		this.setId(piceDTO.getId());
 	}
 
 	public String generatePicName(){

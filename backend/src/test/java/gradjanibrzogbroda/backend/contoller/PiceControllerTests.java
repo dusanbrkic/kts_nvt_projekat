@@ -4,6 +4,8 @@ package gradjanibrzogbroda.backend.contoller;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -55,6 +57,18 @@ public class PiceControllerTests extends AbstractTestNGSpringContextTests{
 	}
 	
 	@Test
+	public void testGetPicePage() {
+		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("/pice/page?first=1&rows=5&sortField=trenutnaCena&sortOrder=1",
+				Object.class);
+		
+		Map<String, Object> actual = (Map<String, Object>) responseEntity.getBody();
+		
+		assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
+		assertEquals(actual.get("currentPage"), 0);
+		
+	}
+	
+	@Test(priority = 1)
 	public void testAddPice() {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/pice", PiceConstants.NEW_PICE_DTO, String.class);
 		
@@ -68,7 +82,7 @@ public class PiceControllerTests extends AbstractTestNGSpringContextTests{
 	
 	@Test
 	public void testIzmeniPice() {
-		ResponseEntity<PiceDTO> responseEntity = restTemplate.postForEntity("/pice", PiceConstants.UPDATED_PICE_DTO, PiceDTO.class);
+		ResponseEntity<PiceDTO> responseEntity = restTemplate.exchange("/pice",HttpMethod.PUT,  new HttpEntity<PiceDTO>(PiceConstants.UPDATED_PICE_DTO),  PiceDTO.class);
 		
 		PiceDTO actual = responseEntity.getBody();
 		

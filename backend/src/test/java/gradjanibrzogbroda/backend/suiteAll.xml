@@ -13,7 +13,9 @@
       <class name="gradjanibrzogbroda.backend.contoller.JeloPorudzbineControllerTests"/>
       <class name="gradjanibrzogbroda.backend.repository.PorudzbinaRepositoryTests"/>
       <class name="gradjanibrzogbroda.backend.contoller.PorudzbinaControllerTests"/>
-
+	  <class name="gradjanibrzogbroda.backend.service.JeloServiceUnitTests"></class>
+	  <class name="gradjanibrzogbroda.backend.service.PiceServiceUnitTests"></class>
+	  <class name="gradjanibrzogbroda.backend.service.JeloPorudzbineServiceUnitTests"></class>
     </classes>
   </test> <!-- TestAll -->
 </suite> <!-- SuiteAll -->
