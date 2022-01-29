@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class PorudzbinaController {
 
 
 
+    @PreAuthorize("hasRole('KONOBAR')")
     @PostMapping()
     public ResponseEntity<PorudzbinaDTO> napraviPorudzbinu(@RequestBody PorudzbinaDTO dto) {
         Porudzbina porudzbina = porudzbinaService.napraviPorudzbinu(dto);
@@ -83,6 +85,7 @@ public class PorudzbinaController {
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
     }
     
+    @PreAuthorize("hasRole('SANKER')")
     @GetMapping("/spremiPica/{pId}")
     public ResponseEntity<PorudzbinaDTO> spremiPica(@PathVariable("pId") int pId) {
         try {
@@ -96,6 +99,7 @@ public class PorudzbinaController {
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('KUVAR') or hasRole('GLAVNI_KUVAR')")
     @PostMapping("/preuzmiPorudzbinu/{id}")
     public ResponseEntity<PorudzbinaDTO> preuzmiPorudzbinu(@PathVariable("id") int id) {
         try {
@@ -113,6 +117,7 @@ public class PorudzbinaController {
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('KONOBAR')")
     @PostMapping("/update")
     public ResponseEntity<PorudzbinaDTO> izmeniPorudzbinu(@RequestBody PorudzbinaDTO dto){
         Porudzbina porudzbina = null;
@@ -134,18 +139,7 @@ public class PorudzbinaController {
         return new ResponseEntity<PorudzbinaDTO>(new PorudzbinaDTO(porudzbina), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> obrisiPorudzbinu(@PathVariable("id") Integer id) {
-        try {
-            porudzbinaService.obrisiPorudzbinuPoId(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch(Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
+    @PreAuthorize("hasRole('KONOBAR')")
     @PostMapping("/naplati/{id}")
     public ResponseEntity<Object> naplatiPorudzbinu(@PathVariable("id") Integer id) {
         try {

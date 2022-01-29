@@ -6,6 +6,7 @@ import gradjanibrzogbroda.backend.service.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -26,6 +27,7 @@ public class ZoneController {
 		return new ResponseEntity<List<ZoneDTO>>(zoneDTOS, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping()
 	public ResponseEntity<String> updateZone(@RequestBody ZoneDTO zoneDTO){
 
@@ -38,6 +40,7 @@ public class ZoneController {
 		return new ResponseEntity<String>("Uspesno.", HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping()
 	public ResponseEntity<String> addZone(@RequestBody ZoneDTO zoneDTO){
 
@@ -46,6 +49,7 @@ public class ZoneController {
 		return new ResponseEntity<String>("Uspesno.", HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("{zoneId}")
 	public ResponseEntity<String> deleteZone(@PathVariable String zoneId){
 

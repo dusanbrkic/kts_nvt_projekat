@@ -13,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import gradjanibrzogbroda.backend.domain.Pice;
@@ -97,6 +98,7 @@ public class PiceController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PostMapping()
 	public ResponseEntity<PiceDTO> addPice(@RequestBody PiceDTO piceDTO) {
 		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null) {
@@ -109,6 +111,7 @@ public class PiceController {
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PutMapping()
 	public ResponseEntity<PiceDTO> updatePice(@RequestBody PiceDTO piceDTO){
 		if(piceDTO.getNaziv()==null || piceDTO.getTrenutnaCena()==null || piceDTO.getId()==null) {
@@ -133,6 +136,7 @@ public class PiceController {
 		return new ResponseEntity<PiceDTO>(new PiceDTO(p), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deletePice(@PathVariable("id") int id) {
 		try {
@@ -145,6 +149,7 @@ public class PiceController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
 	@PutMapping("izmeni-cenu/{id}")
 	public ResponseEntity<PiceDTO> izmeniCenuPica(@PathVariable("id") Integer id, @RequestParam Double novaCena){
 		Pice p = piceService.izmeniCenu(id, novaCena);
